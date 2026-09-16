@@ -1,475 +1,509 @@
-import { Ionicons } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
+import React, { useState } from 'react';
 import {
-  Alert,
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Switch,
-  Text,
-  TextInput,
-  TouchableOpacity,
   View,
-} from "react-native";
-import { useUsuario } from "../../../backend/src/context/UserContext";
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  SafeAreaView,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-// ─── Tela de Perfil Editável ──────────────────────────────────────────────────
-export default function ProfileScreen() {
-  const context = useUsuario();
+const { width } = Dimensions.get('window');
+const PORTFOLIO_ITEM_SIZE = (width - 48) / 3;
 
-  // 1. Fallback seguro: garante que não haja erros ao iniciar os hooks, mesmo sem contexto ainda
-  const usuario = context?.usuario || {
-    nome: "",
-    especialidade: "",
-    bio: "",
-    cidade: "",
-    visivelNoMapa: false,
-    avatarUrl: "",
-    latitude: -23.555,
-    longitude: -46.67,
-  };
-  const atualizarUsuario = context?.atualizarUsuario || (() => {});
+// ─── Tipos ────────────────────────────────────────────────────────────────────
+interface Avaliacao {
+  id: string;
+  nomeAvaliador: string;
+  avatarAvaliador: string;
+  nota: number;
+  comentario: string;
+  data: string;
+}
 
-  // 2. HOOKS NO TOPO: Sempre executam na mesma ordem, respeitando as regras do React
-  const [nome, setNome] = useState(usuario.nome);
-  const [especialidade, setEspecialidade] = useState(usuario.especialidade);
-  const [bio, setBio] = useState(usuario.bio);
-  const [cidade, setCidade] = useState(usuario.cidade);
-  const [visivelNoMapa, setVisivelNoMapa] = useState(usuario.visivelNoMapa);
-  const [modoEdicao, setModoEdicao] = useState(false);
+interface AgentePerfil {
+  id: string;
+  nome: string;
+  especialidade: string;
+  bio: string;
+  cidade: string;
+  avatarUrl: string;
+  notaMedia: number;
+  totalAvaliacoes: number;
+  totalProjetos: number;
+  portfolio: string[];
+  avaliacoes: Avaliacao[];
+}
 
-  // Sincroniza se o contexto mudar externamente
-  useEffect(() => {
-    if (context?.usuario) {
-      setNome(context.usuario.nome);
-      setEspecialidade(context.usuario.especialidade);
-      setBio(context.usuario.bio);
-      setCidade(context.usuario.cidade);
-      setVisivelNoMapa(context.usuario.visivelNoMapa);
-    }
-  }, [context?.usuario]);
+// ─── Dados mock ───────────────────────────────────────────────────────────────
+const agenteMock: AgentePerfil = {
+  id: '1',
+  nome: 'Marina Oliveira',
+  especialidade: 'Fotógrafa & Videomaker',
+  bio: 'Especializada em retratos editoriais e cobertura de eventos culturais. Apaixonada por capturar histórias através das lentes há mais de 8 anos.',
+  cidade: 'São Paulo, SP',
+  avatarUrl: 'https://i.pravatar.cc/150?img=47',
+  notaMedia: 4.8,
+  totalAvaliacoes: 127,
+  totalProjetos: 94,
+  portfolio: [
+    'https://picsum.photos/seed/p1/300/300',
+    'https://picsum.photos/seed/p2/300/300',
+    'https://picsum.photos/seed/p3/300/300',
+    'https://picsum.photos/seed/p4/300/300',
+    'https://picsum.photos/seed/p5/300/300',
+    'https://picsum.photos/seed/p6/300/300',
+  ],
+  avaliacoes: [
+    {
+      id: 'a1',
+      nomeAvaliador: 'Carlos Mendes',
+      avatarAvaliador: 'https://i.pravatar.cc/50?img=12',
+      nota: 5,
+      comentario: 'Trabalho incrível! Marina superou todas as expectativas no nosso evento.',
+      data: 'Jun 2025',
+    },
+    {
+      id: 'a2',
+      nomeAvaliador: 'Beatriz Costa',
+      avatarAvaliador: 'https://i.pravatar.cc/50?img=25',
+      nota: 5,
+      comentario: 'Profissional impecável, entregou tudo no prazo e com qualidade excepcional.',
+      data: 'Mai 2025',
+    },
+    {
+      id: 'a3',
+      nomeAvaliador: 'Rafael Souza',
+      avatarAvaliador: 'https://i.pravatar.cc/50?img=33',
+      nota: 4,
+      comentario: 'Ótimo trabalho! As fotos ficaram lindas, recomendo muito.',
+      data: 'Abr 2025',
+    },
+  ],
+};
 
-  // 3. Early return seguro DEPOIS dos hooks
-  if (!context) {
-    return (
-      <SafeAreaView
-        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-      >
-        <Text style={{ color: "#94A3B8" }}>Carregando dados do usuário...</Text>
-      </SafeAreaView>
-    );
-  }
-
-  function salvar() {
-    if (!nome.trim()) {
-      Alert.alert("Atenção", "O nome não pode ficar em branco.");
-      return;
-    }
-
-    // ─── GEOCODING LOCAL (Localização Exata) ───────────────────
-    let novaLatitude = usuario.latitude;
-    let novaLongitude = usuario.longitude;
-
-    const cidadeLimpa = cidade.toLowerCase().trim();
-
-    // Mapeamento manual de coordenadas para mover o pin no mapa
-    if (cidadeLimpa.includes("santos")) {
-      novaLatitude = -23.9608; // Latitude exata de Santos, SP
-      novaLongitude = -46.3339; // Longitude exata de Santos, SP
-    } else if (
-      cidadeLimpa.includes("mongaguá") ||
-      cidadeLimpa.includes("mongagua")
-    ) {
-      novaLatitude = -24.0934; // Latitude exata de Mongaguá, SP
-      novaLongitude = -46.6214; // Longitude exata de Mongaguá, SP
-    } else if (
-      cidadeLimpa.includes("são paulo") ||
-      cidadeLimpa.includes("sao paulo") ||
-      cidadeLimpa.includes("sp")
-    ) {
-      novaLatitude = -23.5505; // Centro de São Paulo, SP
-      novaLongitude = -46.6333;
-    } else if (
-      cidadeLimpa.includes("rio de janeiro") ||
-      cidadeLimpa.includes("rj")
-    ) {
-      novaLatitude = -22.9068; // Rio de Janeiro, RJ
-      novaLongitude = -43.1729;
-    }
-    // ───────────────────────────────────────────────────────────
-
-    // Salva todas as informações junto com as novas coordenadas atualizadas
-    atualizarUsuario({
-      nome,
-      especialidade,
-      bio,
-      cidade,
-      visivelNoMapa,
-      latitude: novaLatitude,
-      longitude: novaLongitude,
-    });
-
-    setModoEdicao(false);
-    Alert.alert(
-      "Salvo!",
-      `Seu perfil foi atualizado e posicionado em: ${cidade}.`,
-    );
-  }
-
-  function cancelar() {
-    setNome(usuario.nome);
-    setEspecialidade(usuario.especialidade);
-    setBio(usuario.bio);
-    setCidade(usuario.cidade);
-    setVisivelNoMapa(usuario.visivelNoMapa);
-    setModoEdicao(false);
-  }
-
-  const avatarPlaceholder = `https://ui-avatars.com/api/?name=${encodeURIComponent(nome || "Arthere")}&background=EC1B4B&color=fff&size=150`;
-
+// ─── Componente de estrelas ───────────────────────────────────────────────────
+function Estrelas({ nota, tamanho = 14 }: { nota: number; tamanho?: number }) {
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-      >
-        {/* ── Header ─────────────────────────────────────────── */}
-        <View style={styles.header}>
-          <Text style={styles.headerTitulo}>Meu Perfil</Text>
-          {modoEdicao ? (
-            <TouchableOpacity onPress={cancelar}>
-              <Text style={styles.btnCancelar}>Cancelar</Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              style={styles.btnEditar}
-              onPress={() => setModoEdicao(true)}
-            >
-              <Ionicons name="pencil-outline" size={16} color="#EC1B4B" />
-              <Text style={styles.btnEditarTexto}>Editar</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 120 }}
-        >
-          {/* ── Avatar ─────────────────────────────────────────── */}
-          <View style={styles.avatarSection}>
-            <View style={styles.avatarWrapper}>
-              <Image
-                source={{ uri: usuario.avatarUrl || avatarPlaceholder }}
-                style={styles.avatar}
-              />
-              {modoEdicao && (
-                <TouchableOpacity style={styles.btnTrocarFoto}>
-                  <Ionicons name="camera" size={16} color="#fff" />
-                </TouchableOpacity>
-              )}
-            </View>
-            {!modoEdicao && nome ? (
-              <Text style={styles.nomeExibido}>{nome}</Text>
-            ) : null}
-            {!modoEdicao && especialidade ? (
-              <Text style={styles.especialidadeExibida}>{especialidade}</Text>
-            ) : null}
-          </View>
-
-          {/* ── Visibilidade no Mapa ────────────────────────────── */}
-          <View style={styles.card}>
-            <View style={styles.switchRow}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.switchLabel}>Aparecer no mapa</Text>
-                <Text style={styles.switchSub}>
-                  {visivelNoMapa
-                    ? "Seu perfil está visível para contratantes"
-                    : "Você está oculto no mapa"}
-                </Text>
-              </View>
-              <Switch
-                value={visivelNoMapa}
-                onValueChange={(val) => {
-                  setVisivelNoMapa(val);
-                  atualizarUsuario({ visivelNoMapa: val });
-                }}
-                trackColor={{ false: "#E2E8F0", true: "#EC1B4B" }}
-                thumbColor="#fff"
-              />
-            </View>
-          </View>
-
-          {/* ── Campos do perfil ────────────────────────────────── */}
-          <View style={styles.card}>
-            <Text style={styles.cardTitulo}>Informações</Text>
-
-            <Campo
-              label="Nome completo"
-              valor={nome}
-              onChange={setNome}
-              editando={modoEdicao}
-              placeholder="Seu nome"
-              icone="person-outline"
-            />
-            <Campo
-              label="Especialidade"
-              valor={especialidade}
-              onChange={setEspecialidade}
-              editando={modoEdicao}
-              placeholder="Ex: Fotógrafo, DJ, Músico..."
-              icone="brush-outline"
-            />
-            <Campo
-              label="Cidade"
-              valor={cidade}
-              onChange={setCidade}
-              editando={modoEdicao}
-              placeholder="Ex: São Paulo, SP"
-              icone="location-outline"
-            />
-          </View>
-
-          <View style={styles.card}>
-            <Text style={styles.cardTitulo}>Sobre mim</Text>
-            {modoEdicao ? (
-              <TextInput
-                style={styles.inputBio}
-                value={bio}
-                onChangeText={setBio}
-                placeholder="Conte um pouco sobre você e seus serviços..."
-                placeholderTextColor="#94A3B8"
-                multiline
-                numberOfLines={4}
-                textAlignVertical="top"
-              />
-            ) : (
-              <Text style={bio ? styles.bioTexto : styles.bioPlaceholder}>
-                {bio || "Adicione uma descrição sobre você..."}
-              </Text>
-            )}
-          </View>
-
-          {/* ── Botão Salvar ────────────────────────────────────── */}
-          {modoEdicao && (
-            <TouchableOpacity style={styles.btnSalvar} onPress={salvar}>
-              <Ionicons
-                name="checkmark-circle-outline"
-                size={20}
-                color="#fff"
-              />
-              <Text style={styles.btnSalvarTexto}>Salvar alterações</Text>
-            </TouchableOpacity>
-          )}
-
-          {/* ── Info do mapa ─────────────────────────────────────── */}
-          {!modoEdicao && (
-            <View style={styles.infoMapa}>
-              <Ionicons
-                name="information-circle-outline"
-                size={18}
-                color="#7C3AED"
-              />
-              <Text style={styles.infoMapaTexto}>
-                Sua posição no mapa é baseada no endereço do seu perfil. O
-                marcador mudará automaticamente ao digitar e salvar uma cidade
-                mapeada.
-              </Text>
-            </View>
-          )}
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <View style={{ flexDirection: 'row', gap: 2 }}>
+      {[1, 2, 3, 4, 5].map((i) => (
+        <Ionicons
+          key={i}
+          name={i <= Math.round(nota) ? 'star' : 'star-outline'}
+          size={tamanho}
+          color="#F59E0B"
+        />
+      ))}
+    </View>
   );
 }
 
-// ─── Componente de Campo ──────────────────────────────────────────────────────
-function Campo({
-  label,
-  valor,
-  onChange,
-  editando,
-  placeholder,
-  icone,
-}: {
-  label: string;
-  valor: string;
-  onChange: (v: string) => void;
-  editando: boolean;
-  placeholder: string;
-  icone: string;
-}) {
+// ─── Card de avaliação ────────────────────────────────────────────────────────
+function CardAvaliacao({ item }: { item: Avaliacao }) {
   return (
-    <View style={styles.campoWrapper}>
-      <Text style={styles.campoLabel}>{label}</Text>
-      <View style={[styles.campoRow, editando && styles.campoRowAtivo]}>
-        <Ionicons
-          name={icone as any}
-          size={18}
-          color={editando ? "#EC1B4B" : "#94A3B8"}
-          style={{ marginRight: 10 }}
-        />
-        {editando ? (
-          <TextInput
-            style={styles.campoInput}
-            value={valor}
-            onChangeText={onChange}
-            placeholder={placeholder}
-            placeholderTextColor="#94A3B8"
-          />
-        ) : (
-          <Text style={valor ? styles.campoValor : styles.campoVazio}>
-            {valor || placeholder}
-          </Text>
-        )}
+    <View style={styles.cardAvaliacao}>
+      <View style={styles.avaliacaoHeader}>
+        <Image source={{ uri: item.avatarAvaliador }} style={styles.avatarAvaliador} />
+        <View style={{ flex: 1 }}>
+          <Text style={styles.nomeAvaliador}>{item.nomeAvaliador}</Text>
+          <Estrelas nota={item.nota} />
+        </View>
+        <Text style={styles.dataAvaliacao}>{item.data}</Text>
       </View>
+      <Text style={styles.comentario}>{item.comentario}</Text>
     </View>
+  );
+}
+
+// ─── Tela Principal ───────────────────────────────────────────────────────────
+export default function ProfileScreen() {
+  const agente = agenteMock;
+  const [abaAtiva, setAbaAtiva] = useState<'portfolio' | 'avaliacoes'>('portfolio');
+
+  return (
+    <SafeAreaView style={styles.container}>
+      {/* Header fixo com botão voltar */}
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.btnVoltar}>
+          <Ionicons name="chevron-back" size={22} color="#111" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitulo}>Perfil</Text>
+        <TouchableOpacity style={styles.btnVoltar}>
+          <Ionicons name="share-social-outline" size={22} color="#111" />
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
+        {/* ── Seção Hero ─────────────────────────────────────── */}
+        <View style={styles.hero}>
+          <View style={styles.avatarWrapper}>
+            <Image source={{ uri: agente.avatarUrl }} style={styles.avatar} />
+            <View style={styles.badgeOnline} />
+          </View>
+
+          <Text style={styles.nome}>{agente.nome}</Text>
+          <Text style={styles.especialidade}>{agente.especialidade}</Text>
+
+          <View style={styles.localRow}>
+            <Ionicons name="location-outline" size={14} color="#7C3AED" />
+            <Text style={styles.localTexto}>{agente.cidade}</Text>
+          </View>
+
+          {/* Stats */}
+          <View style={styles.statsRow}>
+            <View style={styles.statItem}>
+              <Text style={styles.statNumero}>{agente.notaMedia}</Text>
+              <Text style={styles.statLabel}>Avaliação</Text>
+            </View>
+            <View style={styles.statDivider} />
+            <View style={styles.statItem}>
+              <Text style={styles.statNumero}>{agente.totalAvaliacoes}</Text>
+              <Text style={styles.statLabel}>Avaliações</Text>
+            </View>
+            <View style={styles.statDivider} />
+            <View style={styles.statItem}>
+              <Text style={styles.statNumero}>{agente.totalProjetos}</Text>
+              <Text style={styles.statLabel}>Projetos</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* ── Bio ────────────────────────────────────────────── */}
+        <View style={styles.secao}>
+          <Text style={styles.secaoTitulo}>Sobre</Text>
+          <Text style={styles.bioTexto}>{agente.bio}</Text>
+        </View>
+
+        {/* ── Botões de ação ─────────────────────────────────── */}
+        <View style={styles.botoesRow}>
+          <TouchableOpacity style={styles.btnChat}>
+            <Ionicons name="chatbubble-ellipses-outline" size={20} color="#EC1B4B" />
+            <Text style={styles.btnChatTexto}>Mensagem</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btnAgendar}>
+            <Ionicons name="calendar-outline" size={20} color="#fff" />
+            <Text style={styles.btnAgendarTexto}>Agendar</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* ── Abas: Portfólio / Avaliações ───────────────────── */}
+        <View style={styles.abasRow}>
+          <TouchableOpacity
+            style={[styles.aba, abaAtiva === 'portfolio' && styles.abaAtiva]}
+            onPress={() => setAbaAtiva('portfolio')}
+          >
+            <Text style={[styles.abaTexto, abaAtiva === 'portfolio' && styles.abaTextoAtivo]}>
+              Portfólio
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.aba, abaAtiva === 'avaliacoes' && styles.abaAtiva]}
+            onPress={() => setAbaAtiva('avaliacoes')}
+          >
+            <Text style={[styles.abaTexto, abaAtiva === 'avaliacoes' && styles.abaTextoAtivo]}>
+              Avaliações
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* ── Conteúdo da aba ────────────────────────────────── */}
+        {abaAtiva === 'portfolio' ? (
+          <View style={styles.portfolioGrid}>
+            {agente.portfolio.map((url, index) => (
+              <Image key={index} source={{ uri: url }} style={styles.portfolioItem} />
+            ))}
+          </View>
+        ) : (
+          <View style={styles.avaliacoesContainer}>
+            {/* Resumo de nota */}
+            <View style={styles.resumoNota}>
+              <Text style={styles.notaGrande}>{agente.notaMedia}</Text>
+              <View>
+                <Estrelas nota={agente.notaMedia} tamanho={18} />
+                <Text style={styles.totalAvaliacoesTexto}>{agente.totalAvaliacoes} avaliações</Text>
+              </View>
+            </View>
+
+            {agente.avaliacoes.map((item) => (
+              <CardAvaliacao key={item.id} item={item} />
+            ))}
+          </View>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 // ─── Estilos ──────────────────────────────────────────────────────────────────
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F8F7FA" },
+  container: {
+    flex: 1,
+    backgroundColor: '#F8F7FA',
+  },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingVertical: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: '#F8F7FA',
   },
-  headerTitulo: { fontSize: 22, fontWeight: "800", color: "#111" },
-  btnEditar: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
+  btnVoltar: {
+    width: 40,
+    height: 40,
     borderRadius: 12,
-    borderWidth: 1.5,
-    borderColor: "#EC1B4B",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    elevation: 2,
   },
-  btnEditarTexto: { fontSize: 14, fontWeight: "700", color: "#EC1B4B" },
-  btnCancelar: { fontSize: 15, fontWeight: "600", color: "#94A3B8" },
-  avatarSection: { alignItems: "center", paddingVertical: 24 },
-  avatarWrapper: { position: "relative", marginBottom: 12 },
+  headerTitulo: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: '#111',
+  },
+  hero: {
+    alignItems: 'center',
+    paddingVertical: 24,
+    paddingHorizontal: 16,
+    backgroundColor: '#fff',
+    marginHorizontal: 16,
+    marginTop: 8,
+    borderRadius: 24,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
+  },
+  avatarWrapper: {
+    position: 'relative',
+    marginBottom: 14,
+  },
   avatar: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
     borderWidth: 3,
-    borderColor: "#EC1B4B",
+    borderColor: '#EC1B4B',
   },
-  btnTrocarFoto: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: "#EC1B4B",
-    alignItems: "center",
-    justifyContent: "center",
+  badgeOnline: {
+    position: 'absolute',
+    bottom: 4,
+    right: 4,
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    backgroundColor: '#22C55E',
     borderWidth: 2,
-    borderColor: "#fff",
+    borderColor: '#fff',
   },
-  nomeExibido: {
-    fontSize: 20,
-    fontWeight: "800",
-    color: "#111",
+  nome: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: '#111',
     marginBottom: 4,
   },
-  especialidadeExibida: { fontSize: 14, color: "#7C3AED", fontWeight: "600" },
-  card: {
+  especialidade: {
+    fontSize: 14,
+    color: '#7C3AED',
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  localRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginBottom: 20,
+  },
+  localTexto: {
+    fontSize: 13,
+    color: '#64748B',
+  },
+  statsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: 8,
+  },
+  statItem: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  statNumero: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: '#111',
+  },
+  statLabel: {
+    fontSize: 11,
+    color: '#94A3B8',
+    marginTop: 2,
+  },
+  statDivider: {
+    width: 1,
+    height: 32,
+    backgroundColor: '#E2E8F0',
+  },
+  secao: {
     marginHorizontal: 16,
-    marginBottom: 14,
-    backgroundColor: "#fff",
+    marginTop: 16,
+    backgroundColor: '#fff',
     borderRadius: 20,
-    padding: 18,
-    shadowColor: "#000",
+    padding: 20,
+    shadowColor: '#000',
     shadowOpacity: 0.04,
     shadowRadius: 8,
     elevation: 1,
   },
-  cardTitulo: {
-    fontSize: 13,
-    fontWeight: "700",
-    color: "#94A3B8",
-    textTransform: "uppercase",
-    letterSpacing: 0.8,
-    marginBottom: 14,
-  },
-  switchRow: { flexDirection: "row", alignItems: "center" },
-  switchLabel: {
+  secaoTitulo: {
     fontSize: 15,
-    fontWeight: "700",
-    color: "#111",
-    marginBottom: 3,
+    fontWeight: '700',
+    color: '#111',
+    marginBottom: 8,
   },
-  switchSub: { fontSize: 12, color: "#94A3B8" },
-  campoWrapper: { marginBottom: 14 },
-  campoLabel: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: "#94A3B8",
-    marginBottom: 6,
-    textTransform: "uppercase",
-    letterSpacing: 0.5,
-  },
-  campoRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    borderRadius: 12,
-    backgroundColor: "#F8F7FA",
-    borderWidth: 1.5,
-    borderColor: "transparent",
-  },
-  campoRowAtivo: { borderColor: "#EC1B4B", backgroundColor: "#fff" },
-  campoInput: { flex: 1, fontSize: 15, color: "#111" },
-  campoValor: { fontSize: 15, color: "#111" },
-  campoVazio: { fontSize: 15, color: "#CBD5E1" },
-  inputBio: {
+  bioTexto: {
     fontSize: 14,
-    color: "#111",
+    color: '#475569',
     lineHeight: 22,
-    minHeight: 100,
+  },
+  botoesRow: {
+    flexDirection: 'row',
+    marginHorizontal: 16,
+    marginTop: 16,
+    gap: 12,
+  },
+  btnChat: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    height: 52,
+    borderRadius: 16,
     borderWidth: 1.5,
-    borderColor: "#EC1B4B",
+    borderColor: '#EC1B4B',
+    backgroundColor: '#fff',
+  },
+  btnChatTexto: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#EC1B4B',
+  },
+  btnAgendar: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    height: 52,
+    borderRadius: 16,
+    backgroundColor: '#EC1B4B',
+  },
+  btnAgendarTexto: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#fff',
+  },
+  abasRow: {
+    flexDirection: 'row',
+    marginHorizontal: 16,
+    marginTop: 20,
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 4,
+    shadowColor: '#000',
+    shadowOpacity: 0.04,
+    shadowRadius: 6,
+    elevation: 1,
+  },
+  aba: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
     borderRadius: 12,
-    padding: 12,
-    backgroundColor: "#fff",
   },
-  bioTexto: { fontSize: 14, color: "#475569", lineHeight: 22 },
-  bioPlaceholder: { fontSize: 14, color: "#CBD5E1", fontStyle: "italic" },
-  btnSalvar: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 10,
-    marginHorizontal: 16,
-    marginTop: 4,
-    marginBottom: 16,
-    height: 56,
-    borderRadius: 18,
-    backgroundColor: "#EC1B4B",
-    shadowColor: "#EC1B4B",
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 4,
+  abaAtiva: {
+    backgroundColor: '#EC1B4B',
   },
-  btnSalvarTexto: { fontSize: 16, fontWeight: "800", color: "#fff" },
-  infoMapa: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    gap: 10,
-    marginHorizontal: 16,
-    marginTop: 4,
-    padding: 14,
-    backgroundColor: "#F3F0FF",
-    borderRadius: 14,
+  abaTexto: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#94A3B8',
   },
-  infoMapaTexto: { flex: 1, fontSize: 13, color: "#7C3AED", lineHeight: 20 },
+  abaTextoAtivo: {
+    color: '#fff',
+  },
+  portfolioGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    paddingHorizontal: 16,
+    marginTop: 16,
+  },
+  portfolioItem: {
+    width: PORTFOLIO_ITEM_SIZE,
+    height: PORTFOLIO_ITEM_SIZE,
+    borderRadius: 12,
+  },
+  avaliacoesContainer: {
+    paddingHorizontal: 16,
+    marginTop: 16,
+  },
+  resumoNota: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+    backgroundColor: '#fff',
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 12,
+  },
+  notaGrande: {
+    fontSize: 36,
+    fontWeight: '800',
+    color: '#111',
+  },
+  totalAvaliacoesTexto: {
+    fontSize: 12,
+    color: '#64748B',
+    marginTop: 2,
+  },
+  cardAvaliacao: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 12,
+  },
+  avaliacaoHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 8,
+  },
+  avatarAvaliador: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+  nomeAvaliador: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#111',
+    marginBottom: 2,
+  },
+  dataAvaliacao: {
+    fontSize: 12,
+    color: '#94A3B8',
+  },
+  comentario: {
+    fontSize: 13,
+    color: '#475569',
+    lineHeight: 18,
+  },
 });

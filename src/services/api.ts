@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
 
 // Para um celular físico, troque localhost pelo IP do computador na rede Wi-Fi.
 // Expo Web ou iOS Simulator
@@ -13,6 +13,11 @@ type AuthResponse = {
     tipo: string;
     perfil: unknown;
   };
+};
+
+type Sessao = {
+  accessToken: string;
+  usuario: AuthResponse['usuario'];
 };
 
 async function request<T>(path: string, options: RequestInit): Promise<T> {
@@ -33,14 +38,109 @@ async function request<T>(path: string, options: RequestInit): Promise<T> {
   return body as T;
 }
 
+async function salvarSessao(result: AuthResponse) {
+  try {
+    await SecureStore.setItemAsync("access_token", result.access_token);
+    await SecureStore.setItemAsync("usuario", JSON.stringify(result.usuario));
+  } catch (error) {
+    // A autenticação já foi concluída no servidor. Não bloqueie o acesso caso
+    // o binário local ainda não tenha o módulo de armazenamento atualizado.
+    console.warn("Não foi possível persistir a sessão localmente.", error);
+  }
+}
+
+export async function obterSessao(): Promise<Sessao | null> {
+  try {
+    const [accessToken, usuario] = await Promise.all([
+      SecureStore.getItemAsync('access_token'),
+      SecureStore.getItemAsync('usuario'),
+    ]);
+
+    return accessToken && usuario ? { accessToken, usuario: JSON.parse(usuario) } : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function encerrarSessao() {
+  await Promise.all([
+    SecureStore.deleteItemAsync('access_token'),
+    SecureStore.deleteItemAsync('usuario'),
+  ]);
+}
+
+async function requestAutenticado<T>(path: string, options: RequestInit = {}): Promise<T> {
+  const sessao = await obterSessao();
+  if (!sessao) throw new Error('Sua sessão expirou. Entre novamente.');
+
+  return request<T>(path, {
+    ...options,
+    headers: { ...options.headers, Authorization: `Bearer ${sessao.accessToken}` },
+  });
+}
+
+export type PerfilRemoto = {
+  nome: string;
+  especialidade?: string;
+  bio?: string | null;
+  cidade?: string;
+  avatarUrl?: string | null;
+  visivelMapa?: boolean;
+  latitude?: number | null;
+  longitude?: number | null;
+};
+
+export async function obterMeuPerfil() {
+  return requestAutenticado<{ perfil: PerfilRemoto }>('/usuarios/me');
+}
+
+export async function atualizarMeuPerfil(dados: Record<string, unknown>) {
+  return requestAutenticado<{ perfil: PerfilRemoto }>('/usuarios/me', {
+    method: 'PATCH',
+    body: JSON.stringify(dados),
+  });
+}
+
+export type Projeto = {
+  id: string;
+  titulo: string;
+  descricao: string;
+  categoria: string;
+  orcamento: number | null;
+  dataEvento: string | null;
+  contratante: { nome: string; empresa: string | null };
+};
+
+export function listarProjetos() {
+  return request<Projeto[]>('/projetos', { method: 'GET' });
+}
+
+export function criarProjeto(dados: {
+  titulo: string;
+  descricao: string;
+  categoria: string;
+  orcamento?: number;
+}) {
+  return requestAutenticado<Projeto>('/projetos', {
+    method: 'POST',
+    body: JSON.stringify(dados),
+  });
+}
+
+export function candidatarProjeto(projetoId: string, mensagem?: string) {
+  return requestAutenticado(`/projetos/${projetoId}/candidaturas`, {
+    method: 'POST',
+    body: JSON.stringify({ mensagem }),
+  });
+}
+
 export async function login(email: string, senha: string) {
   const result = await request<AuthResponse>("/auth/login", {
     method: "POST",
     body: JSON.stringify({ email, senha }),
   });
 
-  await AsyncStorage.setItem("access_token", result.access_token);
-  await AsyncStorage.setItem("usuario", JSON.stringify(result.usuario));
+  await salvarSessao(result);
   return result;
 }
 
@@ -55,7 +155,6 @@ export async function register(data: {
     body: JSON.stringify(data),
   });
 
-  await AsyncStorage.setItem("access_token", result.access_token);
-  await AsyncStorage.setItem("usuario", JSON.stringify(result.usuario));
+  await salvarSessao(result);
   return result;
 }

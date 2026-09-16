@@ -2,19 +2,20 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-    ActivityIndicator,
-    Alert,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Alert,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { login } from "../../services/api";
+import { useUser } from "../../context/UserContext";
 
 export default function LoginScreen() {
   const router = useRouter();
+  const { login } = useUser();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [carregando, setCarregando] = useState(false);
@@ -27,13 +28,15 @@ export default function LoginScreen() {
 
     try {
       setCarregando(true);
-      await login(email.trim(), senha);
+      await new Promise((resolve) => setTimeout(resolve, 600));
+      
+      if (login) {
+        await login(email.trim(), senha);
+      }
+
       router.replace("/(tabs)");
     } catch (error) {
-      Alert.alert(
-        "Não foi possível entrar",
-        error instanceof Error ? error.message : "Tente novamente.",
-      );
+      Alert.alert("Erro", "Não foi possível realizar o login.");
     } finally {
       setCarregando(false);
     }
@@ -46,12 +49,7 @@ export default function LoginScreen() {
         <Text style={styles.subtitle}>Entre na sua conta</Text>
 
         <View style={styles.inputContainer}>
-          <Ionicons
-            name="mail-outline"
-            size={20}
-            color="#666"
-            style={styles.icon}
-          />
+          <Ionicons name="mail-outline" size={20} color="#666" style={styles.icon} />
           <TextInput
             style={styles.input}
             placeholder="E-mail"
@@ -64,12 +62,7 @@ export default function LoginScreen() {
         </View>
 
         <View style={styles.inputContainer}>
-          <Ionicons
-            name="lock-closed-outline"
-            size={20}
-            color="#666"
-            style={styles.icon}
-          />
+          <Ionicons name="lock-closed-outline" size={20} color="#666" style={styles.icon} />
           <TextInput
             style={styles.input}
             placeholder="Senha"
@@ -102,70 +95,16 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F8F7FA",
-  },
-  content: {
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 24,
-  },
-  title: {
-    fontSize: 36,
-    fontWeight: "bold",
-    color: "#EC1B4B",
-    textAlign: "center",
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#666",
-    textAlign: "center",
-    marginBottom: 32,
-  },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#FFF",
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    height: 52,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: "#E2E8F0",
-  },
-  icon: {
-    marginRight: 10,
-  },
-  input: {
-    flex: 1,
-    fontSize: 16,
-    color: "#111",
-  },
-  button: {
-    backgroundColor: "#EC1B4B",
-    height: 52,
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 8,
-  },
-  buttonText: {
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  linkButton: {
-    marginTop: 20,
-    alignItems: "center",
-  },
-  linkText: {
-    color: "#666",
-    fontSize: 14,
-  },
-  linkBold: {
-    color: "#EC1B4B",
-    fontWeight: "bold",
-  },
+  container: { flex: 1, backgroundColor: "#F8F7FA" },
+  content: { flex: 1, justifyContent: "center", paddingHorizontal: 24 },
+  title: { fontSize: 36, fontWeight: "bold", color: "#EC1B4B", textAlign: "center", marginBottom: 8 },
+  subtitle: { fontSize: 16, color: "#666", textAlign: "center", marginBottom: 32 },
+  inputContainer: { flexDirection: "row", alignItems: "center", backgroundColor: "#FFF", borderRadius: 12, paddingHorizontal: 16, height: 52, marginBottom: 16, borderWidth: 1, borderColor: "#E2E8F0" },
+  icon: { marginRight: 10 },
+  input: { flex: 1, fontSize: 16, color: "#111" },
+  button: { backgroundColor: "#EC1B4B", height: 52, borderRadius: 12, justifyContent: "center", alignItems: "center", marginTop: 8 },
+  buttonText: { color: "#FFF", fontSize: 16, fontWeight: "bold" },
+  linkButton: { marginTop: 20, alignItems: "center" },
+  linkText: { color: "#666", fontSize: 14 },
+  linkBold: { color: "#EC1B4B", fontWeight: "bold" },
 });

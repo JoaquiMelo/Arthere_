@@ -37,6 +37,15 @@ export default function TabsLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="opportunities"
+        options={{
+          title: 'Vagas',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="briefcase-outline" size={size} color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
