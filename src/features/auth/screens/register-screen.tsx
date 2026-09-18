@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -12,12 +12,12 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useUser } from "../../context/UserContext";
+import { useUser } from "@/providers/user-provider";
 
 type TipoUsuario = "AGENTE" | "CONTRATANTE";
 
 export default function RegisterScreen() {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const { updateProfile } = useUser();
 
   const [tipoUsuario, setTipoUsuario] = useState<TipoUsuario>("AGENTE");
@@ -49,11 +49,11 @@ export default function RegisterScreen() {
 
       // Redirecionamento condicional de acordo com o tipo de conta
       if (tipoUsuario === "AGENTE") {
-        router.replace("/(auth)/create-portfolio");
+        navigation.navigate("CreatePortfolio");
       } else {
-        router.replace("/(auth)/customize-profile");
+        navigation.navigate("CustomizeProfile");
       }
-    } catch (error) {
+    } catch {
       Alert.alert("Erro", "Não foi possível concluir o cadastro.");
     } finally {
       setCarregando(false);
@@ -164,7 +164,7 @@ export default function RegisterScreen() {
             )}
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => router.back()} style={styles.linkButton}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.linkButton}>
             <Text style={styles.linkText}>
               Já possui uma conta? <Text style={styles.linkBold}>Faça Login</Text>
             </Text>

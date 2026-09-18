@@ -13,7 +13,8 @@ export interface AgenteCriativo {
   cidade: string;
   latitude: number;
   longitude: number;
-  fotoUrl: string;
+  avatarUrl: string;
   descricao: string;
   portfolio: PortfolioItem[];
+  especialidades: string[];
 }

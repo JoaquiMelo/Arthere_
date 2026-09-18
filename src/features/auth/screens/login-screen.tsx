@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -11,10 +11,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useUser } from "../../context/UserContext";
+import { useUser } from "@/providers/user-provider";
 
 export default function LoginScreen() {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const { login } = useUser();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -34,8 +34,8 @@ export default function LoginScreen() {
         await login(email.trim(), senha);
       }
 
-      router.replace("/(tabs)");
-    } catch (error) {
+      navigation.reset({ index: 0, routes: [{ name: "Tabs" }] });
+    } catch {
       Alert.alert("Erro", "Não foi possível realizar o login.");
     } finally {
       setCarregando(false);
@@ -82,7 +82,7 @@ export default function LoginScreen() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => router.push("/(auth)/register")}
+          onPress={() => navigation.navigate("Register")}
           style={styles.linkButton}
         >
           <Text style={styles.linkText}>

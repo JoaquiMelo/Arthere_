@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -13,10 +13,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useUser } from "../../context/UserContext";
+import { useUser } from "@/providers/user-provider";
 
 export default function CreatePortfolioScreen() {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const { user, updateProfile } = useUser();
 
   const [especialidade, setEspecialidade] = useState(user?.especialidade || "");
@@ -52,8 +52,8 @@ export default function CreatePortfolioScreen() {
         });
       }
 
-      router.replace("/(tabs)");
-    } catch (error) {
+      navigation.reset({ index: 0, routes: [{ name: "Tabs" }] });
+    } catch {
       Alert.alert("Erro", "Falha ao salvar dados do portfólio.");
     } finally {
       setCarregando(false);

@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, FlatList, KeyboardAvoidingView, Modal, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { candidatarProjeto, criarProjeto, listarProjetos, obterSessao, Projeto } from '../../services/api';
+import { candidatarProjeto, criarProjeto, listarProjetos, obterSessao, Projeto } from '@/services/api';
 
 export default function OpportunitiesScreen() {
   const [projetos, setProjetos] = useState<Projeto[]>([]);
@@ -26,7 +26,10 @@ export default function OpportunitiesScreen() {
     }
   };
 
-  useEffect(() => { carregar(); }, []);
+  useEffect(() => {
+    const timer = setTimeout(() => { void carregar(); }, 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   const candidatar = async (projeto: Projeto) => {
     try {

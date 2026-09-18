@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext } from 'react';
-import { MOCK_USUARIO_LOGADO } from '../data/mockData';
+import { MOCK_USUARIO_LOGADO } from '../shared/data/mock-data';
 
 interface UserContextType {
   user: typeof MOCK_USUARIO_LOGADO;

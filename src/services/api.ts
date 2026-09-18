@@ -3,7 +3,7 @@ import * as SecureStore from "expo-secure-store";
 // Para um celular físico, troque localhost pelo IP do computador na rede Wi-Fi.
 // Expo Web ou iOS Simulator
 // Celular físico
-export const API_URL = 'http://192.168.10.173:3000';
+export const API_URL = process.env.EXPO_PUBLIC_API_URL ?? 'http://192.168.10.173:3000';
 
 type AuthResponse = {
   access_token: string;

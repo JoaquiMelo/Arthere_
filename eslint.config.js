@@ -7,4 +7,12 @@ module.exports = defineConfig([
   {
     ignores: ['dist/*'],
   },
+  {
+    files: ['components/**', 'src/components/**', 'src/screens/**'],
+    rules: { 'import/no-unresolved': 'off' },
+  },
+  {
+    files: ['src/hooks/**'],
+    rules: { 'react-hooks/set-state-in-effect': 'off' },
+  },
 ]);

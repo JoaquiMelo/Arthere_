@@ -10,12 +10,15 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+// TODO: confirme se o caminho de importação bate com a estrutura real do projeto Arthere
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
-const PORTFOLIO_ITEM_SIZE = (width - 48) / 3;
+const PORTFOLIO_ITEM_SIZE_3COL = (width - 48) / 3;
+const PORTFOLIO_ITEM_SIZE_2COL = (width - 40) / 2;
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
-interface Avaliacao {
+export interface Avaliacao {
   id: string;
   nomeAvaliador: string;
   avatarAvaliador: string;
@@ -24,7 +27,14 @@ interface Avaliacao {
   data: string;
 }
 
-interface AgentePerfil {
+export interface PortfolioItem {
+  id: string;
+  imageUrl: string;
+  titulo?: string;
+  descricao?: string;
+}
+
+export interface AgentePerfil {
   id: string;
   nome: string;
   especialidade: string;
@@ -34,9 +44,11 @@ interface AgentePerfil {
   notaMedia: number;
   totalAvaliacoes: number;
   totalProjetos: number;
-  portfolio: string[];
+  portfolio: PortfolioItem[];
   avaliacoes: Avaliacao[];
 }
+
+type LayoutPortfolio = 'grid3' | 'grid2' | 'lista';
 
 // ─── Dados mock ───────────────────────────────────────────────────────────────
 const agenteMock: AgentePerfil = {
@@ -50,12 +62,12 @@ const agenteMock: AgentePerfil = {
   totalAvaliacoes: 127,
   totalProjetos: 94,
   portfolio: [
-    'https://picsum.photos/seed/p1/300/300',
-    'https://picsum.photos/seed/p2/300/300',
-    'https://picsum.photos/seed/p3/300/300',
-    'https://picsum.photos/seed/p4/300/300',
-    'https://picsum.photos/seed/p5/300/300',
-    'https://picsum.photos/seed/p6/300/300',
+    { id: 'p1', imageUrl: 'https://picsum.photos/seed/p1/300/300', titulo: 'Ensaio urbano', descricao: 'Sessão de retratos no centro de São Paulo.' },
+    { id: 'p2', imageUrl: 'https://picsum.photos/seed/p2/300/300', titulo: 'Casamento Ana & Bruno', descricao: 'Cobertura completa da cerimônia e festa.' },
+    { id: 'p3', imageUrl: 'https://picsum.photos/seed/p3/300/300', titulo: 'Editorial de moda' },
+    { id: 'p4', imageUrl: 'https://picsum.photos/seed/p4/300/300', titulo: 'Evento cultural' },
+    { id: 'p5', imageUrl: 'https://picsum.photos/seed/p5/300/300' },
+    { id: 'p6', imageUrl: 'https://picsum.photos/seed/p6/300/300' },
   ],
   avaliacoes: [
     {
@@ -121,19 +133,42 @@ function CardAvaliacao({ item }: { item: Avaliacao }) {
 // ─── Tela Principal ───────────────────────────────────────────────────────────
 export default function ProfileScreen() {
   const agente = agenteMock;
+  const navigation = useNavigation<any>();
   const [abaAtiva, setAbaAtiva] = useState<'portfolio' | 'avaliacoes'>('portfolio');
+  const [layoutPortfolio, setLayoutPortfolio] = useState<LayoutPortfolio>('grid3');
+
+  // TODO: troque por uma verificação real (ex: comparar agente.id com o usuário logado no AuthContext)
+  const isOwnProfile = true;
+
+  const abrirEdicaoPerfil = () => {
+    navigation.navigate('EditProfile', { agente });
+  };
+
+  const abrirEdicaoPortfolio = (itemId?: string) => {
+    navigation.navigate('PortfolioCreation', {
+      portfolio: agente.portfolio,
+      focarItemId: itemId,
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Header fixo com botão voltar */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.btnVoltar}>
+        <TouchableOpacity style={styles.btnVoltar} onPress={() => navigation.goBack()}>
           <Ionicons name="chevron-back" size={22} color="#111" />
         </TouchableOpacity>
         <Text style={styles.headerTitulo}>Perfil</Text>
-        <TouchableOpacity style={styles.btnVoltar}>
-          <Ionicons name="share-social-outline" size={22} color="#111" />
-        </TouchableOpacity>
+        <View style={styles.headerAcoes}>
+          {isOwnProfile && (
+            <TouchableOpacity style={styles.btnVoltar} onPress={abrirEdicaoPerfil}>
+              <Ionicons name="create-outline" size={20} color="#111" />
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity style={styles.btnVoltar}>
+            <Ionicons name="share-social-outline" size={22} color="#111" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
@@ -142,6 +177,11 @@ export default function ProfileScreen() {
           <View style={styles.avatarWrapper}>
             <Image source={{ uri: agente.avatarUrl }} style={styles.avatar} />
             <View style={styles.badgeOnline} />
+            {isOwnProfile && (
+              <TouchableOpacity style={styles.btnEditarFoto} onPress={abrirEdicaoPerfil}>
+                <Ionicons name="camera" size={14} color="#fff" />
+              </TouchableOpacity>
+            )}
           </View>
 
           <Text style={styles.nome}>{agente.nome}</Text>
@@ -173,21 +213,37 @@ export default function ProfileScreen() {
 
         {/* ── Bio ────────────────────────────────────────────── */}
         <View style={styles.secao}>
-          <Text style={styles.secaoTitulo}>Sobre</Text>
+          <View style={styles.secaoHeaderRow}>
+            <Text style={styles.secaoTitulo}>Sobre</Text>
+            {isOwnProfile && (
+              <TouchableOpacity onPress={abrirEdicaoPerfil} hitSlop={8}>
+                <Ionicons name="pencil" size={16} color="#7C3AED" />
+              </TouchableOpacity>
+            )}
+          </View>
           <Text style={styles.bioTexto}>{agente.bio}</Text>
         </View>
 
         {/* ── Botões de ação ─────────────────────────────────── */}
-        <View style={styles.botoesRow}>
-          <TouchableOpacity style={styles.btnChat}>
-            <Ionicons name="chatbubble-ellipses-outline" size={20} color="#EC1B4B" />
-            <Text style={styles.btnChatTexto}>Mensagem</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btnAgendar}>
-            <Ionicons name="calendar-outline" size={20} color="#fff" />
-            <Text style={styles.btnAgendarTexto}>Agendar</Text>
-          </TouchableOpacity>
-        </View>
+        {isOwnProfile ? (
+          <View style={styles.botoesRow}>
+            <TouchableOpacity style={styles.btnEditarPerfilFull} onPress={abrirEdicaoPerfil}>
+              <Ionicons name="create-outline" size={20} color="#fff" />
+              <Text style={styles.btnAgendarTexto}>Editar Perfil</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.botoesRow}>
+            <TouchableOpacity style={styles.btnChat}>
+              <Ionicons name="chatbubble-ellipses-outline" size={20} color="#EC1B4B" />
+              <Text style={styles.btnChatTexto}>Mensagem</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btnAgendar}>
+              <Ionicons name="calendar-outline" size={20} color="#fff" />
+              <Text style={styles.btnAgendarTexto}>Agendar</Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
         {/* ── Abas: Portfólio / Avaliações ───────────────────── */}
         <View style={styles.abasRow}>
@@ -211,10 +267,90 @@ export default function ProfileScreen() {
 
         {/* ── Conteúdo da aba ────────────────────────────────── */}
         {abaAtiva === 'portfolio' ? (
-          <View style={styles.portfolioGrid}>
-            {agente.portfolio.map((url, index) => (
-              <Image key={index} source={{ uri: url }} style={styles.portfolioItem} />
-            ))}
+          <View>
+            {isOwnProfile && (
+              <View style={styles.portfolioToolbar}>
+                <View style={styles.layoutSwitcher}>
+                  <TouchableOpacity
+                    style={[styles.layoutBtn, layoutPortfolio === 'grid3' && styles.layoutBtnAtivo]}
+                    onPress={() => setLayoutPortfolio('grid3')}
+                  >
+                    <Ionicons
+                      name="grid-outline"
+                      size={16}
+                      color={layoutPortfolio === 'grid3' ? '#fff' : '#64748B'}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.layoutBtn, layoutPortfolio === 'grid2' && styles.layoutBtnAtivo]}
+                    onPress={() => setLayoutPortfolio('grid2')}
+                  >
+                    <Ionicons
+                      name="apps-outline"
+                      size={16}
+                      color={layoutPortfolio === 'grid2' ? '#fff' : '#64748B'}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.layoutBtn, layoutPortfolio === 'lista' && styles.layoutBtnAtivo]}
+                    onPress={() => setLayoutPortfolio('lista')}
+                  >
+                    <Ionicons
+                      name="list-outline"
+                      size={16}
+                      color={layoutPortfolio === 'lista' ? '#fff' : '#64748B'}
+                    />
+                  </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity style={styles.btnEditarPortfolio} onPress={() => abrirEdicaoPortfolio()}>
+                  <Ionicons name="create-outline" size={16} color="#EC1B4B" />
+                  <Text style={styles.btnEditarPortfolioTexto}>Editar portfólio</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            {layoutPortfolio === 'lista' ? (
+              <View style={styles.portfolioLista}>
+                {agente.portfolio.map((item) => (
+                  <TouchableOpacity
+                    key={item.id}
+                    style={styles.portfolioListaItem}
+                    onPress={() => isOwnProfile && abrirEdicaoPortfolio(item.id)}
+                    activeOpacity={isOwnProfile ? 0.7 : 1}
+                  >
+                    <Image source={{ uri: item.imageUrl }} style={styles.portfolioListaImagem} />
+                    <View style={{ flex: 1 }}>
+                      <Text style={styles.portfolioListaTitulo}>{item.titulo || 'Sem título'}</Text>
+                      {!!item.descricao && (
+                        <Text style={styles.portfolioListaDescricao} numberOfLines={2}>
+                          {item.descricao}
+                        </Text>
+                      )}
+                    </View>
+                    {isOwnProfile && <Ionicons name="chevron-forward" size={18} color="#CBD5E1" />}
+                  </TouchableOpacity>
+                ))}
+              </View>
+            ) : (
+              <View style={styles.portfolioGrid}>
+                {agente.portfolio.map((item) => (
+                  <TouchableOpacity
+                    key={item.id}
+                    onPress={() => isOwnProfile && abrirEdicaoPortfolio(item.id)}
+                    activeOpacity={isOwnProfile ? 0.7 : 1}
+                  >
+                    <Image
+                      source={{ uri: item.imageUrl }}
+                      style={[
+                        styles.portfolioItem,
+                        layoutPortfolio === 'grid2' && styles.portfolioItem2col,
+                      ]}
+                    />
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
           </View>
         ) : (
           <View style={styles.avaliacoesContainer}>
@@ -250,6 +386,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     backgroundColor: '#F8F7FA',
+  },
+  headerAcoes: {
+    flexDirection: 'row',
+    gap: 8,
   },
   btnVoltar: {
     width: 40,
@@ -300,6 +440,19 @@ const styles = StyleSheet.create({
     height: 14,
     borderRadius: 7,
     backgroundColor: '#22C55E',
+    borderWidth: 2,
+    borderColor: '#fff',
+  },
+  btnEditarFoto: {
+    position: 'absolute',
+    top: -2,
+    right: -2,
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: '#7C3AED',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderWidth: 2,
     borderColor: '#fff',
   },
@@ -361,11 +514,16 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 1,
   },
+  secaoHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
   secaoTitulo: {
     fontSize: 15,
     fontWeight: '700',
     color: '#111',
-    marginBottom: 8,
   },
   bioTexto: {
     fontSize: 14,
@@ -410,6 +568,16 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#fff',
   },
+  btnEditarPerfilFull: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    height: 52,
+    borderRadius: 16,
+    backgroundColor: '#EC1B4B',
+  },
   abasRow: {
     flexDirection: 'row',
     marginHorizontal: 16,
@@ -439,17 +607,89 @@ const styles = StyleSheet.create({
   abaTextoAtivo: {
     color: '#fff',
   },
+  portfolioToolbar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    marginTop: 16,
+  },
+  layoutSwitcher: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 3,
+    gap: 2,
+  },
+  layoutBtn: {
+    width: 30,
+    height: 30,
+    borderRadius: 9,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  layoutBtnAtivo: {
+    backgroundColor: '#EC1B4B',
+  },
+  btnEditarPortfolio: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+  },
+  btnEditarPortfolioTexto: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#EC1B4B',
+  },
   portfolioGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 8,
     paddingHorizontal: 16,
-    marginTop: 16,
+    marginTop: 12,
   },
   portfolioItem: {
-    width: PORTFOLIO_ITEM_SIZE,
-    height: PORTFOLIO_ITEM_SIZE,
+    width: PORTFOLIO_ITEM_SIZE_3COL,
+    height: PORTFOLIO_ITEM_SIZE_3COL,
     borderRadius: 12,
+  },
+  portfolioItem2col: {
+    width: PORTFOLIO_ITEM_SIZE_2COL,
+    height: PORTFOLIO_ITEM_SIZE_2COL,
+    borderRadius: 16,
+  },
+  portfolioLista: {
+    paddingHorizontal: 16,
+    marginTop: 12,
+    gap: 10,
+  },
+  portfolioListaItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 10,
+  },
+  portfolioListaImagem: {
+    width: 64,
+    height: 64,
+    borderRadius: 12,
+  },
+  portfolioListaTitulo: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#111',
+    marginBottom: 2,
+  },
+  portfolioListaDescricao: {
+    fontSize: 12,
+    color: '#64748B',
+    lineHeight: 16,
   },
   avaliacoesContainer: {
     paddingHorizontal: 16,
