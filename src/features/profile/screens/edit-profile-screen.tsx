@@ -1,54 +1,30 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-  Alert,
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
+import { ActivityIndicator, Alert, Image, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
-// Requer o pacote expo-image-picker (já comum em projetos Expo).
-// Se ainda não estiver instalado: npx expo install expo-image-picker
 import * as ImagePicker from 'expo-image-picker';
-import type { AgentePerfil } from './profile-screen';
+import { AgentePerfil, MOCK_AGENT_PROFILE } from './profile-screen';
+import { colors } from '@/shared/theme/colors';
 
 export default function EditProfileScreen() {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
-  const agenteAtual: AgentePerfil | undefined = route.params?.agente;
-
-  const [avatarUri, setAvatarUri] = useState(agenteAtual?.avatarUrl ?? '');
-  const [nome, setNome] = useState(agenteAtual?.nome ?? '');
-  const [especialidade, setEspecialidade] = useState(agenteAtual?.especialidade ?? '');
-  const [cidade, setCidade] = useState(agenteAtual?.cidade ?? '');
-  const [bio, setBio] = useState(agenteAtual?.bio ?? '');
+  const agenteAtual: AgentePerfil = route.params?.agente ?? MOCK_AGENT_PROFILE;
+  const [avatarUri, setAvatarUri] = useState(agenteAtual.avatarUrl);
+  const [nome, setNome] = useState(agenteAtual.nome);
+  const [especialidade, setEspecialidade] = useState(agenteAtual.especialidade);
+  const [cidade, setCidade] = useState(agenteAtual.cidade);
+  const [bio, setBio] = useState(agenteAtual.bio);
   const [salvando, setSalvando] = useState(false);
 
   const escolherFoto = async () => {
     const permissao = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permissao.granted) {
-      Alert.alert('Permissão necessária', 'Precisamos de acesso à galeria para trocar sua foto de perfil.');
+      Alert.alert('Permissão necessária', 'Autorize o acesso à galeria para trocar a foto de perfil.');
       return;
     }
-
-    const resultado = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.8,
-    });
-
-    if (!resultado.canceled && resultado.assets?.length) {
-      setAvatarUri(resultado.assets[0].uri);
-    }
+    const resultado = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, allowsEditing: true, aspect: [1, 1], quality: 0.8 });
+    if (!resultado.canceled && resultado.assets?.[0]) setAvatarUri(resultado.assets[0].uri);
   };
 
   const salvar = async () => {
@@ -56,25 +32,10 @@ export default function EditProfileScreen() {
       Alert.alert('Nome obrigatório', 'Informe seu nome para continuar.');
       return;
     }
-
     setSalvando(true);
     try {
-      // TODO: integrar com o serviço de API centralizado do Arthere, ex:
-      // await apiService.atualizarPerfil(agenteAtual.id, { nome, especialidade, cidade, bio, avatarUri });
-      await new Promise((resolve) => setTimeout(resolve, 600));
-
-      navigation.navigate('Profile', {
-        perfilAtualizado: {
-          ...agenteAtual,
-          nome: nome.trim(),
-          especialidade: especialidade.trim(),
-          cidade: cidade.trim(),
-          bio: bio.trim(),
-          avatarUrl: avatarUri,
-        },
-      });
-    } catch {
-      Alert.alert('Erro ao salvar', 'Não foi possível atualizar seu perfil. Tente novamente.');
+      await new Promise((resolve) => setTimeout(resolve, 450));
+      navigation.goBack();
     } finally {
       setSalvando(false);
     }
@@ -83,200 +44,57 @@ export default function EditProfileScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.btnIcone} onPress={() => navigation.goBack()}>
-          <Ionicons name="close" size={22} color="#111" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitulo}>Editar Perfil</Text>
-        <TouchableOpacity style={styles.btnSalvar} onPress={salvar} disabled={salvando}>
-          {salvando ? (
-            <ActivityIndicator size="small" color="#fff" />
-          ) : (
-            <Text style={styles.btnSalvarTexto}>Salvar</Text>
-          )}
-        </TouchableOpacity>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()} accessibilityLabel="Voltar"><Ionicons name="chevron-back" size={25} color={colors.text} /></TouchableOpacity>
+        <Text style={styles.headerTitle}>Editar perfil</Text>
+        <View style={styles.headerSpacer} />
       </View>
-
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={{ flex: 1 }}
-      >
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
-          {/* Avatar */}
-          <View style={styles.avatarSecao}>
-            <TouchableOpacity style={styles.avatarWrapper} onPress={escolherFoto}>
-              {avatarUri ? (
-                <Image source={{ uri: avatarUri }} style={styles.avatar} />
-              ) : (
-                <View style={[styles.avatar, styles.avatarPlaceholder]}>
-                  <Ionicons name="person" size={36} color="#94A3B8" />
-                </View>
-              )}
-              <View style={styles.btnCamera}>
-                <Ionicons name="camera" size={16} color="#fff" />
-              </View>
+      <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
+          <View style={styles.photoSection}>
+            <TouchableOpacity style={styles.avatarWrapper} onPress={escolherFoto} accessibilityLabel="Trocar foto de perfil">
+              <Image source={{ uri: avatarUri }} style={styles.avatar} />
+              <View style={styles.cameraBadge}><Ionicons name="camera" size={15} color={colors.white} /></View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={escolherFoto}>
-              <Text style={styles.trocarFotoTexto}>Trocar foto</Text>
-            </TouchableOpacity>
+            <TouchableOpacity onPress={escolherFoto}><Text style={styles.changePhoto}>Alterar foto</Text></TouchableOpacity>
           </View>
 
-          {/* Campos */}
-          <View style={styles.campo}>
-            <Text style={styles.rotulo}>Nome</Text>
-            <TextInput
-              style={styles.input}
-              value={nome}
-              onChangeText={setNome}
-              placeholder="Seu nome completo"
-              placeholderTextColor="#94A3B8"
-            />
+          <View style={styles.form}>
+            <Field label="Nome" value={nome} onChangeText={setNome} placeholder="Seu nome completo" />
+            <Field label="Especialidade" value={especialidade} onChangeText={setEspecialidade} placeholder="Ex.: Fotógrafa e videomaker" />
+            <Field label="Cidade" value={cidade} onChangeText={setCidade} placeholder="Ex.: São Paulo, SP" icon="location-outline" />
+            <View style={styles.field}>
+              <Text style={styles.label}>Sobre você</Text>
+              <TextInput style={[styles.input, styles.multiline]} value={bio} onChangeText={setBio} placeholder="Conte um pouco sobre seu trabalho" placeholderTextColor={colors.muted} multiline maxLength={280} textAlignVertical="top" />
+              <Text style={styles.counter}>{bio.length}/280</Text>
+            </View>
           </View>
 
-          <View style={styles.campo}>
-            <Text style={styles.rotulo}>Especialidade</Text>
-            <TextInput
-              style={styles.input}
-              value={especialidade}
-              onChangeText={setEspecialidade}
-              placeholder="Ex: Fotógrafo & Videomaker"
-              placeholderTextColor="#94A3B8"
-            />
-          </View>
-
-          <View style={styles.campo}>
-            <Text style={styles.rotulo}>Cidade</Text>
-            <TextInput
-              style={styles.input}
-              value={cidade}
-              onChangeText={setCidade}
-              placeholder="Ex: São Paulo, SP"
-              placeholderTextColor="#94A3B8"
-            />
-          </View>
-
-          <View style={styles.campo}>
-            <Text style={styles.rotulo}>Bio</Text>
-            <TextInput
-              style={[styles.input, styles.inputMultilinha]}
-              value={bio}
-              onChangeText={setBio}
-              placeholder="Conte um pouco sobre seu trabalho..."
-              placeholderTextColor="#94A3B8"
-              multiline
-              numberOfLines={5}
-              textAlignVertical="top"
-              maxLength={280}
-            />
-            <Text style={styles.contador}>{bio.length}/280</Text>
-          </View>
+          <TouchableOpacity style={[styles.saveButton, salvando && styles.saveButtonDisabled]} onPress={salvar} disabled={salvando}>
+            {salvando ? <ActivityIndicator color={colors.white} /> : <><Text style={styles.saveText}>Salvar alterações</Text><Ionicons name="checkmark" size={19} color={colors.white} /></>}
+          </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
+function Field({ label, icon, ...inputProps }: { label: string; icon?: keyof typeof Ionicons.glyphMap } & React.ComponentProps<typeof TextInput>) {
+  return (
+    <View style={styles.field}>
+      <Text style={styles.label}>{label}</Text>
+      <View style={styles.inputWithIcon}>
+        {icon && <Ionicons name={icon} size={18} color={colors.primaryDark} />}
+        <TextInput style={styles.input} placeholderTextColor={colors.muted} {...inputProps} />
+      </View>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F8F7FA',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  btnIcone: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerTitulo: {
-    fontSize: 17,
-    fontWeight: '700',
-    color: '#111',
-  },
-  btnSalvar: {
-    minWidth: 72,
-    height: 36,
-    borderRadius: 12,
-    backgroundColor: '#EC1B4B',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 14,
-  },
-  btnSalvarTexto: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#fff',
-  },
-  avatarSecao: {
-    alignItems: 'center',
-    paddingVertical: 24,
-  },
-  avatarWrapper: {
-    position: 'relative',
-    marginBottom: 10,
-  },
-  avatar: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    borderWidth: 3,
-    borderColor: '#EC1B4B',
-  },
-  avatarPlaceholder: {
-    backgroundColor: '#E2E8F0',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  btnCamera: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: '#7C3AED',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: '#fff',
-  },
-  trocarFotoTexto: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#EC1B4B',
-  },
-  campo: {
-    marginHorizontal: 16,
-    marginBottom: 16,
-  },
-  rotulo: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#475569',
-    marginBottom: 6,
-  },
-  input: {
-    backgroundColor: '#fff',
-    borderRadius: 14,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    fontSize: 14,
-    color: '#111',
-  },
-  inputMultilinha: {
-    minHeight: 110,
-  },
-  contador: {
-    alignSelf: 'flex-end',
-    fontSize: 11,
-    color: '#94A3B8',
-    marginTop: 4,
-  },
+  container: { flex: 1, backgroundColor: colors.background }, flex: { flex: 1 },
+  header: { height: 58, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16 },
+  backButton: { width: 38, height: 38, alignItems: 'center', justifyContent: 'center' }, headerTitle: { color: colors.text, fontSize: 17, fontWeight: '800' }, headerSpacer: { width: 38 },
+  content: { paddingHorizontal: 20, paddingBottom: 38 }, photoSection: { alignItems: 'center', paddingVertical: 18 }, avatarWrapper: { position: 'relative' }, avatar: { width: 104, height: 104, borderRadius: 52, borderWidth: 3, borderColor: colors.secondary }, cameraBadge: { position: 'absolute', right: 0, bottom: 1, width: 31, height: 31, borderRadius: 16, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.primaryDark, borderWidth: 2, borderColor: colors.white }, changePhoto: { marginTop: 10, color: colors.primaryDark, fontSize: 13, fontWeight: '800' },
+  form: { gap: 15 }, field: { gap: 7 }, label: { color: colors.text, fontSize: 13, fontWeight: '800' }, inputWithIcon: { minHeight: 49, borderWidth: 1, borderColor: colors.border, borderRadius: 9, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 13, gap: 8, backgroundColor: colors.white }, input: { flex: 1, paddingVertical: 12, color: colors.text, fontSize: 14 }, multiline: { minHeight: 108, borderWidth: 1, borderColor: colors.border, borderRadius: 9, paddingHorizontal: 13, backgroundColor: colors.white }, counter: { alignSelf: 'flex-end', color: colors.muted, fontSize: 11 },
+  saveButton: { height: 50, marginTop: 27, borderRadius: 9, backgroundColor: colors.primaryDark, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7 }, saveButtonDisabled: { opacity: 0.7 }, saveText: { color: colors.white, fontSize: 15, fontWeight: '800' },
 });

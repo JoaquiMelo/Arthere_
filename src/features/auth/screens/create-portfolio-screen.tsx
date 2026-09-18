@@ -14,6 +14,7 @@ import {
   View,
 } from "react-native";
 import { useUser } from "@/providers/user-provider";
+import { colors } from "@/shared/theme/colors";
 
 export default function CreatePortfolioScreen() {
   const navigation = useNavigation<any>();
@@ -67,22 +68,22 @@ export default function CreatePortfolioScreen() {
         <Text style={styles.subtitle}>Mostre seu talento para os contratantes</Text>
 
         <View style={styles.inputContainer}>
-          <Ionicons name="brush-outline" size={20} color="#666" style={styles.icon} />
+          <Ionicons name="brush-outline" size={20} color={colors.muted} style={styles.icon} />
           <TextInput
             style={styles.input}
             placeholder="Especialidade (ex: Fotógrafo, DJ, Videomaker)"
-            placeholderTextColor="#999"
+            placeholderTextColor={colors.muted}
             value={especialidade}
             onChangeText={setEspecialidade}
           />
         </View>
 
         <View style={styles.inputContainer}>
-          <Ionicons name="location-outline" size={20} color="#666" style={styles.icon} />
+          <Ionicons name="location-outline" size={20} color={colors.muted} style={styles.icon} />
           <TextInput
             style={styles.input}
             placeholder="Cidade - UF (ex: Santos - SP)"
-            placeholderTextColor="#999"
+            placeholderTextColor={colors.muted}
             value={cidade}
             onChangeText={setCidade}
           />
@@ -92,7 +93,7 @@ export default function CreatePortfolioScreen() {
           <TextInput
             style={[styles.input, styles.textArea]}
             placeholder="Fale um pouco sobre seu trabalho e experiência (Bio)"
-            placeholderTextColor="#999"
+            placeholderTextColor={colors.muted}
             value={bio}
             onChangeText={setBio}
             multiline
@@ -107,14 +108,14 @@ export default function CreatePortfolioScreen() {
             <Image key={index} source={{ uri: url }} style={styles.gridImage} />
           ))}
           <TouchableOpacity style={styles.btnAddImage} onPress={handleAdicionarFoto}>
-            <Ionicons name="add" size={32} color="#EC1B4B" />
+            <Ionicons name="add" size={32} color={colors.primaryDark} />
             <Text style={styles.btnAddText}>Adicionar</Text>
           </TouchableOpacity>
         </View>
 
         <TouchableOpacity style={styles.button} onPress={handleSalvarPerfil} disabled={carregando}>
           {carregando ? (
-            <ActivityIndicator color="#FFF" />
+            <ActivityIndicator color={colors.white} />
           ) : (
             <Text style={styles.buttonText}>Concluir e Ir para o Mapa</Text>
           )}
@@ -125,26 +126,26 @@ export default function CreatePortfolioScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F8F7FA" },
+  container: { flex: 1, backgroundColor: colors.background },
   scrollContent: { padding: 24 },
-  title: { fontSize: 26, fontWeight: "bold", color: "#111", marginBottom: 6 },
-  subtitle: { fontSize: 14, color: "#666", marginBottom: 24 },
+  title: { fontSize: 26, fontWeight: "bold", color: colors.text, marginBottom: 6 },
+  subtitle: { fontSize: 14, color: colors.muted, marginBottom: 24 },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFF",
+    backgroundColor: colors.white,
     borderRadius: 12,
     paddingHorizontal: 16,
     height: 52,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#E2E8F0",
+    borderColor: colors.border,
   },
   textAreaContainer: { height: 110, alignItems: "flex-start", paddingTop: 12 },
   icon: { marginRight: 10 },
-  input: { flex: 1, fontSize: 15, color: "#111" },
+  input: { flex: 1, fontSize: 15, color: colors.text },
   textArea: { textAlignVertical: "top" },
-  sectionTitle: { fontSize: 15, fontWeight: "bold", color: "#333", marginTop: 8, marginBottom: 12 },
+  sectionTitle: { fontSize: 15, fontWeight: "bold", color: colors.text, marginTop: 8, marginBottom: 12 },
   gridContainer: { flexDirection: "row", flexWrap: "wrap", gap: 12, marginBottom: 24 },
   gridImage: { width: 90, height: 90, borderRadius: 12 },
   btnAddImage: {
@@ -152,20 +153,20 @@ const styles = StyleSheet.create({
     height: 90,
     borderRadius: 12,
     borderWidth: 1.5,
-    borderColor: "#EC1B4B",
+    borderColor: colors.primaryDark,
     borderStyle: "dashed",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFF5F7",
+    backgroundColor: colors.surfaceStrong,
   },
-  btnAddText: { fontSize: 11, color: "#EC1B4B", fontWeight: "600", marginTop: 2 },
+  btnAddText: { fontSize: 11, color: colors.primaryDark, fontWeight: "600", marginTop: 2 },
   button: {
-    backgroundColor: "#EC1B4B",
+    backgroundColor: colors.primaryDark,
     height: 52,
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 8,
   },
-  buttonText: { color: "#FFF", fontSize: 16, fontWeight: "bold" },
+  buttonText: { color: colors.white, fontSize: 16, fontWeight: "bold" },
 });

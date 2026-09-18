@@ -3,6 +3,7 @@ import { Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } fr
 
 import { CATEGORIAS } from '../../../shared/config/categories';
 import type { AgenteCriativo } from '@/features/agents/types/agent';
+import { colors } from '@/shared/theme/colors';
 
 interface Props {
   agente: AgenteCriativo | null;
@@ -24,7 +25,7 @@ export function AgentProfileCard({ agente, visible, onClose, onAgendar, onChat }
       <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={onClose} />
       <View style={styles.sheet}>
         <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-          <Ionicons name="close" size={20} color="#666" />
+          <Ionicons name="close" size={20} color={colors.muted} />
         </TouchableOpacity>
         <View style={styles.header}>
           <Image source={{ uri: agente.avatarUrl }} style={styles.avatar} />
@@ -50,7 +51,7 @@ export function AgentProfileCard({ agente, visible, onClose, onAgendar, onChat }
         </ScrollView>
         <View style={styles.acoes}>
           <TouchableOpacity style={styles.agendar} onPress={() => onAgendar(agente)}><Text style={styles.agendarTexto}>Agendar</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.chat} onPress={() => onChat(agente)}><Ionicons name="chatbubble-outline" size={20} color="#EC1B4B" /></TouchableOpacity>
+          <TouchableOpacity style={styles.chat} onPress={() => onChat(agente)}><Ionicons name="chatbubble-outline" size={20} color={colors.primaryDark} /></TouchableOpacity>
         </View>
       </View>
     </Modal>
@@ -59,11 +60,11 @@ export function AgentProfileCard({ agente, visible, onClose, onAgendar, onChat }
 
 const styles = StyleSheet.create({
   backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.3)' },
-  sheet: { position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: '#fff', borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 20, paddingBottom: 32 },
+  sheet: { position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: colors.white, borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 20, paddingBottom: 32 },
   closeButton: { position: 'absolute', top: 14, right: 14, zIndex: 1, padding: 8 },
-  header: { flexDirection: 'row', gap: 12 }, avatar: { width: 56, height: 56, borderRadius: 28 }, nome: { fontSize: 16, fontWeight: '700', color: '#111' },
-  categoriaRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 4 }, categoriaTexto: { fontSize: 13, fontWeight: '600' }, disponivel: { color: '#15803D', fontSize: 11, fontWeight: '600', marginTop: 4 },
-  meta: { fontSize: 12, color: '#666', marginTop: 16 }, descricao: { fontSize: 13, color: '#333', lineHeight: 19, marginTop: 12 }, titulo: { fontSize: 11, color: '#999', fontWeight: '600', letterSpacing: 0.5, marginTop: 18, marginBottom: 8 },
-  portfolioItem: { width: 90, marginRight: 10 }, portfolioImagem: { width: 90, height: 70, borderRadius: 10 }, placeholder: { width: 90, height: 70, borderRadius: 10, backgroundColor: '#F3F4F6' }, portfolioTexto: { fontSize: 11, color: '#555', marginTop: 4 },
-  acoes: { flexDirection: 'row', marginTop: 20 }, agendar: { flex: 1, backgroundColor: '#EC1B4B', borderRadius: 14, height: 48, alignItems: 'center', justifyContent: 'center' }, agendarTexto: { color: '#fff', fontWeight: '700' }, chat: { width: 48, height: 48, borderRadius: 14, borderWidth: 1, borderColor: '#EEE', alignItems: 'center', justifyContent: 'center', marginLeft: 10 },
+  header: { flexDirection: 'row', gap: 12 }, avatar: { width: 56, height: 56, borderRadius: 28 }, nome: { fontSize: 16, fontWeight: '700', color: colors.text },
+  categoriaRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 4 }, categoriaTexto: { fontSize: 13, fontWeight: '600' }, disponivel: { color: colors.primary, fontSize: 11, fontWeight: '600', marginTop: 4 },
+  meta: { fontSize: 12, color: colors.muted, marginTop: 16 }, descricao: { fontSize: 13, color: colors.text, lineHeight: 19, marginTop: 12 }, titulo: { fontSize: 11, color: colors.muted, fontWeight: '600', letterSpacing: 0.5, marginTop: 18, marginBottom: 8 },
+  portfolioItem: { width: 90, marginRight: 10 }, portfolioImagem: { width: 90, height: 70, borderRadius: 10 }, placeholder: { width: 90, height: 70, borderRadius: 10, backgroundColor: colors.surface }, portfolioTexto: { fontSize: 11, color: colors.muted, marginTop: 4 },
+  acoes: { flexDirection: 'row', marginTop: 20 }, agendar: { flex: 1, backgroundColor: colors.primaryDark, borderRadius: 14, height: 48, alignItems: 'center', justifyContent: 'center' }, agendarTexto: { color: colors.white, fontWeight: '700' }, chat: { width: 48, height: 48, borderRadius: 14, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center', marginLeft: 10 },
 });

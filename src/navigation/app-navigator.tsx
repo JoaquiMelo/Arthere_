@@ -7,11 +7,15 @@ import CreatePortfolioScreen from '../features/auth/screens/create-portfolio-scr
 import CustomizeProfileScreen from '../features/auth/screens/customize-profile-screen';
 import LoginScreen from '../features/auth/screens/login-screen';
 import RegisterScreen from '../features/auth/screens/register-screen';
+import ChatConversationScreen from '../features/chat/screens/chat-conversation-screen';
+import ChatListScreen from '../features/chat/screens/chat-list-screen';
 import { MapScreen } from '../features/map/screens/map-screen';
 import OpportunitiesScreen from '../features/opportunities/screens/opportunities-screen';
 import EditProfileScreen from '../features/profile/screens/edit-profile-screen';
 import PortfolioCreationScreen from '../features/profile/screens/portfolio-creation-screen';
 import ProfileScreen from '../features/profile/screens/profile-screen';
+import SettingsScreen from '../features/profile/screens/settings-screen';
+import { colors } from '../shared/theme/colors';
 
 type RootStackParamList = {
   Login: undefined;
@@ -21,12 +25,16 @@ type RootStackParamList = {
   Tabs: undefined;
   EditProfile: undefined;
   PortfolioCreation: undefined;
+  Settings: undefined;
+  ChatConversation: { conversationId: string };
 };
 
 type TabParamList = {
   Map: undefined;
   Profile: undefined;
   Opportunities: undefined;
+  Settings: undefined;
+  Chat: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -37,14 +45,16 @@ function AppTabs() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor: '#EC1B4B',
-        tabBarInactiveTintColor: '#64748B',
-        tabBarStyle: { height: 60, paddingBottom: 8, paddingTop: 8 },
+        tabBarActiveTintColor: colors.danger,
+        tabBarInactiveTintColor: colors.muted,
+        tabBarStyle: { height: 64, paddingBottom: 8, paddingTop: 8, borderTopColor: colors.orange, borderTopWidth: 2, backgroundColor: colors.white },
         tabBarIcon: ({ color, size }) => {
           const icons = {
             Map: 'map-outline',
             Profile: 'person-outline',
             Opportunities: 'briefcase-outline',
+            Settings: 'settings-outline',
+            Chat: 'chatbubbles-outline',
           } as const;
 
           return <Ionicons name={icons[route.name]} size={size} color={color} />;
@@ -53,6 +63,8 @@ function AppTabs() {
       <Tab.Screen name="Map" component={MapScreen} options={{ title: 'Mapa' }} />
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: 'Perfil' }} />
       <Tab.Screen name="Opportunities" component={OpportunitiesScreen} options={{ title: 'Vagas' }} />
+      <Tab.Screen name="Settings" component={SettingsScreen} options={{ title: 'Ajustes' }} />
+      <Tab.Screen name="Chat" component={ChatListScreen} options={{ title: 'Chat' }} />
     </Tab.Navigator>
   );
 }
@@ -68,6 +80,8 @@ export function AppNavigator() {
         <Stack.Screen name="Tabs" component={AppTabs} />
         <Stack.Screen name="EditProfile" component={EditProfileScreen} />
         <Stack.Screen name="PortfolioCreation" component={PortfolioCreationScreen} />
+        <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="ChatConversation" component={ChatConversationScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

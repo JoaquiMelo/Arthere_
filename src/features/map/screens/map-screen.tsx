@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { useMemo, useState } from 'react';
 import { Alert, Platform, StyleSheet, Text, TextInput, View, Image } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
@@ -6,6 +7,8 @@ import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { AgentProfileCard } from '../../../features/agents/components/agent-profile-card';
 import type { AgenteCriativo } from '@/features/agents/types/agent';
 import { CATEGORIAS } from '../../../shared/config/categories';
+import { colors } from '@/shared/theme/colors';
+import { useChat } from '@/providers/chat-provider';
 
 // 1. Centralizando a região inicial na Baixada Santista (Santos, SP)
 const REGIAO_INICIAL: Region = { 
@@ -66,6 +69,8 @@ const CustomPin = ({ agente, onPress }: { agente: AgenteCriativo, onPress: (a: A
 };
 
 export function MapScreen() {
+  const navigation = useNavigation<any>();
+  const { startConversation } = useChat();
   const [busca, setBusca] = useState('');
   const [agenteSelecionado, setAgenteSelecionado] = useState<AgenteCriativo | null>(null);
   
@@ -93,11 +98,11 @@ export function MapScreen() {
 
       <View style={styles.topBar}>
         <View style={styles.searchBox}>
-          <Ionicons name="search" size={18} color="#999" />
+          <Ionicons name="search" size={18} color={colors.muted} />
           <TextInput 
             style={styles.searchInput} 
             placeholder="Buscar artistas ou cidades" 
-            placeholderTextColor="#999" 
+            placeholderTextColor={colors.muted}
             value={busca} 
             onChangeText={setBusca} 
           />
@@ -113,7 +118,7 @@ export function MapScreen() {
         visible={agenteSelecionado !== null} 
         onClose={() => setAgenteSelecionado(null)} 
         onAgendar={(agente) => { setAgenteSelecionado(null); Alert.alert(`Agendando com ${agente.nome}`); }} 
-        onChat={(agente) => { setAgenteSelecionado(null); Alert.alert(`Iniciando chat com ${agente.nome}`); }} 
+        onChat={(agente) => { const conversationId = startConversation(agente); setAgenteSelecionado(null); navigation.navigate('ChatConversation', { conversationId }); }}
       />
     </View>
   );
@@ -122,10 +127,10 @@ export function MapScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   topBar: { position: 'absolute', top: 50, left: 16, right: 16 },
-  searchBox: { flexDirection: 'row', alignItems: 'center', height: 46, paddingHorizontal: 14, borderRadius: 14, backgroundColor: '#fff', elevation: 3 },
-  searchInput: { flex: 1, marginLeft: 8, fontSize: 14, color: '#111' },
-  badge: { position: 'absolute', top: 112, alignSelf: 'center', backgroundColor: '#7C3AED', borderRadius: 16, paddingHorizontal: 14, paddingVertical: 6 },
-  badgeTexto: { color: '#fff', fontWeight: '700', fontSize: 13 },
+  searchBox: { flexDirection: 'row', alignItems: 'center', height: 46, paddingHorizontal: 14, borderRadius: 14, backgroundColor: colors.white, elevation: 3 },
+  searchInput: { flex: 1, marginLeft: 8, fontSize: 14, color: colors.text },
+  badge: { position: 'absolute', top: 112, alignSelf: 'center', backgroundColor: colors.primaryDark, borderRadius: 16, paddingHorizontal: 14, paddingVertical: 6 },
+  badgeTexto: { color: colors.white, fontWeight: '700', fontSize: 13 },
   
   // Estilos do Pin customizado
   pinContainer: {
@@ -139,7 +144,7 @@ const styles = StyleSheet.create({
     height: 44,
     borderRadius: 22,
     borderWidth: 2.5,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',

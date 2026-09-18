@@ -13,6 +13,7 @@ import {
   View,
 } from "react-native";
 import { useUser } from "@/providers/user-provider";
+import { colors } from "@/shared/theme/colors";
 
 type TipoUsuario = "AGENTE" | "CONTRATANTE";
 
@@ -80,7 +81,7 @@ export default function RegisterScreen() {
               <Ionicons
                 name="color-palette-outline"
                 size={24}
-                color={tipoUsuario === "AGENTE" ? "#EC1B4B" : "#666"}
+                color={tipoUsuario === "AGENTE" ? colors.primaryDark : colors.muted}
               />
               <Text
                 style={[
@@ -103,7 +104,7 @@ export default function RegisterScreen() {
               <Ionicons
                 name="briefcase-outline"
                 size={24}
-                color={tipoUsuario === "CONTRATANTE" ? "#EC1B4B" : "#666"}
+                color={tipoUsuario === "CONTRATANTE" ? colors.primaryDark : colors.muted}
               />
               <Text
                 style={[
@@ -119,22 +120,22 @@ export default function RegisterScreen() {
 
           {/* Campos de formulário */}
           <View style={styles.inputContainer}>
-            <Ionicons name="person-outline" size={20} color="#666" style={styles.icon} />
+            <Ionicons name="person-outline" size={20} color={colors.muted} style={styles.icon} />
             <TextInput
               style={styles.input}
               placeholder="Nome Completo"
-              placeholderTextColor="#999"
+              placeholderTextColor={colors.muted}
               value={nome}
               onChangeText={setNome}
             />
           </View>
 
           <View style={styles.inputContainer}>
-            <Ionicons name="mail-outline" size={20} color="#666" style={styles.icon} />
+            <Ionicons name="mail-outline" size={20} color={colors.muted} style={styles.icon} />
             <TextInput
               style={styles.input}
               placeholder="E-mail"
-              placeholderTextColor="#999"
+              placeholderTextColor={colors.muted}
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
@@ -143,11 +144,11 @@ export default function RegisterScreen() {
           </View>
 
           <View style={styles.inputContainer}>
-            <Ionicons name="lock-closed-outline" size={20} color="#666" style={styles.icon} />
+            <Ionicons name="lock-closed-outline" size={20} color={colors.muted} style={styles.icon} />
             <TextInput
               style={styles.input}
               placeholder="Senha"
-              placeholderTextColor="#999"
+              placeholderTextColor={colors.muted}
               value={senha}
               onChangeText={setSenha}
               secureTextEntry
@@ -156,7 +157,7 @@ export default function RegisterScreen() {
 
           <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={carregando}>
             {carregando ? (
-              <ActivityIndicator color="#FFF" />
+              <ActivityIndicator color={colors.white} />
             ) : (
               <Text style={styles.buttonText}>
                 {tipoUsuario === "AGENTE" ? "Continuar para Portfólio" : "Personalizar Perfil"}
@@ -176,49 +177,49 @@ export default function RegisterScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F8F7FA" },
+  container: { flex: 1, backgroundColor: colors.background },
   scrollContent: { flexGrow: 1, justifyContent: "center" },
   content: { paddingHorizontal: 24, paddingVertical: 32 },
-  title: { fontSize: 36, fontWeight: "bold", color: "#EC1B4B", textAlign: "center", marginBottom: 4 },
-  subtitle: { fontSize: 15, color: "#666", textAlign: "center", marginBottom: 24 },
-  sectionLabel: { fontSize: 14, fontWeight: "600", color: "#333", marginBottom: 12 },
+  title: { fontSize: 36, fontWeight: "bold", color: colors.primaryDark, textAlign: "center", marginBottom: 4 },
+  subtitle: { fontSize: 15, color: colors.muted, textAlign: "center", marginBottom: 24 },
+  sectionLabel: { fontSize: 14, fontWeight: "600", color: colors.text, marginBottom: 12 },
   roleContainer: { flexDirection: "row", gap: 12, marginBottom: 20 },
   roleCard: {
     flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: colors.white,
     borderWidth: 1.5,
-    borderColor: "#E2E8F0",
+    borderColor: colors.border,
     borderRadius: 16,
     padding: 14,
     alignItems: "center",
   },
-  roleCardActive: { borderColor: "#EC1B4B", backgroundColor: "#FFF5F7" },
-  roleTitle: { fontSize: 13, fontWeight: "bold", color: "#333", marginTop: 6 },
-  roleTextActive: { color: "#EC1B4B" },
-  roleSubtext: { fontSize: 10, color: "#888", marginTop: 2, textAlign: "center" },
+  roleCardActive: { borderColor: colors.primaryDark, backgroundColor: colors.surfaceStrong },
+  roleTitle: { fontSize: 13, fontWeight: "bold", color: colors.text, marginTop: 6 },
+  roleTextActive: { color: colors.primaryDark },
+  roleSubtext: { fontSize: 10, color: colors.muted, marginTop: 2, textAlign: "center" },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFF",
+    backgroundColor: colors.white,
     borderRadius: 12,
     paddingHorizontal: 16,
     height: 52,
     marginBottom: 14,
     borderWidth: 1,
-    borderColor: "#E2E8F0",
+    borderColor: colors.border,
   },
   icon: { marginRight: 10 },
-  input: { flex: 1, fontSize: 15, color: "#111" },
+  input: { flex: 1, fontSize: 15, color: colors.text },
   button: {
-    backgroundColor: "#EC1B4B",
+    backgroundColor: colors.primaryDark,
     height: 52,
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 8,
   },
-  buttonText: { color: "#FFF", fontSize: 16, fontWeight: "bold" },
+  buttonText: { color: colors.white, fontSize: 16, fontWeight: "bold" },
   linkButton: { marginTop: 20, alignItems: "center" },
-  linkText: { color: "#666", fontSize: 14 },
-  linkBold: { color: "#EC1B4B", fontWeight: "bold" },
+  linkText: { color: colors.muted, fontSize: 14 },
+  linkBold: { color: colors.primaryDark, fontWeight: "bold" },
 });

@@ -13,6 +13,7 @@ import {
   View,
 } from "react-native";
 import { useUser } from "@/providers/user-provider";
+import { colors } from "@/shared/theme/colors";
 
 export default function CustomizeProfileScreen() {
   const navigation = useNavigation<any>();
@@ -58,33 +59,33 @@ export default function CustomizeProfileScreen() {
         <Text style={styles.subtitle}>Ajuste suas informações para buscar profissionais</Text>
 
         <View style={styles.inputContainer}>
-          <Ionicons name="business-outline" size={20} color="#666" style={styles.icon} />
+          <Ionicons name="business-outline" size={20} color={colors.muted} style={styles.icon} />
           <TextInput
             style={styles.input}
             placeholder="Nome da empresa ou Nome Pessoal"
-            placeholderTextColor="#999"
+            placeholderTextColor={colors.muted}
             value={nomeEmpresa}
             onChangeText={setNomeEmpresa}
           />
         </View>
 
         <View style={styles.inputContainer}>
-          <Ionicons name="location-outline" size={20} color="#666" style={styles.icon} />
+          <Ionicons name="location-outline" size={20} color={colors.muted} style={styles.icon} />
           <TextInput
             style={styles.input}
             placeholder="Sua Cidade - UF (ex: Santos - SP)"
-            placeholderTextColor="#999"
+            placeholderTextColor={colors.muted}
             value={cidade}
             onChangeText={setCidade}
           />
         </View>
 
         <View style={styles.inputContainer}>
-          <Ionicons name="call-outline" size={20} color="#666" style={styles.icon} />
+          <Ionicons name="call-outline" size={20} color={colors.muted} style={styles.icon} />
           <TextInput
             style={styles.input}
             placeholder="Telefone / WhatsApp de Contato"
-            placeholderTextColor="#999"
+            placeholderTextColor={colors.muted}
             value={telefone}
             onChangeText={setTelefone}
             keyboardType="phone-pad"
@@ -116,7 +117,7 @@ export default function CustomizeProfileScreen() {
 
         <TouchableOpacity style={styles.button} onPress={handleSalvarPerfil} disabled={carregando}>
           {carregando ? (
-            <ActivityIndicator color="#FFF" />
+            <ActivityIndicator color={colors.white} />
           ) : (
             <Text style={styles.buttonText}>Concluir e Explorar Artistas</Text>
           )}
@@ -127,42 +128,42 @@ export default function CustomizeProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F8F7FA" },
+  container: { flex: 1, backgroundColor: colors.background },
   scrollContent: { padding: 24 },
-  title: { fontSize: 26, fontWeight: "bold", color: "#111", marginBottom: 6 },
-  subtitle: { fontSize: 14, color: "#666", marginBottom: 24 },
+  title: { fontSize: 26, fontWeight: "bold", color: colors.text, marginBottom: 6 },
+  subtitle: { fontSize: 14, color: colors.muted, marginBottom: 24 },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFF",
+    backgroundColor: colors.white,
     borderRadius: 12,
     paddingHorizontal: 16,
     height: 52,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#E2E8F0",
+    borderColor: colors.border,
   },
   icon: { marginRight: 10 },
-  input: { flex: 1, fontSize: 15, color: "#111" },
-  sectionTitle: { fontSize: 15, fontWeight: "bold", color: "#333", marginTop: 8, marginBottom: 12 },
+  input: { flex: 1, fontSize: 15, color: colors.text },
+  sectionTitle: { fontSize: 15, fontWeight: "bold", color: colors.text, marginTop: 8, marginBottom: 12 },
   chipsContainer: { flexDirection: "row", flexWrap: "wrap", gap: 10, marginBottom: 32 },
   chip: {
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 20,
-    backgroundColor: "#FFF",
+    backgroundColor: colors.white,
     borderWidth: 1,
-    borderColor: "#E2E8F0",
+    borderColor: colors.border,
   },
-  chipSelected: { backgroundColor: "#EC1B4B", borderColor: "#EC1B4B" },
-  chipText: { fontSize: 13, color: "#666", fontWeight: "600" },
-  chipTextSelected: { color: "#FFF" },
+  chipSelected: { backgroundColor: colors.primaryDark, borderColor: colors.primaryDark },
+  chipText: { fontSize: 13, color: colors.muted, fontWeight: "600" },
+  chipTextSelected: { color: colors.white },
   button: {
-    backgroundColor: "#EC1B4B",
+    backgroundColor: colors.primaryDark,
     height: 52,
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
   },
-  buttonText: { color: "#FFF", fontSize: 16, fontWeight: "bold" },
+  buttonText: { color: colors.white, fontSize: 16, fontWeight: "bold" },
 });
