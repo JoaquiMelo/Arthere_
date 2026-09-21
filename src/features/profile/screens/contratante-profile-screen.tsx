@@ -13,7 +13,7 @@ export default function ContratanteProfileScreen() {
   const navigation = useNavigation<any>();
   const { user } = useUser();
   const { vagas } = useManagement();
-  const [empresa, setEmpresa] = useState('Empresa não informada');
+  const [empresa, setEmpresa] = useState(user.empresa || 'Empresa não informada');
   const [editando, setEditando] = useState(false);
   const [rascunhoEmpresa, setRascunhoEmpresa] = useState(empresa);
 
@@ -54,6 +54,11 @@ export default function ContratanteProfileScreen() {
           <TouchableOpacity style={styles.manageButton} onPress={() => navigation.navigate('ManageOpportunities')}>
             <Ionicons name="people-outline" size={17} color={colors.white} />
             <Text style={styles.manageButtonText}>Gerenciar candidaturas{totalCandidaturas > 0 ? ` (${totalCandidaturas})` : ''}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.editProfileButton} onPress={() => navigation.navigate('EditContractorProfile')} activeOpacity={0.8}>
+            <Ionicons name="create-outline" size={17} color={colors.primaryDark} />
+            <Text style={styles.editProfileButtonText}>Editar perfil do contratante</Text>
           </TouchableOpacity>
         </View>
 
@@ -98,7 +103,7 @@ const styles = StyleSheet.create({
   locationRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 6 }, location: { color: colors.muted, fontSize: 13 },
   statsRow: { flexDirection: 'row', alignItems: 'center', marginTop: 20 }, stat: { width: 96, alignItems: 'center' }, statNumber: { color: colors.text, fontSize: 18, fontWeight: '800' }, statLabel: { marginTop: 2, color: colors.muted, fontSize: 11, textAlign: 'center' }, statDivider: { width: StyleSheet.hairlineWidth, height: 27, backgroundColor: colors.border },
   manageButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 20, height: 46, borderRadius: 12, paddingHorizontal: 18, backgroundColor: colors.primaryDark }, manageButtonText: { color: colors.white, fontWeight: '800', fontSize: 13 },
-  editProfileButton:{marginHorizontal:20,marginTop:4,height:46,borderRadius:12,flexDirection:'row',alignItems:'center',justifyContent:'center',gap:7,backgroundColor:colors.primaryDark},
+  editProfileButton:{marginHorizontal:20,marginTop:10,height:46,borderRadius:12,flexDirection:'row',alignItems:'center',justifyContent:'center',gap:7,borderWidth:1,borderColor:colors.primaryDark,backgroundColor:colors.white}, editProfileButtonText:{color:colors.primaryDark,fontSize:13,fontWeight:'800'},
   vagasSection: { paddingHorizontal: 20, paddingTop: 26, gap: 10 }, sectionTitle: { color: colors.text, fontSize: 16, fontWeight: '800', marginBottom: 4 }, emptyText: { color: colors.muted, fontSize: 13 },
   vagaCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.white, borderRadius: 14, padding: 14, shadowColor: '#000', shadowOpacity: .05, shadowRadius: 8, elevation: 1 }, flex1: { flex: 1 }, vagaTitulo: { color: colors.text, fontWeight: '800', fontSize: 14 }, vagaMeta: { color: colors.muted, fontSize: 12, marginTop: 3 },
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,.35)', justifyContent: 'center', paddingHorizontal: 28 },
