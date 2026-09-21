@@ -2,7 +2,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { ActivityIndicator, Alert, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { atualizarMeuPerfil } from '@/services/api';
 import { useUser } from '@/providers/user-provider';
 import { colors } from '@/shared/theme/colors';
 
@@ -12,7 +11,7 @@ export default function EditContractorProfileScreen() {
   const [telefone,setTelefone]=useState(user.telefone||''); const [categoria,setCategoria]=useState(user.categoria||'');
   const [cidade,setCidade]=useState(user.cidade||''); const [endereco,setEndereco]=useState(user.endereco||'');
   const [site,setSite]=useState(user.site||''); const [descricao,setDescricao]=useState(user.descricao||''); const [salvando,setSalvando]=useState(false);
-  const salvar=async()=>{if(!nome.trim()||!empresa.trim()){Alert.alert('Campos obrigatórios','Informe seu nome e sua empresa.');return;}setSalvando(true);try{const dados={nome:nome.trim(),empresa:empresa.trim(),telefone:telefone.trim(),categoria:categoria.trim(),cidade:cidade.trim(),endereco:endereco.trim(),site:site.trim(),descricao:descricao.trim()};await atualizarMeuPerfil(dados);updateProfile(dados);Alert.alert('Perfil atualizado','Suas informações foram salvas.');navigation.goBack();}catch(e){Alert.alert('Erro',e instanceof Error?e.message:'Não foi possível salvar o perfil.');}finally{setSalvando(false);}};
+  const salvar=async()=>{if(!nome.trim()||!empresa.trim()){Alert.alert('Campos obrigatórios','Informe seu nome e sua empresa.');return;}setSalvando(true);try{const dados={nome:nome.trim(),empresa:empresa.trim(),telefone:telefone.trim(),categoria:categoria.trim(),cidade:cidade.trim(),endereco:endereco.trim(),site:site.trim(),descricao:descricao.trim()};updateProfile(dados);Alert.alert('Perfil atualizado','Suas informações foram salvas.');navigation.goBack();}catch(e){Alert.alert('Erro',e instanceof Error?e.message:'Não foi possível salvar o perfil.');}finally{setSalvando(false);}};
   return <SafeAreaView style={styles.container}><View style={styles.header}><TouchableOpacity onPress={()=>navigation.goBack()}><Ionicons name="chevron-back" size={25} color={colors.text}/></TouchableOpacity><Text style={styles.headerTitle}>Editar perfil do contratante</Text><View style={{width:25}}/></View>
   <ScrollView contentContainerStyle={styles.content}><Text style={styles.intro}>Complete os dados da empresa para transmitir mais confiança aos profissionais.</Text>
   <Field label="Nome do responsável" value={nome} onChangeText={setNome} placeholder="Seu nome completo"/><Field label="Empresa / organização" value={empresa} onChangeText={setEmpresa} placeholder="Nome da empresa"/>
