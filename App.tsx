@@ -7,14 +7,16 @@ import { ThemeProvider } from './src/providers/theme-provider';
 
 export default function App() {
   return (
-    <UserProvider>
-      <ReviewsProvider>
-        <ManagementProvider>
-          <ChatProvider>
-            <AppNavigator />
-          </ChatProvider>
-        </ManagementProvider>
-      </ReviewsProvider>
-    </UserProvider>
+    <ThemeProvider>
+      <UserProvider>
+        <ReviewsProvider>
+          <ManagementProvider>
+            <ChatProvider>
+              <AppNavigator />
+            </ChatProvider>
+          </ManagementProvider>
+        </ReviewsProvider>
+      </UserProvider>
+    </ThemeProvider>
   );
 }
