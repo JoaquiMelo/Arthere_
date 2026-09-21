@@ -5,10 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { ProjetosModule } from './projetos/projetos.module';
+import { EventosModule } from './eventos/eventos.module';
 
-@Module({
-  imports: [PrismaModule, AuthModule, UsuariosModule, ProjetosModule],
-  controllers: [AppController],
-  providers: [AppService],
-})
+@Module({ imports: [PrismaModule, AuthModule, UsuariosModule, ProjetosModule, EventosModule], controllers: [AppController], providers: [AppService] })
 export class AppModule {}
