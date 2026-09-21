@@ -8,6 +8,6 @@ export const MOCK_PROJETOS:Projeto[]=[
 {id:'1',titulo:'Cobertura Fotográfica de Aniversário',categoria:'Fotografia',orcamento:'R$ 800,00',localizacao:'Santos - SP',descricao:'Preciso de um fotógrafo para evento de 4 horas no Gonzaga.'},
 {id:'2',titulo:'DJ para Festa Corporativa',categoria:'Música',orcamento:'R$ 1.200,00',localizacao:'Praia Grande - SP',descricao:'Procuramos DJ com equipamento próprio para evento de fim de ano.'}];
 export const MOCK_USUARIO_LOGADO={
-id:'user-001',nome:'Joaquim Silva',email:'usuario@teste.com',tipo:'AGENTE',especialidade:'Design & Arte',cidade:'Santos - SP',latitude:-23.9608,longitude:-46.3339,bio:'Criativo independente focado em identidades visuais e ilustrações.',
+id:'user-001',documento:'12.345.678/0001-90',nome:'Joaquim Silva',nomeSocial:'',pronomes:'',email:'usuario@teste.com',tipo:'AGENTE',especialidade:'Design & Arte',cidade:'Santos - SP',latitude:-23.9608,longitude:-46.3339,bio:'Criativo independente focado em identidades visuais e ilustrações.',
 empresa:'',telefone:'',descricao:'',site:'',endereco:'',categoria:''
 };
