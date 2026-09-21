@@ -10,6 +10,7 @@ import RegisterScreen from '../features/auth/screens/register-screen';
 import ChatConversationScreen from '../features/chat/screens/chat-conversation-screen';
 import ChatListScreen from '../features/chat/screens/chat-list-screen';
 import { MapScreen } from '../features/map/screens/map-screen';
+import ManageOpportunitiesScreen from '../features/opportunities/screens/manage-opportunities-screen';
 import OpportunitiesScreen from '../features/opportunities/screens/opportunities-screen';
 import EditProfileScreen from '../features/profile/screens/edit-profile-screen';
 import PortfolioCreationScreen from '../features/profile/screens/portfolio-creation-screen';
@@ -27,6 +28,7 @@ type RootStackParamList = {
   PortfolioCreation: undefined;
   Settings: undefined;
   ChatConversation: { conversationId: string };
+  ManageOpportunities: undefined;
 };
 
 type TabParamList = {
@@ -82,6 +84,7 @@ export function AppNavigator() {
         <Stack.Screen name="PortfolioCreation" component={PortfolioCreationScreen} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
         <Stack.Screen name="ChatConversation" component={ChatConversationScreen} />
+        <Stack.Screen name="ManageOpportunities" component={ManageOpportunitiesScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

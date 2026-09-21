@@ -1,13 +1,9 @@
+
 import { colors } from '@/shared/theme/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
-import { ReviewList } from '@/features/reviews/components/review-list';
-import { useReviews } from '@/providers/reviews-provider';
-import { useUser } from '@/providers/user-provider';
-import ContratanteProfileScreen from './contratante-profile-screen';
 
 const { width } = Dimensions.get('window');
 const galleryItemSize = (width - 48) / 3;
@@ -47,22 +43,11 @@ export const MOCK_AGENT_PROFILE: AgentePerfil = {
 };
 
 export default function ProfileScreen() {
-  const { user } = useUser();
-  if (user.tipo === 'CONTRATANTE') return <ContratanteProfileScreen />;
-  return <AgenteProfileScreenContent />;
-}
-
-function AgenteProfileScreenContent() {
   const navigation = useNavigation<any>();
-  const [abaAtiva, setAbaAtiva] = useState<'portfolio' | 'sobre' | 'avaliacoes'>('portfolio');
+  const [abaAtiva, setAbaAtiva] = useState<'portfolio' | 'sobre'>('portfolio');
   const agente = MOCK_AGENT_PROFILE;
-  const { avaliacoesPorAgente, mediaPorAgente } = useReviews();
-  const avaliacoes = avaliacoesPorAgente(agente.id);
-  const media = avaliacoes.length ? mediaPorAgente(agente.id) : agente.notaMedia;
-  const totalAvaliacoes = avaliacoes.length || agente.totalAvaliacoes;
   const abrirEdicaoPerfil = () => navigation.navigate('EditProfile', { agente });
   const abrirEdicaoPortfolio = () => navigation.navigate('PortfolioCreation', { portfolio: agente.portfolio });
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
@@ -87,9 +72,9 @@ function AgenteProfileScreenContent() {
           <View style={styles.statsRow}>
             <View style={styles.stat}><Text style={styles.statNumber}>{agente.totalProjetos}</Text><Text style={styles.statLabel}>projetos</Text></View>
             <View style={styles.statDivider} />
-            <View style={styles.stat}><Text style={styles.statNumber}>{totalAvaliacoes}</Text><Text style={styles.statLabel}>avaliações</Text></View>
+            <View style={styles.stat}><Text style={styles.statNumber}>{agente.totalAvaliacoes}</Text><Text style={styles.statLabel}>avaliações</Text></View>
             <View style={styles.statDivider} />
-            <View style={styles.stat}><Text style={styles.statNumber}>{media.toFixed(1)}</Text><Text style={styles.statLabel}>nota média</Text></View>
+            <View style={styles.stat}><Text style={styles.statNumber}>{agente.notaMedia}</Text><Text style={styles.statLabel}>nota média</Text></View>
           </View>
 
           <View style={styles.buttonRow}>
@@ -101,10 +86,9 @@ function AgenteProfileScreenContent() {
         <View style={styles.tabs}>
           <TouchableOpacity style={[styles.tab, abaAtiva === 'portfolio' && styles.tabActive]} onPress={() => setAbaAtiva('portfolio')}><Text style={[styles.tabText, abaAtiva === 'portfolio' && styles.tabTextActive]}>Fotos</Text></TouchableOpacity>
           <TouchableOpacity style={[styles.tab, abaAtiva === 'sobre' && styles.tabActive]} onPress={() => setAbaAtiva('sobre')}><Text style={[styles.tabText, abaAtiva === 'sobre' && styles.tabTextActive]}>Sobre</Text></TouchableOpacity>
-          <TouchableOpacity style={[styles.tab, abaAtiva === 'avaliacoes' && styles.tabActive]} onPress={() => setAbaAtiva('avaliacoes')}><Text style={[styles.tabText, abaAtiva === 'avaliacoes' && styles.tabTextActive]}>Avaliações</Text></TouchableOpacity>
         </View>
 
-        {abaAtiva === 'portfolio' && (
+        {abaAtiva === 'portfolio' ? (
           <View style={styles.gallerySection}>
             <View style={styles.sectionHeader}><Text style={styles.sectionTitle}>Trabalhos recentes</Text><TouchableOpacity onPress={abrirEdicaoPortfolio}><Text style={styles.actionText}>Gerenciar</Text></TouchableOpacity></View>
             <View style={styles.gallery}>
@@ -112,20 +96,11 @@ function AgenteProfileScreenContent() {
               <TouchableOpacity style={styles.addWork} onPress={abrirEdicaoPortfolio} accessibilityLabel="Adicionar trabalho ao portfólio"><Ionicons name="add" size={29} color={colors.primaryDark} /></TouchableOpacity>
             </View>
           </View>
-        )}
-
-        {abaAtiva === 'sobre' && (
+        ) : (
           <View style={styles.aboutCard}>
             <View style={styles.aboutTitleRow}><Ionicons name="person-circle-outline" size={22} color={colors.primaryDark} /><Text style={styles.sectionTitle}>Sobre mim</Text></View>
             <Text style={styles.aboutText}>{agente.bio}</Text>
             <TouchableOpacity style={styles.editBio} onPress={abrirEdicaoPerfil}><Text style={styles.editBioText}>Editar apresentação</Text><Ionicons name="arrow-forward" size={16} color={colors.primaryDark} /></TouchableOpacity>
-          </View>
-        )}
-
-        {abaAtiva === 'avaliacoes' && (
-          <View style={styles.reviewsSection}>
-            <View style={styles.sectionHeader}><Text style={styles.sectionTitle}>O que dizem sobre você</Text></View>
-            <ReviewList avaliacoes={avaliacoes} />
           </View>
         )}
       </ScrollView>
@@ -144,5 +119,4 @@ const styles = StyleSheet.create({
   tabs: { flexDirection: 'row', marginTop: 4, borderBottomWidth: 1, borderBottomColor: colors.border }, tab: { flex: 1, alignItems: 'center', paddingVertical: 13, borderBottomWidth: 3, borderBottomColor: 'transparent' }, tabActive: { borderBottomColor: colors.primary }, tabText: { color: colors.muted, fontSize: 13, fontWeight: '600' }, tabTextActive: { color: colors.text, fontWeight: '800' },
   gallerySection: { paddingHorizontal: 16, paddingTop: 19 }, sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }, sectionTitle: { color: colors.text, fontSize: 16, fontWeight: '800' }, actionText: { color: colors.primaryDark, fontSize: 13, fontWeight: '800' }, gallery: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 }, galleryItem: { width: galleryItemSize, height: galleryItemSize, borderRadius: 10, overflow: 'hidden' }, galleryImage: { width: '100%', height: '100%' }, addWork: { width: galleryItemSize, height: galleryItemSize, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.surfaceStrong, borderWidth: 1.5, borderStyle: 'dashed', borderColor: colors.primary },
   aboutCard: { margin: 20, padding: 18, borderRadius: 14, backgroundColor: colors.surface }, aboutTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 8 }, aboutText: { marginTop: 14, color: colors.muted, fontSize: 14, lineHeight: 21 }, editBio: { flexDirection: 'row', alignItems: 'center', gap: 5, alignSelf: 'flex-start', marginTop: 18 }, editBioText: { color: colors.primaryDark, fontSize: 13, fontWeight: '800' },
-  reviewsSection: { paddingHorizontal: 20, paddingTop: 19 },
 });
