@@ -1,160 +1,19 @@
 import * as SecureStore from "expo-secure-store";
-
-// Para um celular físico, troque localhost pelo IP do computador na rede Wi-Fi.
-// Expo Web ou iOS Simulator
-// Celular físico
 export const API_URL = process.env.EXPO_PUBLIC_API_URL ?? 'http://192.168.10.173:3000';
-
-type AuthResponse = {
-  access_token: string;
-  usuario: {
-    id: string;
-    email: string;
-    tipo: string;
-    perfil: unknown;
-  };
-};
-
-type Sessao = {
-  accessToken: string;
-  usuario: AuthResponse['usuario'];
-};
-
-async function request<T>(path: string, options: RequestInit): Promise<T> {
-  const response = await fetch(`${API_URL}${path}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers ?? {}),
-    },
-  });
-
-  const body = await response.json().catch(() => null);
-
-  if (!response.ok) {
-    throw new Error(body?.message ?? "Não foi possível concluir a operação.");
-  }
-
-  return body as T;
-}
-
-async function salvarSessao(result: AuthResponse) {
-  try {
-    await SecureStore.setItemAsync("access_token", result.access_token);
-    await SecureStore.setItemAsync("usuario", JSON.stringify(result.usuario));
-  } catch (error) {
-    // A autenticação já foi concluída no servidor. Não bloqueie o acesso caso
-    // o binário local ainda não tenha o módulo de armazenamento atualizado.
-    console.warn("Não foi possível persistir a sessão localmente.", error);
-  }
-}
-
-export async function obterSessao(): Promise<Sessao | null> {
-  try {
-    const [accessToken, usuario] = await Promise.all([
-      SecureStore.getItemAsync('access_token'),
-      SecureStore.getItemAsync('usuario'),
-    ]);
-
-    return accessToken && usuario ? { accessToken, usuario: JSON.parse(usuario) } : null;
-  } catch {
-    return null;
-  }
-}
-
-export async function encerrarSessao() {
-  await Promise.all([
-    SecureStore.deleteItemAsync('access_token'),
-    SecureStore.deleteItemAsync('usuario'),
-  ]);
-}
-
-async function requestAutenticado<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const sessao = await obterSessao();
-  if (!sessao) throw new Error('Sua sessão expirou. Entre novamente.');
-
-  return request<T>(path, {
-    ...options,
-    headers: { ...options.headers, Authorization: `Bearer ${sessao.accessToken}` },
-  });
-}
-
-export type PerfilRemoto = {
-  nome: string;
-  especialidade?: string;
-  bio?: string | null;
-  cidade?: string;
-  avatarUrl?: string | null;
-  visivelMapa?: boolean;
-  latitude?: number | null;
-  longitude?: number | null;
-};
-
-export async function obterMeuPerfil() {
-  return requestAutenticado<{ perfil: PerfilRemoto }>('/usuarios/me');
-}
-
-export async function atualizarMeuPerfil(dados: Record<string, unknown>) {
-  return requestAutenticado<{ perfil: PerfilRemoto }>('/usuarios/me', {
-    method: 'PATCH',
-    body: JSON.stringify(dados),
-  });
-}
-
-export type Projeto = {
-  id: string;
-  titulo: string;
-  descricao: string;
-  categoria: string;
-  orcamento: number | null;
-  dataEvento: string | null;
-  contratante: { nome: string; empresa: string | null };
-};
-
-export function listarProjetos() {
-  return request<Projeto[]>('/projetos', { method: 'GET' });
-}
-
-export function criarProjeto(dados: {
-  titulo: string;
-  descricao: string;
-  categoria: string;
-  orcamento?: number;
-}) {
-  return requestAutenticado<Projeto>('/projetos', {
-    method: 'POST',
-    body: JSON.stringify(dados),
-  });
-}
-
-export function candidatarProjeto(projetoId: string, mensagem?: string) {
-  return requestAutenticado(`/projetos/${projetoId}/candidaturas`, {
-    method: 'POST',
-    body: JSON.stringify({ mensagem }),
-  });
-}
-
-export async function login(email: string, senha: string) {
-  const result = await request<AuthResponse>("/auth/login", {
-    method: "POST",
-    body: JSON.stringify({ email, senha }),
-  });
-
-  await salvarSessao(result);
-  return result;
-}
-
-export async function register(data: {
-  nome: string;
-  email: string;
-  senha: string;
-  tipo: "AGENTE" | "CONTRATANTE";
-}) {
-  const result = await request<AuthResponse>("/auth/register", {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
-
-  await salvarSessao(result);
-  return result;
-}
+type AuthResponse={access_token:string;usuario:{id:string;email:string;tipo:string;perfil:unknown}};
+type Sessao={accessToken:string;usuario:AuthResponse['usuario']};
+async function request<T>(path:string,options:RequestInit):Promise<T>{const response=await fetch(`${API_URL}${path}`,{...options,headers:{"Content-Type":"application/json",...(options.headers??{})}});const body=await response.json().catch(()=>null);if(!response.ok)throw new Error(body?.message??"Não foi possível concluir a operação.");return body as T;}
+async function salvarSessao(result:AuthResponse){try{await SecureStore.setItemAsync("access_token",result.access_token);await SecureStore.setItemAsync("usuario",JSON.stringify(result.usuario));}catch(error){console.warn("Não foi possível persistir a sessão localmente.",error);}}
+export async function obterSessao():Promise<Sessao|null>{try{const [accessToken,usuario]=await Promise.all([SecureStore.getItemAsync('access_token'),SecureStore.getItemAsync('usuario')]);return accessToken&&usuario?{accessToken,usuario:JSON.parse(usuario)}:null;}catch{return null;}}
+export async function encerrarSessao(){await Promise.all([SecureStore.deleteItemAsync('access_token'),SecureStore.deleteItemAsync('usuario')]);}
+async function requestAutenticado<T>(path:string,options:RequestInit={}):Promise<T>{const sessao=await obterSessao();if(!sessao)throw new Error('Sua sessão expirou. Entre novamente.');return request<T>(path,{...options,headers:{...options.headers,Authorization:`Bearer ${sessao.accessToken}`}});}
+export type PerfilRemoto={nome:string;especialidade?:string;bio?:string|null;cidade?:string;avatarUrl?:string|null;visivelMapa?:boolean;latitude?:number|null;longitude?:number|null;empresa?:string|null;telefone?:string|null;descricao?:string|null;site?:string|null;endereco?:string|null;categoria?:string|null};
+export async function obterMeuPerfil(){return requestAutenticado<{perfil:PerfilRemoto}>('/usuarios/me');}
+export async function atualizarMeuPerfil(dados:Record<string,unknown>){return requestAutenticado<{perfil:PerfilRemoto}>('/usuarios/me',{method:'PATCH',body:JSON.stringify(dados)});}
+export type Projeto={id:string;titulo:string;descricao:string;categoria:string;orcamento:number|null;dataEvento:string|null;contratante:{nome:string;empresa:string|null}};
+export function listarProjetos(){return request<Projeto[]>('/projetos',{method:'GET'});}
+export function criarProjeto(dados:{titulo:string;descricao:string;categoria:string;orcamento?:number}){return requestAutenticado<Projeto>('/projetos',{method:'POST',body:JSON.stringify(dados)});}
+export function candidatarProjeto(projetoId:string,mensagem?:string){return requestAutenticado(`/projetos/${projetoId}/candidaturas`,{method:'POST',body:JSON.stringify({mensagem})});}
+export async function listarEventos(cidade?:string){return request<{id:string;titulo:string;descricao:string;categoria:string;local:string;cidade:string;dataEvento:string;horario:string;organizador:string;premium:boolean}[]>(`/eventos${cidade?`?cidade=${encodeURIComponent(cidade)}`:''}`,{method:'GET'});}
+export async function login(email:string,senha:string){const result=await request<AuthResponse>("/auth/login",{method:"POST",body:JSON.stringify({email,senha})});await salvarSessao(result);return result;}
+export async function register(data:{nome:string;email:string;senha:string;tipo:"AGENTE"|"CONTRATANTE";especialidade?:string;empresa?:string;telefone?:string;descricao?:string;site?:string;cidade?:string;endereco?:string;categoria?:string}){const result=await request<AuthResponse>("/auth/register",{method:"POST",body:JSON.stringify(data)});await salvarSessao(result);return result;}
