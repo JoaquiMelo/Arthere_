@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, SafeAreaView, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Modal, SafeAreaView, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { colors } from '@/shared/theme/colors';
@@ -23,7 +23,7 @@ export default function SettingsScreen() {
   ]);
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: palette.background }]>
+    <SafeAreaView style={[styles.container, { backgroundColor: palette.background }]}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.canGoBack() ? navigation.goBack() : navigation.navigate('Profile')} accessibilityLabel="Voltar"><Ionicons name="chevron-back" size={25} color={colors.text} /></TouchableOpacity>
         <Text style={[styles.headerTitle, { color: palette.text }]}>Configurações</Text>
