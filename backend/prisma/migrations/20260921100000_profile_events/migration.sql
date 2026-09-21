@@ -1,0 +1,22 @@
+ALTER TABLE `contratante`
+  ADD COLUMN `telefone` VARCHAR(191) NULL,
+  ADD COLUMN `descricao` TEXT NULL,
+  ADD COLUMN `site` VARCHAR(191) NULL,
+  ADD COLUMN `cidade` VARCHAR(191) NULL,
+  ADD COLUMN `endereco` VARCHAR(191) NULL,
+  ADD COLUMN `categoria` VARCHAR(191) NULL;
+
+CREATE TABLE `evento` (
+  `id` VARCHAR(191) NOT NULL,
+  `titulo` VARCHAR(191) NOT NULL,
+  `descricao` TEXT NOT NULL,
+  `categoria` VARCHAR(191) NOT NULL,
+  `local` VARCHAR(191) NOT NULL,
+  `cidade` VARCHAR(191) NOT NULL,
+  `dataEvento` DATETIME(3) NOT NULL,
+  `horario` VARCHAR(191) NOT NULL,
+  `organizador` VARCHAR(191) NOT NULL,
+  `premium` BOOLEAN NOT NULL DEFAULT false,
+  `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
