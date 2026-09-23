@@ -40,7 +40,14 @@ export default function SettingsScreen() {
         <Text style={styles.groupTitle}>APARÊNCIA</Text>
         <View style={styles.card}>
           <SettingRow icon="moon-outline" label="Modo escuro" right={<Switch value={modoEscuro} onValueChange={setModoEscuro} trackColor={{ false: colors.secondary, true: colors.primary }} thumbColor={colors.white} />} />
-          <SettingRow icon="color-palette-outline" label="Paleta de cores" last onPress={() => setPaletaAberta(true)} right={<View style={styles.swatches}><View style={[styles.swatch, { backgroundColor: palette.primary }]} /><View style={[styles.swatch, { backgroundColor: palette.danger }]} /><View style={[styles.swatch, { backgroundColor: palette.accent }]} /><Ionicons name="chevron-forward" size={18} color={palette.muted}/></View>} />
+          <SettingRow icon="color-palette-outline" label="Paleta de cores" last onPress={() => setPaletaAberta(true)} right={<View style={styles.swatches}>
+              <View style={[styles.swatch, { backgroundColor: palette.surface }]} />
+              <View style={[styles.swatch, { backgroundColor: palette.surfaceStrong }]} />
+              <View style={[styles.swatch, { backgroundColor: palette.accent }]} />
+              <View style={[styles.swatch, { backgroundColor: palette.orange }]} />
+              <View style={[styles.swatch, { backgroundColor: palette.primary }]} />
+              <Ionicons name="chevron-forward" size={18} color={palette.muted}/>
+            </View>} />
         </View>
 
         <Text style={styles.groupTitle}>SUPORTE</Text>
@@ -59,7 +66,11 @@ export default function SettingsScreen() {
             <Text style={[styles.paletteTitle, { color: palette.text }]}>Escolha sua paleta</Text>
             {(['Arthere','Oceano','Ameixa'] as PaletteName[]).map((nome) => {
               const selecionada = nome === paletteName;
-              const cores = nome === 'Arthere' ? ['#D75103','#F00817','#FCC12E'] : nome === 'Oceano' ? ['#087F8C','#D64545','#F2C14E'] : ['#8A3D72','#C83D58','#E4B84A'];
+              const cores = nome === 'Arthere'
+                ? ['#C7DFD8','#90C8D8','#F2CE99','#D88160','#EB6241']
+                : nome === 'Oceano'
+                  ? ['#D9EEF1','#B9DFE5','#F2CE99','#E17A56','#3F91A3']
+                  : ['#EFE2EB','#DFC6D7','#F2CE99','#D88160','#8B567D'];
               return <TouchableOpacity key={nome} style={[styles.paletteOption,{borderColor:selecionada?palette.primary:palette.border,backgroundColor:selecionada?palette.surface:palette.white}]} onPress={() => { setPalette(nome); setPaletaAberta(false); }}>
                 <View style={styles.paletteDots}>{cores.map((cor) => <View key={cor} style={[styles.paletteDot,{backgroundColor:cor}]} />)}</View>
                 <Text style={[styles.paletteName,{color:palette.text}]}>{nome}</Text>
