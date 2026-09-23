@@ -15,7 +15,7 @@ const STATUS_COR: Record<VagaGerenciada['status'], string> = { ABERTA: colors.pr
 
 export default function ManageOpportunitiesScreen() {
   const navigation = useNavigation<any>();
-  const { vagas, aceitarCandidato, recusarCandidato, concluirVaga, marcarAvaliado } = useManagement();
+  const { vagas, solicitacoesEvento, aceitarCandidato, recusarCandidato, concluirVaga, marcarAvaliado, aceitarSolicitacaoEvento, recusarSolicitacaoEvento } = useManagement();
   const { adicionarAvaliacao } = useReviews();
   const [expandida, setExpandida] = useState<string | null>(null);
   const [avaliando, setAvaliando] = useState<{ vagaId: string; candidato: Candidato } | null>(null);
@@ -60,6 +60,29 @@ export default function ManageOpportunitiesScreen() {
         <Text style={styles.title}>Minhas vagas</Text>
         <View style={styles.headerSpacer} />
       </View>
+      {solicitacoesEvento.length > 0 && (
+        <View style={styles.eventRequestsSection}>
+          <Text style={styles.eventRequestsTitle}>Solicitações para eventos</Text>
+          {solicitacoesEvento.map((solicitacao) => (
+            <View key={solicitacao.id} style={styles.eventRequestCard}>
+              <View style={styles.flex1}>
+                <Text style={styles.eventRequestEvent}>{solicitacao.eventoTitulo}</Text>
+                <Text style={styles.candidatoNome}>{solicitacao.agenteNome}</Text>
+                <Text style={styles.candidatoEspecialidade}>{solicitacao.agenteEspecialidade}</Text>
+                <Text style={styles.candidatoMensagem}>{solicitacao.mensagem}</Text>
+                {solicitacao.status === "PENDENTE" ? (
+                  <View style={styles.candidatoActions}>
+                    <TouchableOpacity style={styles.recusar} onPress={() => recusarSolicitacaoEvento(solicitacao.id)}><Text style={styles.recusarText}>Recusar</Text></TouchableOpacity>
+                    <TouchableOpacity style={styles.aceitar} onPress={() => aceitarSolicitacaoEvento(solicitacao.id)}><Text style={styles.aceitarText}>Aceitar</Text></TouchableOpacity>
+                  </View>
+                ) : (
+                  <Text style={[styles.statusCandidato, solicitacao.status === "ACEITA" ? styles.statusAceito : styles.statusRecusado]}>{solicitacao.status === "ACEITA" ? "✓ Solicitação aceita" : "Solicitação recusada"}</Text>
+                )}
+              </View>
+            </View>
+          ))}
+        </View>
+      )
       <FlatList
         data={vagas}
         keyExtractor={(item) => item.id}
@@ -126,7 +149,11 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
   header: { height: 58, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16 },
   back: { width: 38, height: 38, alignItems: 'center', justifyContent: 'center' }, title: { color: colors.text, fontSize: 17, fontWeight: '800' }, headerSpacer: { width: 38 },
-  list: { padding: 16, paddingTop: 6, gap: 12 }, emptyText: { color: colors.muted, textAlign: 'center', marginTop: 20 },
+  list: { padding: 16, paddingTop: 6, gap: 12 },
+  eventRequestsSection: { paddingHorizontal: 16, paddingBottom: 12 },
+  eventRequestsTitle: { color: colors.text, fontSize: 16, fontWeight: '900', marginBottom: 10 },
+  eventRequestCard: { backgroundColor: colors.white, borderRadius: 16, padding: 14, borderWidth: 1, borderColor: colors.border, marginBottom: 10 },
+  eventRequestEvent: { color: colors.primary, fontWeight: '900', fontSize: 12, textTransform: 'uppercase', marginBottom: 4 }, emptyText: { color: colors.muted, textAlign: 'center', marginTop: 20 },
   card: { backgroundColor: colors.white, borderRadius: 16, padding: 14, shadowColor: '#000', shadowOpacity: .05, shadowRadius: 8, elevation: 1 },
   cardHeader: { flexDirection: 'row', alignItems: 'center', gap: 10 }, flex1: { flex: 1 },
   category: { color: colors.primary, fontWeight: '700', fontSize: 11, textTransform: 'uppercase' }, vagaTitulo: { color: colors.text, fontSize: 15, fontWeight: '800', marginTop: 3 }, candidatosCount: { color: colors.muted, fontSize: 12, marginTop: 4 },
