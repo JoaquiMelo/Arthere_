@@ -4,11 +4,7 @@ import { colors as baseColors } from '@/shared/theme/colors';
 export type PaletteName = 'Arthere' | 'Oceano' | 'Ameixa';
 
 const palettes = {
-  // Inspirada diretamente no conceito visual enviado:
-  // verde suave + azul claro + areia + terracota + coral.
   Arthere: baseColors,
-
-  // Variação mais marítima, mas mantendo contraste quente para não ficar monocromática.
   Oceano: {
     ...baseColors,
     background: '#F4FAFA',
@@ -24,9 +20,14 @@ const palettes = {
     muted: '#5F7F86',
     border: '#9ECBD2',
     white: '#FFFFFF',
+    brandInk: '#19343B',
+    brandPaper: '#F3F8F8',
+    brandBlue: '#63B4C8',
+    brandGreen: '#3E9B73',
+    brandSand: '#F2D7A7',
+    brandTerracotta: '#E58B68',
+    brandCoral: '#E65D4B',
   },
-
-  // Variação elegante com roxo/malva, equilibrada por areia e coral.
   Ameixa: {
     ...baseColors,
     background: '#FBF7FA',
@@ -42,6 +43,13 @@ const palettes = {
     muted: '#796274',
     border: '#D5BACC',
     white: '#FFFFFF',
+    brandInk: '#322633',
+    brandPaper: '#FAF5F8',
+    brandBlue: '#8BC2D1',
+    brandGreen: '#6AA66D',
+    brandSand: '#ECCE9E',
+    brandTerracotta: '#D18672',
+    brandCoral: '#D85B74',
   },
 } as const;
 
@@ -58,9 +66,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const palette = useMemo(() => palettes[paletteName], [paletteName]);
 
   return (
-    <ThemeContext.Provider
-      value={{ paletteName, palette, setPalette: setPaletteName }}
-    >
+    <ThemeContext.Provider value={{ paletteName, palette, setPalette: setPaletteName }}>
       {children}
     </ThemeContext.Provider>
   );
