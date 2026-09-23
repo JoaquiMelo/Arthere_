@@ -1,7 +1,7 @@
+import { useTheme } from '@/providers/theme-provider';
 import { Ionicons } from '@expo/vector-icons';
 import { useMemo, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useTheme } from '@/providers/theme-provider';
 import { MOCK_EVENTOS } from '../types/event';
 
 export default function EventsScreen() {
@@ -18,11 +18,11 @@ export default function EventsScreen() {
           <View style={[styles.heroShapeOrange, { backgroundColor: palette.brandCoral }]} />
           <View style={styles.heroCopy}>
             <Text style={[styles.eyebrow, { color: palette.brandSand }]}>AGENDA REGIONAL</Text>
-            <Text style={[styles.title, { color: palette.brandPaper }]}>EVENT</Text>
-            <Text style={[styles.title, { color: palette.brandPaper, marginTop: -8 }]}>SCHEDULE</Text>
+            <Text style={[styles.title, { color: palette.brandPaper }]}>RETRATO</Text>
+            <Text style={[styles.title, { color: palette.brandPaper, marginTop: -8 }]}>EXPO</Text>
             <View style={[styles.titleLine, { backgroundColor: palette.brandCoral }]} />
             <Text style={[styles.subtitle, { color: palette.brandPaper }]}>
-              Cultura, encontros e oportunidades criativas perto de você.
+              Encontro e exposção de fotrografia em Santos
             </Text>
           </View>
         </View>
