@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
 import { colors as baseColors } from '@/shared/theme/colors';
+import React, { createContext, useContext, useMemo, useState } from 'react';
 
 export type PaletteName = 'Arthere' | 'Oceano' | 'Ameixa';
 
@@ -55,7 +55,7 @@ const palettes = {
 
 type ThemeContextType = {
   paletteName: PaletteName;
-  palette: typeof palettes.Arthere;
+  palette: (typeof palettes)[PaletteName];
   setPalette: (name: PaletteName) => void;
 };
 
@@ -74,3 +74,4 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
 export const useTheme = () => useContext(ThemeContext);
 export { palettes };
+

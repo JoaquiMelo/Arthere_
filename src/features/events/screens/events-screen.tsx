@@ -1,13 +1,14 @@
 import { useTheme } from '@/providers/theme-provider';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useMemo, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useTheme } from '@/providers/theme-provider';
-import { MOCK_EVENTOS } from '../types/event';
 import type { RootStackParamList } from '../../../navigation/app-navigator';
+import { MOCK_EVENTOS } from '../types/event';
 
 export default function EventsScreen() {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Events'>>();
   const [filtro, setFiltro] = useState<'TODOS' | 'PREMIUM'>('TODOS');
   const { palette } = useTheme();
   const eventos = useMemo(() => MOCK_EVENTOS.filter((e) => filtro === 'TODOS' || e.premium), [filtro]);
@@ -86,7 +87,7 @@ export default function EventsScreen() {
                   </View>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
           );
         })}
 

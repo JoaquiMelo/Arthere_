@@ -3,12 +3,12 @@ import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { Alert, FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import type { Candidato, VagaGerenciada } from '../../../features/opportunities/screens/types/management';
 import { ReviewFormModal } from '@/features/reviews/components/review-form-modal';
-import { StarRating } from '../../../features/reviews/components/star-rating';
 import { useManagement } from '@/providers/management-provider';
 import { useReviews } from '@/providers/reviews-provider';
 import { colors } from '@/shared/theme/colors';
+import type { Candidato, VagaGerenciada } from '../../../features/opportunities/screens/types/management';
+import { StarRating } from '../../../features/reviews/components/star-rating';
 
 const STATUS_LABEL: Record<VagaGerenciada['status'], string> = { ABERTA: 'Aberta', EM_ANDAMENTO: 'Em andamento', CONCLUIDA: 'Concluída' };
 const STATUS_COR: Record<VagaGerenciada['status'], string> = { ABERTA: colors.primary, EM_ANDAMENTO: colors.accent, CONCLUIDA: colors.muted };
@@ -70,19 +70,19 @@ export default function ManageOpportunitiesScreen() {
                 <Text style={styles.candidatoNome}>{solicitacao.agenteNome}</Text>
                 <Text style={styles.candidatoEspecialidade}>{solicitacao.agenteEspecialidade}</Text>
                 <Text style={styles.candidatoMensagem}>{solicitacao.mensagem}</Text>
-                {solicitacao.status === "PENDENTE" ? (
+                {solicitacao.status === 'PENDENTE' ? (
                   <View style={styles.candidatoActions}>
                     <TouchableOpacity style={styles.recusar} onPress={() => recusarSolicitacaoEvento(solicitacao.id)}><Text style={styles.recusarText}>Recusar</Text></TouchableOpacity>
                     <TouchableOpacity style={styles.aceitar} onPress={() => aceitarSolicitacaoEvento(solicitacao.id)}><Text style={styles.aceitarText}>Aceitar</Text></TouchableOpacity>
                   </View>
                 ) : (
-                  <Text style={[styles.statusCandidato, solicitacao.status === "ACEITA" ? styles.statusAceito : styles.statusRecusado]}>{solicitacao.status === "ACEITA" ? "✓ Solicitação aceita" : "Solicitação recusada"}</Text>
+                  <Text style={[styles.statusCandidato, solicitacao.status === 'ACEITA' ? styles.statusAceito : styles.statusRecusado]}>{solicitacao.status === 'ACEITA' ? '✓ Solicitação aceita' : 'Solicitação recusada'}</Text>
                 )}
               </View>
             </View>
           ))}
         </View>
-      )
+      )}
       <FlatList
         data={vagas}
         keyExtractor={(item) => item.id}
