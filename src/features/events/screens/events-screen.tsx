@@ -1,10 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useMemo, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@/providers/theme-provider';
 import { MOCK_EVENTOS } from '../types/event';
+import type { RootStackParamList } from '../../../navigation/app-navigator';
 
 export default function EventsScreen() {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [filtro, setFiltro] = useState<'TODOS' | 'PREMIUM'>('TODOS');
   const { palette } = useTheme();
   const eventos = useMemo(() => MOCK_EVENTOS.filter((e) => filtro === 'TODOS' || e.premium), [filtro]);
@@ -53,7 +57,7 @@ export default function EventsScreen() {
           const semana = new Intl.DateTimeFormat('pt-BR', { weekday: 'short' }).format(data).replace('.', '').toUpperCase();
 
           return (
-            <View key={e.id} style={[styles.cardWrap, { backgroundColor: palette.brandCoral }]}>
+            <TouchableOpacity key={e.id} activeOpacity={0.88} onPress={() => navigation.navigate('EventDetails', { eventId: e.id })} style={[styles.cardWrap, { backgroundColor: palette.brandCoral }]}>
               <View style={[styles.card, { backgroundColor: palette.brandPaper, borderColor: palette.brandInk }]}>
                 <View style={[styles.dateBox, { backgroundColor: e.premium ? palette.brandSand : palette.brandBlue, borderRightColor: palette.brandInk }]}>
                   <Text style={[styles.arrow, { color: palette.brandGreen }]}>↘</Text>
