@@ -1,7 +1,5 @@
 export const colors = {
-  // Paleta principal baseada no conceito visual enviado.
-  // Cada função da interface usa uma cor de papel diferente para evitar
-  // um visual monocromático e manter contraste entre ações e superfícies.
+  // Base semântica da interface: clara e acessível.
   background: '#F7FBFA',
   surface: '#C7DFD8',
   surfaceStrong: '#90C8D8',
@@ -15,4 +13,14 @@ export const colors = {
   muted: '#687D79',
   border: '#AFCFC9',
   white: '#FFFFFF',
+
+  // Identidade visual inspirada na referência:
+  // azul + verde + areia + terracota + coral + preto-grafite.
+  brandInk: '#29242B',
+  brandPaper: '#F6F1E8',
+  brandBlue: '#90C8D8',
+  brandGreen: '#08A013',
+  brandSand: '#F2CE99',
+  brandTerracotta: '#D88160',
+  brandCoral: '#EB6241',
 } as const;
