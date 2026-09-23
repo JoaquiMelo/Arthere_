@@ -1,11 +1,13 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
+import { Alert } from 'react-native';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RouteProp } from '@react-navigation/native';
 import { useTheme } from '@/providers/theme-provider';
 import { useUser } from '@/providers/user-provider';
+import { useManagement } from '@/providers/management-provider';
 import { MOCK_EVENTOS } from '../types/event';
 import type { RootStackParamList } from '../../../navigation/app-navigator';
 
@@ -17,7 +19,7 @@ export default function EventDetailsScreen() {
   const route = useRoute<EventRoute>();
   const { palette } = useTheme();
   const { user } = useUser();
-  const [inscrito, setInscrito] = useState(false);
+  const { solicitacoesEvento, enviarSolicitacaoEvento } = useManagement();
 
   const evento = MOCK_EVENTOS.find((item) => item.id === route.params.eventId);
 
@@ -39,6 +41,16 @@ export default function EventDetailsScreen() {
   const mes = new Intl.DateTimeFormat('pt-BR', { month: 'long' }).format(data);
   const semana = new Intl.DateTimeFormat('pt-BR', { weekday: 'long' }).format(data);
   const isAgente = user.tipo === 'AGENTE';
+  const solicitacao = solicitacoesEvento.find((item) => item.eventId === evento.id && item.agenteId === user.id);
+  const statusSolicitacao = solicitacao?.status;
+
+  const solicitarParticipacao = () => {
+    if (statusSolicitacao === 'PENDENTE' || statusSolicitacao === 'ACEITA') return;
+    Alert.prompt?.('Solicitação para o contratante', 'Escreva uma mensagem para acompanhar sua solicitação.', [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Enviar', onPress: (mensagem) => enviarSolicitacaoEvento({ eventId: evento.id, eventoTitulo: evento.titulo, agenteId: user.id, agenteNome: user.nomeSocial || user.nome, agenteEspecialidade: user.especialidade || 'Profissional criativo', mensagem: mensagem?.trim() || 'Olá! Gostaria de participar deste projeto como agente criativo.' }) },
+    ], 'plain-text', 'Olá! Gostaria de participar deste projeto.');
+  };
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: palette.background }]}>
@@ -101,24 +113,26 @@ export default function EventDetailsScreen() {
           <View style={[styles.registration, { backgroundColor: palette.brandInk }]}>
             <View style={styles.registrationCopy}>
               <Text style={[styles.registrationTitle, { color: palette.brandPaper }]}>
-                {inscrito ? 'Você está inscrito!' : 'Quer participar?'}
+                {statusSolicitacao === 'ACEITA' ? 'Solicitação aceita!' : statusSolicitacao === 'PENDENTE' ? 'Solicitação enviada!' : 'Quer participar?'}
               </Text>
               <Text style={[styles.registrationText, { color: palette.brandPaper }]}>
-                {inscrito
-                  ? 'Sua participação foi registrada nesta demonstração.'
-                  : 'Cadastre-se neste evento como agente criativo.'}
+                {statusSolicitacao === 'ACEITA'
+                  ? 'O contratante aceitou sua solicitação para este projeto.'
+                  : statusSolicitacao === 'PENDENTE'
+                    ? 'Aguarde o contratante analisar sua solicitação.'
+                    : 'Envie uma solicitação ao contratante para participar deste projeto.'}
               </Text>
             </View>
             <TouchableOpacity
-              onPress={() => setInscrito((value) => !value)}
+              onPress={solicitarParticipacao}
               style={[
                 styles.registerButton,
-                { backgroundColor: inscrito ? palette.brandGreen : palette.brandCoral },
+                { backgroundColor: statusSolicitacao === 'ACEITA' ? palette.brandGreen : palette.brandCoral },
               ]}
             >
-              <Ionicons name={inscrito ? 'checkmark-circle' : 'add-circle-outline'} size={19} color={palette.brandPaper} />
+              <Ionicons name={statusSolicitacao === 'ACEITA' ? 'checkmark-circle' : statusSolicitacao === 'PENDENTE' ? 'time-outline' : 'send-outline'} size={19} color={palette.brandPaper} />
               <Text style={[styles.registerButtonText, { color: palette.brandPaper }]}>
-                {inscrito ? 'INSCRITO' : 'CADASTRAR-SE'}
+                {statusSolicitacao === 'ACEITA' ? 'ACEITO' : statusSolicitacao === 'PENDENTE' ? 'PENDENTE' : 'SOLICITAR'}
               </Text>
             </TouchableOpacity>
           </View>
