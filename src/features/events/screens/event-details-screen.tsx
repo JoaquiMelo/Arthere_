@@ -46,10 +46,27 @@ export default function EventDetailsScreen() {
 
   const solicitarParticipacao = () => {
     if (statusSolicitacao === 'PENDENTE' || statusSolicitacao === 'ACEITA') return;
-    Alert.prompt?.('Solicitação para o contratante', 'Escreva uma mensagem para acompanhar sua solicitação.', [
-      { text: 'Cancelar', style: 'cancel' },
-      { text: 'Enviar', onPress: (mensagem) => enviarSolicitacaoEvento({ eventId: evento.id, eventoTitulo: evento.titulo, agenteId: user.id, agenteNome: user.nomeSocial || user.nome, agenteEspecialidade: user.especialidade || 'Profissional criativo', mensagem: mensagem?.trim() || 'Olá! Gostaria de participar deste projeto como agente criativo.' }) },
-    ], 'plain-text', 'Olá! Gostaria de participar deste projeto.');
+
+    Alert.alert(
+      'Enviar solicitação',
+      `Deseja enviar uma solicitação ao contratante para participar de "${evento.titulo}"?`,
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Enviar',
+          onPress: () => {
+            enviarSolicitacaoEvento({
+              eventId: evento.id,
+              eventoTitulo: evento.titulo,
+              agenteId: user.id,
+              agenteNome: user.nomeSocial || user.nome,
+              agenteEspecialidade: user.especialidade || 'Profissional criativo',
+              mensagem: 'Olá! Gostaria de participar deste projeto como agente criativo.',
+            });
+          },
+        },
+      ],
+    );
   };
 
   return (
