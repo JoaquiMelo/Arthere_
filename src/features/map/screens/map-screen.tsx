@@ -13,8 +13,9 @@ import { useChat } from '@/providers/chat-provider';
 const REGIAO_INICIAL: Region = {
   latitude: -23.9608,
   longitude: -46.3339,
-  latitudeDelta: 0.1,
-  longitudeDelta: 0.1,
+  // Um pouco mais próximo para dar mais presença visual aos agentes e à região.
+  latitudeDelta: 0.08,
+  longitudeDelta: 0.08,
 };
 
 const agentesBaixadaSantista: AgenteCriativo[] = [
@@ -160,6 +161,7 @@ export function MapScreen() {
 
       <View style={styles.topBar}>
         <Text style={styles.kicker}>MAPA CRIATIVO · BAIXADA SANTISTA</Text>
+
         <View style={styles.searchBox}>
           <Ionicons name="search" size={18} color={colors.brandInk} />
           <TextInput
@@ -175,7 +177,8 @@ export function MapScreen() {
       <View style={styles.badge}>
         <View style={styles.badgeDot} />
         <Text style={styles.badgeTexto}>
-          {agentesFiltrados.length} {agentesFiltrados.length === 1 ? 'ARTISTA' : 'ARTISTAS'}
+          {agentesFiltrados.length}{' '}
+          {agentesFiltrados.length === 1 ? 'ARTISTA' : 'ARTISTAS'}
         </Text>
       </View>
 
@@ -200,36 +203,38 @@ export function MapScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.brandInk,
   },
   topBar: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 18 : 12,
-    left: 14,
-    right: 14,
+    top: Platform.OS === 'ios' ? 12 : 9,
+    left: 12,
+    right: 12,
   },
   kicker: {
     alignSelf: 'flex-start',
     backgroundColor: colors.brandInk,
     color: colors.brandSand,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    fontSize: 9,
+    paddingHorizontal: 9,
+    paddingVertical: 5,
+    fontSize: 8,
     fontWeight: '900',
-    letterSpacing: 1.25,
-    marginBottom: 7,
+    fontFamily: 'sans-serif',
+    letterSpacing: 1.15,
+    marginBottom: 6,
   },
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    minHeight: 50,
-    paddingHorizontal: 14,
+    minHeight: 47,
+    paddingHorizontal: 13,
     backgroundColor: colors.brandPaper,
     borderWidth: 1,
     borderColor: colors.brandInk,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 5 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.12,
-    shadowRadius: 10,
+    shadowRadius: 9,
     elevation: 4,
   },
   searchInput: {
@@ -237,20 +242,26 @@ const styles = StyleSheet.create({
     marginLeft: 9,
     color: colors.brandInk,
     fontSize: 14,
-    paddingVertical: 12,
+    fontFamily: 'sans-serif',
+    paddingVertical: 10,
   },
   badge: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 142 : 133,
+    top: Platform.OS === 'ios' ? 116 : 108,
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 7,
+    gap: 6,
     backgroundColor: colors.brandPaper,
     borderWidth: 1,
     borderColor: colors.brandInk,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
+    paddingHorizontal: 11,
+    paddingVertical: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 3,
   },
   badgeDot: {
     width: 7,
@@ -260,9 +271,10 @@ const styles = StyleSheet.create({
   },
   badgeTexto: {
     color: colors.brandInk,
-    fontSize: 9,
+    fontSize: 8,
     fontWeight: '900',
-    letterSpacing: 1,
+    fontFamily: 'sans-serif',
+    letterSpacing: 0.95,
   },
   pinContainer: {
     alignItems: 'center',
