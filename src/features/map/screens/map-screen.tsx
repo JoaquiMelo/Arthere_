@@ -13,11 +13,11 @@ import {
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 
-import { AgentProfileCard } from '../../../features/agents/components/agent-profile-card';
 import type { AgenteCriativo } from '@/features/agents/types/agent';
-import { CATEGORIAS } from '../../../shared/config/categories';
-import { colors } from '@/shared/theme/colors';
 import { useChat } from '@/providers/chat-provider';
+import { colors } from '@/shared/theme/colors';
+import { AgentProfileCard } from '../../../features/agents/components/agent-profile-card';
+import { CATEGORIAS } from '../../../shared/config/categories';
 
 const REGIAO_INICIAL: Region = {
   latitude: -23.96,
@@ -170,8 +170,7 @@ export function MapScreen() {
           <Text style={styles.kicker}>ARTE, ENCONTRO E TERRITÓRIO</Text>
 
           <Text style={styles.heroTitle}>
-            O mapa vivo dos{'
-'}
+            O mapa vivo dos{' '}
             <Text style={styles.heroAccent}>talentos criativos</Text>
             {'\n'}da Baixada Santista.
           </Text>
