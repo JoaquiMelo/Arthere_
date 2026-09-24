@@ -145,7 +145,7 @@ export function MapScreen() {
           );
         })
       : agentesBaixadaSantista;
-  }, [busca]);
+  }, [busca, categoriaSelecionada]);
 
   return (
     <View style={styles.container}>
@@ -159,8 +159,36 @@ export function MapScreen() {
         ))}
       </MapView>
 
-      <View style={styles.topBar}>
-        <Text style={styles.kicker}>MAPA CRIATIVO · BAIXADA SANTISTA</Text>
+      <View pointerEvents="box-none" style={styles.overlay}>
+        <View style={styles.editorialHeader}>
+          <View style={styles.brandRow}>
+            <Text style={styles.brand}>Arthere</Text>
+            <Text style={styles.brandRegion}>BAIXADA SANTISTA</Text>
+          </View>
+
+          <Text style={styles.kicker}>ARTE, ENCONTRO E TERRITÓRIO</Text>
+          <Text style={styles.title}>
+            O mapa vivo dos{'
+'}
+            <Text style={styles.titleAccent}>talentos criativos.</Text>
+          </Text>
+
+          <View style={styles.statsRow}>
+            <View>
+              <Text style={styles.statValue}>{agentesBaixadaSantista.length}</Text>
+              <Text style={styles.statLabel}>ARTISTAS</Text>
+            </View>
+            <View style={styles.statDivider} />
+            <View>
+              <Text style={styles.statValue}>{Object.keys(CATEGORIAS).length}</Text>
+              <Text style={styles.statLabel}>ÁREAS CRIATIVAS</Text>
+            </View>
+            <View style={styles.mapBadge}>
+              <View style={styles.badgeDot} />
+              <Text style={styles.badgeTexto}>{agentesFiltrados.length} NO MAPA</Text>
+            </View>
+          </View>
+        </View>
 
         <View style={styles.searchBox}>
           <Ionicons name="search" size={18} color={colors.brandInk} />
@@ -171,15 +199,23 @@ export function MapScreen() {
             value={busca}
             onChangeText={setBusca}
           />
+          {busca.length > 0 ? (
+            <Ionicons name="close-circle" size={18} color={colors.muted} onPress={() => setBusca('')} />
+          ) : null}
         </View>
-      </View>
 
-      <View style={styles.badge}>
-        <View style={styles.badgeDot} />
-        <Text style={styles.badgeTexto}>
-          {agentesFiltrados.length}{' '}
-          {agentesFiltrados.length === 1 ? 'ARTISTA' : 'ARTISTAS'}
-        </Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filters}>
+          <FilterChip label="Todos" active={!categoriaSelecionada} onPress={() => setCategoriaSelecionada(null)} />
+          {Object.entries(CATEGORIAS).map(([id, categoria]) => (
+            <FilterChip
+              key={id}
+              label={categoria.label}
+              dot={categoria.cor}
+              active={categoriaSelecionada === id}
+              onPress={() => setCategoriaSelecionada(categoriaSelecionada === id ? null : id)}
+            />
+          ))}
+        </ScrollView>
       </View>
 
       <AgentProfileCard
@@ -201,117 +237,73 @@ export function MapScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.brandInk,
+  container: { flex: 1, backgroundColor: colors.brandInk },
+  overlay: { position: 'absolute', top: Platform.OS === 'ios' ? 8 : 6, left: 12, right: 12 },
+  editorialHeader: {
+    backgroundColor: colors.brandPaper,
+    borderWidth: 1,
+    borderColor: colors.border,
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 13,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.13,
+    shadowRadius: 12,
+    elevation: 5,
   },
-  topBar: {
-    position: 'absolute',
-    top: Platform.OS === 'ios' ? 12 : 9,
-    left: 12,
-    right: 12,
+  brandRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+    paddingBottom: 9,
+    marginBottom: 12,
   },
-  kicker: {
-    alignSelf: 'flex-start',
-    backgroundColor: colors.brandInk,
-    color: colors.brandSand,
-    paddingHorizontal: 9,
-    paddingVertical: 5,
-    fontSize: 8,
-    fontWeight: '900',
-    fontFamily: 'sans-serif',
-    letterSpacing: 1.15,
-    marginBottom: 6,
-  },
+  brand: { color: colors.brandInk, fontFamily: 'serif', fontSize: 27, lineHeight: 30, letterSpacing: -0.7 },
+  brandRegion: { color: colors.muted, fontSize: 8, fontWeight: '800', letterSpacing: 1.3 },
+  kicker: { color: colors.muted, fontSize: 8, fontWeight: '700', letterSpacing: 1.7, marginBottom: 5 },
+  title: { color: colors.brandInk, fontFamily: 'serif', fontSize: 25, lineHeight: 27, letterSpacing: -0.5 },
+  titleAccent: { color: colors.brandCoral, fontStyle: 'italic' },
+  statsRow: { flexDirection: 'row', alignItems: 'center', marginTop: 11 },
+  statValue: { color: colors.brandInk, fontFamily: 'serif', fontSize: 21, lineHeight: 22 },
+  statLabel: { color: colors.muted, fontSize: 7, fontWeight: '800', letterSpacing: 1, marginTop: 2 },
+  statDivider: { width: 1, height: 27, backgroundColor: colors.border, marginHorizontal: 14 },
+  mapBadge: { marginLeft: 'auto', flexDirection: 'row', alignItems: 'center', backgroundColor: colors.brandInk, paddingHorizontal: 9, paddingVertical: 7 },
+  badgeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: colors.brandCoral, marginRight: 6 },
+  badgeTexto: { color: colors.brandPaper, fontSize: 7, fontWeight: '900', letterSpacing: 0.9 },
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    minHeight: 47,
+    minHeight: 46,
+    marginTop: 8,
     paddingHorizontal: 13,
     backgroundColor: colors.brandPaper,
     borderWidth: 1,
     borderColor: colors.brandInk,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.12,
-    shadowRadius: 9,
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
     elevation: 4,
   },
-  searchInput: {
-    flex: 1,
-    marginLeft: 9,
-    color: colors.brandInk,
-    fontSize: 14,
-    fontFamily: 'sans-serif',
-    paddingVertical: 10,
-  },
-  badge: {
-    position: 'absolute',
-    top: Platform.OS === 'ios' ? 116 : 108,
-    alignSelf: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    backgroundColor: colors.brandPaper,
-    borderWidth: 1,
-    borderColor: colors.brandInk,
-    paddingHorizontal: 11,
-    paddingVertical: 6,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.08,
-    shadowRadius: 6,
-    elevation: 3,
-  },
-  badgeDot: {
-    width: 7,
-    height: 7,
-    borderRadius: 4,
-    backgroundColor: colors.brandCoral,
-  },
-  badgeTexto: {
-    color: colors.brandInk,
-    fontSize: 8,
-    fontWeight: '900',
-    fontFamily: 'sans-serif',
-    letterSpacing: 0.95,
-  },
-  pinContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 52,
-    height: 62,
-  },
+  searchInput: { flex: 1, marginLeft: 9, color: colors.brandInk, fontSize: 14, fontFamily: 'sans-serif', paddingVertical: 9 },
+  filters: { paddingVertical: 8, paddingRight: 10 },
+  chipWrap: { marginRight: 6 },
+  chip: { paddingHorizontal: 11, paddingVertical: 7, borderWidth: 1, fontSize: 8, fontWeight: '800', letterSpacing: 0.8 },
+  chipActive: { color: colors.brandPaper, backgroundColor: colors.brandInk, borderColor: colors.brandInk },
+  chipInactive: { color: colors.brandInk, backgroundColor: colors.brandPaper, borderColor: colors.border },
+  pinContainer: { alignItems: 'center', justifyContent: 'center', width: 52, height: 62 },
   pinImageContainer: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    borderWidth: 2.5,
-    backgroundColor: colors.brandPaper,
-    overflow: 'hidden',
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.24,
-    shadowRadius: 4,
+    width: 44, height: 44, borderRadius: 22, borderWidth: 2.5, backgroundColor: colors.brandPaper,
+    overflow: 'hidden', justifyContent: 'center', alignItems: 'center', elevation: 4,
+    shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.24, shadowRadius: 4,
   },
-  pinImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
+  pinImage: { width: 40, height: 40, borderRadius: 20 },
   pinTail: {
-    width: 0,
-    height: 0,
-    backgroundColor: 'transparent',
-    borderStyle: 'solid',
-    borderLeftWidth: 6,
-    borderRightWidth: 6,
-    borderTopWidth: 10,
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
-    marginTop: -2,
+    width: 0, height: 0, backgroundColor: 'transparent', borderStyle: 'solid',
+    borderLeftWidth: 6, borderRightWidth: 6, borderTopWidth: 10,
+    borderLeftColor: 'transparent', borderRightColor: 'transparent', marginTop: -2,
   },
 });
