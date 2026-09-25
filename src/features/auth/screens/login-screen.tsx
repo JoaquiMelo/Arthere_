@@ -47,20 +47,16 @@ export default function LoginScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.page}>
-        <View style={styles.hero}>
-          <View style={styles.sun} />
-          <View style={styles.wave} />
-          <View style={styles.orangeBlob} />
-          <View style={styles.blueBlob} />
-          <View style={styles.heroInner}>
+        <View style={styles.brandPanel}>
+          <View style={[styles.shapeBlue, { backgroundColor: colors.brandBlue }]} />
+          <View style={[styles.shapeSand, { backgroundColor: colors.brandSand }]} />
+          <View style={[styles.shapeCoral, { backgroundColor: colors.brandCoral }]} />
+          <View style={styles.brandCopy}>
             <Text style={styles.kicker}>ARTE · ENCONTRO · TERRITÓRIO</Text>
             <Text style={styles.brand}>Arthere</Text>
-            <View style={styles.dash}>
-              <View style={styles.dashRed} />
-              <View style={styles.dashYellow} />
-            </View>
-            <Text style={styles.heroText}>
-              Um espaço para talentos criativos, projetos e encontros na Baixada Santista.
+            <View style={styles.brandRule} />
+            <Text style={styles.brandDescription}>
+              Conectando talentos criativos e projetos na Baixada Santista.
             </Text>
           </View>
         </View>
@@ -68,12 +64,12 @@ export default function LoginScreen() {
         <View style={styles.content}>
           <View style={styles.heading}>
             <Text style={styles.title}>Entrar</Text>
-            <Text style={styles.subtitle}>Volte para o seu espaço criativo.</Text>
+            <Text style={styles.subtitle}>Acesse seu espaço criativo.</Text>
           </View>
 
           <Text style={styles.label}>E-MAIL</Text>
           <View style={styles.inputContainer}>
-            <Ionicons name="mail-outline" size={19} color={colors.brandBlue} />
+            <Ionicons name="mail-outline" size={19} color={colors.muted} />
             <TextInput
               style={styles.input}
               placeholder="seu@email.com"
@@ -87,7 +83,7 @@ export default function LoginScreen() {
 
           <Text style={styles.label}>SENHA</Text>
           <View style={styles.inputContainer}>
-            <Ionicons name="lock-closed-outline" size={19} color={colors.brandTerracotta} />
+            <Ionicons name="lock-closed-outline" size={19} color={colors.muted} />
             <TextInput
               style={styles.input}
               placeholder="Digite sua senha"
@@ -104,9 +100,7 @@ export default function LoginScreen() {
             ) : (
               <>
                 <Text style={styles.buttonText}>ENTRAR</Text>
-                <View style={styles.buttonArrow}>
-                  <Ionicons name="arrow-forward" size={17} color={colors.brandInk} />
-                </View>
+                <Ionicons name="arrow-forward" size={17} color={colors.brandPaper} />
               </>
             )}
           </TouchableOpacity>
@@ -131,134 +125,109 @@ const styles = StyleSheet.create({
   page: {
     flex: 1,
   },
-  hero: {
-    minHeight: 282,
+  brandPanel: {
+    minHeight: 245,
     backgroundColor: colors.brandInk,
     overflow: 'hidden',
     position: 'relative',
   },
-  heroInner: {
-    zIndex: 3,
+  brandCopy: {
+    zIndex: 2,
     paddingHorizontal: 24,
-    paddingTop: 34,
-    paddingBottom: 30,
+    paddingTop: 28,
+    paddingBottom: 24,
+    maxWidth: 340,
   },
   kicker: {
     color: colors.brandSand,
-    fontSize: 9,
-    fontWeight: '900',
+    fontSize: 10,
+    fontWeight: '800',
     letterSpacing: 1.8,
   },
   brand: {
     color: colors.brandPaper,
-    fontSize: 57,
-    lineHeight: 60,
+    fontSize: 54,
+    lineHeight: 56,
     fontWeight: '900',
-    letterSpacing: -2.5,
-    marginTop: 16,
-  },
-  dash: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 9,
-    gap: 5,
-  },
-  dashRed: {
-    width: 66,
-    height: 7,
-    borderRadius: 10,
-    backgroundColor: colors.brandCoral,
-    transform: [{ rotate: '-2deg' }],
-  },
-  dashYellow: {
-    width: 25,
-    height: 7,
-    borderRadius: 10,
-    backgroundColor: colors.brandSand,
-    transform: [{ rotate: '4deg' }],
-  },
-  heroText: {
-    color: colors.brandPaper,
-    opacity: 0.9,
-    fontSize: 13,
-    lineHeight: 19,
-    maxWidth: 245,
+    letterSpacing: -1.8,
     marginTop: 18,
   },
-  sun: {
-    position: 'absolute',
-    width: 112,
-    height: 112,
-    borderRadius: 56,
-    backgroundColor: colors.brandSand,
-    right: -28,
-    top: -38,
-  },
-  wave: {
-    position: 'absolute',
-    width: 185,
-    height: 88,
-    borderRadius: 70,
-    backgroundColor: colors.brandBlue,
-    right: -66,
-    bottom: -38,
-    transform: [{ rotate: '-12deg' }],
-  },
-  orangeBlob: {
-    position: 'absolute',
-    width: 55,
-    height: 145,
-    borderRadius: 24,
-    backgroundColor: colors.brandTerracotta,
-    right: 72,
-    top: -34,
-    transform: [{ rotate: '7deg' }],
-  },
-  blueBlob: {
-    position: 'absolute',
-    width: 46,
-    height: 46,
-    borderRadius: 23,
+  brandRule: {
+    width: 86,
+    height: 7,
     backgroundColor: colors.brandCoral,
-    left: -17,
-    bottom: 30,
+    marginTop: 12,
+    marginBottom: 14,
+  },
+  brandDescription: {
+    color: colors.brandPaper,
+    fontSize: 13,
+    lineHeight: 19,
+    fontWeight: '500',
+    maxWidth: 250,
+  },
+  shapeBlue: {
+    position: 'absolute',
+    width: 130,
+    height: 130,
+    borderRadius: 28,
+    right: -18,
+    bottom: -20,
+    transform: [{ rotate: '20deg' }],
+  },
+  shapeSand: {
+    position: 'absolute',
+    width: 88,
+    height: 55,
+    borderRadius: 12,
+    right: 34,
+    top: 34,
+    transform: [{ rotate: '-5deg' }],
+  },
+  shapeCoral: {
+    position: 'absolute',
+    width: 58,
+    height: 150,
+    borderRadius: 10,
+    right: 100,
+    top: -28,
+    transform: [{ rotate: '2deg' }],
   },
   content: {
     flex: 1,
     paddingHorizontal: 24,
-    paddingTop: 30,
-    paddingBottom: 24,
+    paddingTop: 28,
+    paddingBottom: 26,
   },
   heading: {
-    marginBottom: 25,
+    marginBottom: 24,
   },
   title: {
     color: colors.brandInk,
-    fontSize: 35,
-    lineHeight: 38,
+    fontSize: 31,
+    lineHeight: 34,
     fontWeight: '900',
-    letterSpacing: -1.2,
+    letterSpacing: -0.8,
   },
   subtitle: {
     color: colors.muted,
     fontSize: 14,
-    marginTop: 5,
+    marginTop: 4,
   },
   label: {
-    color: colors.brandInk,
-    fontSize: 9,
-    fontWeight: '900',
-    letterSpacing: 1.7,
-    marginBottom: 6,
+    color: colors.muted,
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 1.4,
+    marginBottom: 7,
   },
   inputContainer: {
-    minHeight: 54,
+    minHeight: 52,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: 16,
     paddingHorizontal: 14,
     marginBottom: 18,
   },
@@ -270,44 +239,33 @@ const styles = StyleSheet.create({
     paddingVertical: 13,
   },
   button: {
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: colors.brandCoral,
+    height: 52,
+    backgroundColor: colors.brandInk,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingLeft: 22,
-    paddingRight: 7,
-    marginTop: 5,
-    transform: [{ rotate: '-0.5deg' }],
+    paddingHorizontal: 17,
+    marginTop: 2,
   },
   buttonText: {
-    color: colors.white,
+    color: colors.brandPaper,
     fontSize: 11,
     fontWeight: '900',
-    letterSpacing: 1.7,
-  },
-  buttonArrow: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
-    backgroundColor: colors.brandSand,
-    alignItems: 'center',
-    justifyContent: 'center',
+    letterSpacing: 1.5,
   },
   registerRow: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 7,
-    marginTop: 24,
+    marginTop: 22,
   },
   registerText: {
     color: colors.muted,
     fontSize: 13,
   },
   registerLink: {
-    color: colors.brandTerracotta,
+    color: colors.brandCoral,
     fontSize: 11,
     fontWeight: '900',
     letterSpacing: 1.1,
