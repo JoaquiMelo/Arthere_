@@ -4,7 +4,10 @@ import React, { useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
+  Image,
+  Platform,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -14,6 +17,12 @@ import {
 
 import { useUser } from '@/providers/user-provider';
 import { colors } from '@/shared/theme/colors';
+
+const displayFont = Platform.select({
+  ios: 'Arial Rounded MT Bold',
+  android: 'sans-serif-black',
+  default: 'sans-serif-black',
+});
 
 export default function LoginScreen() {
   const navigation = useNavigation<any>();
@@ -46,34 +55,36 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.page}>
-        <View style={styles.brandPanel}>
-          <View style={[styles.shapeBlue, { backgroundColor: colors.brandBlue }]} />
-          <View style={[styles.shapeSand, { backgroundColor: colors.brandSand }]} />
-          <View style={[styles.shapeCoral, { backgroundColor: colors.brandCoral }]} />
-          <View style={styles.brandCopy}>
-            <Text style={styles.kicker}>ARTE · ENCONTRO · TERRITÓRIO</Text>
-            <Text style={styles.brand}>Arthere</Text>
-            <View style={styles.brandRule} />
-            <Text style={styles.brandDescription}>
-              Conectando talentos criativos e projetos na Baixada Santista.
-            </Text>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.hero}>
+          <Text style={styles.title}>Entre no{"\n"}Arthere</Text>
+
+          <View style={styles.logoFrame}>
+            <Image
+              source={require('../../../../assets/images/icon.png')}
+              style={styles.logo}
+              resizeMode="contain"
+              accessibilityLabel="Logo do Arthere"
+            />
           </View>
+
+          <Text style={styles.description}>
+            Encontre talentos criativos, descubra projetos e faça novas conexões na Baixada Santista.
+          </Text>
         </View>
 
-        <View style={styles.content}>
-          <View style={styles.heading}>
-            <Text style={styles.title}>Entrar</Text>
-            <Text style={styles.subtitle}>Acesse seu espaço criativo.</Text>
-          </View>
-
+        <View style={styles.form}>
           <Text style={styles.label}>E-MAIL</Text>
           <View style={styles.inputContainer}>
-            <Ionicons name="mail-outline" size={19} color={colors.muted} />
+            <Ionicons name="mail-outline" size={19} color={colors.authBlue} />
             <TextInput
               style={styles.input}
               placeholder="seu@email.com"
-              placeholderTextColor={colors.muted}
+              placeholderTextColor={colors.authInk}
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
@@ -83,11 +94,11 @@ export default function LoginScreen() {
 
           <Text style={styles.label}>SENHA</Text>
           <View style={styles.inputContainer}>
-            <Ionicons name="lock-closed-outline" size={19} color={colors.muted} />
+            <Ionicons name="lock-closed-outline" size={19} color={colors.authBlue} />
             <TextInput
               style={styles.input}
               placeholder="Digite sua senha"
-              placeholderTextColor={colors.muted}
+              placeholderTextColor={colors.authInk}
               value={senha}
               onChangeText={setSenha}
               secureTextEntry
@@ -96,23 +107,26 @@ export default function LoginScreen() {
 
           <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={carregando}>
             {carregando ? (
-              <ActivityIndicator color={colors.brandPaper} />
+              <ActivityIndicator color={colors.authWhite} />
             ) : (
               <>
                 <Text style={styles.buttonText}>ENTRAR</Text>
-                <Ionicons name="arrow-forward" size={17} color={colors.brandPaper} />
+                <Ionicons name="arrow-forward" size={19} color={colors.authWhite} />
               </>
             )}
           </TouchableOpacity>
 
           <View style={styles.registerRow}>
             <Text style={styles.registerText}>Ainda não tem uma conta?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-              <Text style={styles.registerLink}>CRIAR PERFIL</Text>
+            <TouchableOpacity
+              style={styles.secondaryButton}
+              onPress={() => navigation.navigate('Register')}
+            >
+              <Text style={styles.secondaryButtonText}>CRIAR PERFIL</Text>
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -120,154 +134,122 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.brandPaper,
-  },
-  page: {
-    flex: 1,
-  },
-  brandPanel: {
-    minHeight: 245,
-    backgroundColor: colors.brandInk,
-    overflow: 'hidden',
-    position: 'relative',
-  },
-  brandCopy: {
-    zIndex: 2,
-    paddingHorizontal: 24,
-    paddingTop: 28,
-    paddingBottom: 24,
-    maxWidth: 340,
-  },
-  kicker: {
-    color: colors.brandSand,
-    fontSize: 10,
-    fontWeight: '800',
-    letterSpacing: 1.8,
-  },
-  brand: {
-    color: colors.brandPaper,
-    fontSize: 54,
-    lineHeight: 56,
-    fontWeight: '900',
-    letterSpacing: -1.8,
-    marginTop: 18,
-  },
-  brandRule: {
-    width: 86,
-    height: 7,
-    backgroundColor: colors.brandCoral,
-    marginTop: 12,
-    marginBottom: 14,
-  },
-  brandDescription: {
-    color: colors.brandPaper,
-    fontSize: 13,
-    lineHeight: 19,
-    fontWeight: '500',
-    maxWidth: 250,
-  },
-  shapeBlue: {
-    position: 'absolute',
-    width: 130,
-    height: 130,
-    borderRadius: 28,
-    right: -18,
-    bottom: -20,
-    transform: [{ rotate: '20deg' }],
-  },
-  shapeSand: {
-    position: 'absolute',
-    width: 88,
-    height: 55,
-    borderRadius: 12,
-    right: 34,
-    top: 34,
-    transform: [{ rotate: '-5deg' }],
-  },
-  shapeCoral: {
-    position: 'absolute',
-    width: 58,
-    height: 150,
-    borderRadius: 10,
-    right: 100,
-    top: -28,
-    transform: [{ rotate: '2deg' }],
+    backgroundColor: colors.authSky,
   },
   content: {
-    flex: 1,
-    paddingHorizontal: 24,
+    flexGrow: 1,
+    paddingHorizontal: 22,
     paddingTop: 28,
-    paddingBottom: 26,
+    paddingBottom: 36,
   },
-  heading: {
-    marginBottom: 24,
+  hero: {
+    alignItems: 'center',
   },
   title: {
-    color: colors.brandInk,
-    fontSize: 31,
-    lineHeight: 34,
+    color: colors.authBlue,
+    fontFamily: displayFont,
+    fontSize: 48,
+    lineHeight: 45,
     fontWeight: '900',
-    letterSpacing: -0.8,
+    letterSpacing: -1.7,
+    textAlign: 'center',
   },
-  subtitle: {
-    color: colors.muted,
-    fontSize: 14,
-    marginTop: 4,
+  logoFrame: {
+    width: 150,
+    height: 150,
+    marginTop: 24,
+    marginBottom: 18,
+    borderRadius: 24,
+    overflow: 'hidden',
+    backgroundColor: colors.authWhite,
+    borderWidth: 2,
+    borderColor: colors.authBlue,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logo: {
+    width: '100%',
+    height: '100%',
+  },
+  description: {
+    maxWidth: 335,
+    color: colors.authBlue,
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  form: {
+    marginTop: 30,
+    padding: 18,
+    borderRadius: 28,
+    backgroundColor: 'rgba(255,253,249,0.68)',
   },
   label: {
-    color: colors.muted,
-    fontSize: 10,
-    fontWeight: '800',
-    letterSpacing: 1.4,
     marginBottom: 7,
-  },
-  inputContainer: {
-    minHeight: 52,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.white,
-    borderWidth: 1,
-    borderColor: colors.border,
-    paddingHorizontal: 14,
-    marginBottom: 18,
-  },
-  input: {
-    flex: 1,
-    color: colors.text,
-    fontSize: 15,
-    marginLeft: 10,
-    paddingVertical: 13,
-  },
-  button: {
-    height: 52,
-    backgroundColor: colors.brandInk,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 17,
-    marginTop: 2,
-  },
-  buttonText: {
-    color: colors.brandPaper,
-    fontSize: 11,
+    color: colors.authInk,
+    fontSize: 10,
     fontWeight: '900',
     letterSpacing: 1.5,
   },
-  registerRow: {
+  inputContainer: {
+    minHeight: 54,
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
-    gap: 7,
-    marginTop: 22,
+    paddingHorizontal: 16,
+    marginBottom: 15,
+    borderRadius: 18,
+    borderWidth: 2,
+    borderColor: colors.authLine,
+    backgroundColor: colors.authWhite,
+  },
+  input: {
+    flex: 1,
+    marginLeft: 10,
+    paddingVertical: 13,
+    color: colors.authInk,
+    fontSize: 15,
+  },
+  button: {
+    height: 56,
+    marginTop: 4,
+    paddingHorizontal: 20,
+    borderRadius: 28,
+    backgroundColor: colors.authBlue,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  buttonText: {
+    color: colors.authWhite,
+    fontSize: 12,
+    fontWeight: '900',
+    letterSpacing: 1.7,
+  },
+  registerRow: {
+    alignItems: 'center',
+    marginTop: 18,
+    gap: 9,
   },
   registerText: {
-    color: colors.muted,
-    fontSize: 13,
+    color: colors.authInk,
+    fontSize: 12,
+    fontWeight: '600',
   },
-  registerLink: {
-    color: colors.brandCoral,
-    fontSize: 11,
+  secondaryButton: {
+    minHeight: 44,
+    paddingHorizontal: 20,
+    borderRadius: 22,
+    borderWidth: 2,
+    borderColor: colors.authBlue,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.authWhite,
+  },
+  secondaryButtonText: {
+    color: colors.authBlue,
+    fontSize: 10,
     fontWeight: '900',
-    letterSpacing: 1.1,
+    letterSpacing: 1.3,
   },
 });

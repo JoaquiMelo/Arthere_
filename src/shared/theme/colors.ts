@@ -1,6 +1,4 @@
 export const colors = {
-  // Base do design editorial do Arthere:
-  // papel + grafite + coral + terracota + areia + azul.
   background: '#F6F1E8',
   surface: '#EFE7DA',
   surfaceStrong: '#90C8D8',
@@ -15,7 +13,6 @@ export const colors = {
   border: '#D8CEC0',
   white: '#FCFAF4',
 
-  // Tokens de identidade visual compartilhados com o projeto web.
   brandInk: '#29242B',
   brandPaper: '#F6F1E8',
   brandBlue: '#90C8D8',
@@ -23,4 +20,12 @@ export const colors = {
   brandSand: '#F2CE99',
   brandTerracotta: '#D88160',
   brandCoral: '#EB6241',
+
+  // Paleta da nova experiência de autenticação, inspirada na referência enviada.
+  authSky: '#C5D9FA',
+  authBlue: '#0757C9',
+  authBlueDark: '#0648A8',
+  authWhite: '#FFFDF9',
+  authInk: '#123B78',
+  authLine: '#A9C4F0',
 } as const;
