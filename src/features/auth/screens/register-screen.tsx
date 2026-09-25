@@ -87,17 +87,21 @@ export default function RegisterScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.header}>
+          <View style={styles.headerShapes}>
+            <View style={styles.yellowBlob} />
+            <View style={styles.blueBlob} />
+            <View style={styles.orangeBlob} />
+            <View style={styles.redDot} />
+          </View>
+
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => navigation.goBack()}
             accessibilityLabel="Voltar"
           >
-            <Ionicons name="arrow-back" size={20} color={colors.brandPaper} />
+            <Ionicons name="arrow-back" size={19} color={colors.brandInk} />
           </TouchableOpacity>
-          <View style={styles.headerShapes}>
-            <View style={[styles.shapeBlue, { backgroundColor: colors.brandBlue }]} />
-            <View style={[styles.shapeCoral, { backgroundColor: colors.brandCoral }]} />
-          </View>
+
           <Text style={styles.headerKicker}>NOVO PERFIL</Text>
           <Text style={styles.headerTitle}>Faça parte do Arthere.</Text>
           <Text style={styles.headerText}>
@@ -105,117 +109,136 @@ export default function RegisterScreen() {
           </Text>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionKicker}>01 · TIPO DE PERFIL</Text>
+        <View style={styles.form}>
+          <View style={styles.sectionTitleRow}>
+            <Text style={styles.sectionNumber}>01</Text>
+            <View>
+              <Text style={styles.sectionKicker}>TIPO DE PERFIL</Text>
+              <Text style={styles.sectionHint}>Como você chega ao Arthere?</Text>
+            </View>
+          </View>
+
           <View style={styles.roles}>
             <TouchableOpacity
-              style={[
-                styles.role,
-                tipoUsuario === 'AGENTE' && styles.roleActive,
-              ]}
+              style={[styles.role, tipoUsuario === 'AGENTE' && styles.roleActive]}
               onPress={() => setTipoUsuario('AGENTE')}
             >
-              <View
-                style={[
-                  styles.roleIcon,
-                  tipoUsuario === 'AGENTE' && styles.roleIconActive,
-                ]}
-              >
+              <View style={[styles.roleIcon, tipoUsuario === 'AGENTE' && styles.roleIconActive]}>
                 <Ionicons
                   name="color-palette-outline"
-                  size={20}
-                  color={tipoUsuario === 'AGENTE' ? colors.brandInk : colors.muted}
+                  size={21}
+                  color={tipoUsuario === 'AGENTE' ? colors.brandInk : colors.brandTerracotta}
                 />
               </View>
               <Text style={styles.roleTitle}>Agente criativo</Text>
               <Text style={styles.roleSub}>Artista ou profissional</Text>
+              {tipoUsuario === 'AGENTE' && <View style={styles.roleMark} />}
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[
-                styles.role,
-                tipoUsuario === 'CONTRATANTE' && styles.roleActive,
-              ]}
+              style={[styles.role, tipoUsuario === 'CONTRATANTE' && styles.roleActiveContractor]}
               onPress={() => setTipoUsuario('CONTRATANTE')}
             >
               <View
                 style={[
                   styles.roleIcon,
-                  tipoUsuario === 'CONTRATANTE' && styles.roleIconActive,
+                  tipoUsuario === 'CONTRATANTE' && styles.roleIconContractor,
                 ]}
               >
                 <Ionicons
                   name="briefcase-outline"
-                  size={20}
-                  color={tipoUsuario === 'CONTRATANTE' ? colors.brandInk : colors.muted}
+                  size={21}
+                  color={tipoUsuario === 'CONTRATANTE' ? colors.brandInk : colors.brandBlue}
                 />
               </View>
               <Text style={styles.roleTitle}>Contratante</Text>
               <Text style={styles.roleSub}>Empresa ou organização</Text>
+              {tipoUsuario === 'CONTRATANTE' && <View style={styles.roleMarkBlue} />}
             </TouchableOpacity>
           </View>
-        </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionKicker}>02 · DADOS PESSOAIS</Text>
-          <Field icon="card-outline" placeholder="CPF ou CNPJ *" value={documento} onChangeText={setDocumento} keyboardType="numeric" />
-          <Field icon="person-outline" placeholder="Nome completo *" value={nome} onChangeText={setNome} />
-          <Field icon="person-add-outline" placeholder="Nome social (opcional)" value={nomeSocial} onChangeText={setNomeSocial} />
-          <Field icon="people-outline" placeholder="Pronomes (opcional)" value={pronomes} onChangeText={setPronomes} />
-        </View>
+          <Section title="DADOS PESSOAIS" number="02">
+            <Field icon="card-outline" placeholder="CPF ou CNPJ *" value={documento} onChangeText={setDocumento} keyboardType="numeric" />
+            <Field icon="person-outline" placeholder="Nome completo *" value={nome} onChangeText={setNome} />
+            <Field icon="person-add-outline" placeholder="Nome social (opcional)" value={nomeSocial} onChangeText={setNomeSocial} />
+            <Field icon="people-outline" placeholder="Pronomes (opcional)" value={pronomes} onChangeText={setPronomes} />
+          </Section>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionKicker}>03 · ACESSO</Text>
-          <Field icon="mail-outline" placeholder="E-mail" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
-          <Field icon="lock-closed-outline" placeholder="Senha" value={senha} onChangeText={setSenha} secureTextEntry />
-        </View>
+          <Section title="ACESSO" number="03">
+            <Field icon="mail-outline" placeholder="E-mail" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
+            <Field icon="lock-closed-outline" placeholder="Senha" value={senha} onChangeText={setSenha} secureTextEntry />
+          </Section>
 
-        {tipoUsuario === 'CONTRATANTE' ? (
-          <View style={styles.section}>
-            <Text style={styles.sectionKicker}>04 · ORGANIZAÇÃO</Text>
-            <Field icon="business-outline" placeholder="Empresa / organização *" value={empresa} onChangeText={setEmpresa} />
-            <Field icon="pricetag-outline" placeholder="Categoria de atuação" value={categoria} onChangeText={setCategoria} />
-            <Field icon="call-outline" placeholder="Telefone" value={telefone} onChangeText={setTelefone} keyboardType="phone-pad" />
-            <Field icon="location-outline" placeholder="Cidade" value={cidade} onChangeText={setCidade} />
-            <Field icon="navigate-outline" placeholder="Endereço" value={endereco} onChangeText={setEndereco} />
-            <Field icon="globe-outline" placeholder="Site ou rede social" value={site} onChangeText={setSite} />
-            <TextInput
-              style={styles.textarea}
-              placeholder="Descreva a empresa, eventos e serviços..."
-              placeholderTextColor={colors.muted}
-              value={descricao}
-              onChangeText={setDescricao}
-              multiline
-              maxLength={500}
-            />
-          </View>
-        ) : (
-          <View style={styles.section}>
-            <Text style={styles.sectionKicker}>04 · PERFIL PROFISSIONAL</Text>
-            <Field icon="sparkles-outline" placeholder="Especialidade" value={especialidade} onChangeText={setEspecialidade} />
-            <Field icon="location-outline" placeholder="Cidade" value={cidade} onChangeText={setCidade} />
-          </View>
-        )}
-
-        <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={carregando}>
-          {carregando ? (
-            <ActivityIndicator color={colors.brandPaper} />
+          {tipoUsuario === 'CONTRATANTE' ? (
+            <Section title="ORGANIZAÇÃO" number="04">
+              <Field icon="business-outline" placeholder="Empresa / organização *" value={empresa} onChangeText={setEmpresa} />
+              <Field icon="pricetag-outline" placeholder="Categoria de atuação" value={categoria} onChangeText={setCategoria} />
+              <Field icon="call-outline" placeholder="Telefone" value={telefone} onChangeText={setTelefone} keyboardType="phone-pad" />
+              <Field icon="location-outline" placeholder="Cidade" value={cidade} onChangeText={setCidade} />
+              <Field icon="navigate-outline" placeholder="Endereço" value={endereco} onChangeText={setEndereco} />
+              <Field icon="globe-outline" placeholder="Site ou rede social" value={site} onChangeText={setSite} />
+              <TextInput
+                style={styles.textarea}
+                placeholder="Conte um pouco sobre a organização..."
+                placeholderTextColor={colors.muted}
+                value={descricao}
+                onChangeText={setDescricao}
+                multiline
+                maxLength={500}
+              />
+            </Section>
           ) : (
-            <>
-              <Text style={styles.buttonText}>
-                {tipoUsuario === 'AGENTE' ? 'CONTINUAR PARA PORTFÓLIO' : 'PERSONALIZAR PERFIL'}
-              </Text>
-              <Ionicons name="arrow-forward" size={17} color={colors.brandPaper} />
-            </>
+            <Section title="PERFIL PROFISSIONAL" number="04">
+              <Field icon="sparkles-outline" placeholder="Especialidade" value={especialidade} onChangeText={setEspecialidade} />
+              <Field icon="location-outline" placeholder="Cidade" value={cidade} onChangeText={setCidade} />
+            </Section>
           )}
-        </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.login}>
-          <Text style={styles.loginText}>Já possui uma conta?</Text>
-          <Text style={styles.loginLink}>FAÇA LOGIN</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={carregando}>
+            {carregando ? (
+              <ActivityIndicator color={colors.brandInk} />
+            ) : (
+              <>
+                <Text style={styles.buttonText}>
+                  {tipoUsuario === 'AGENTE' ? 'CONTINUAR PARA PORTFÓLIO' : 'PERSONALIZAR PERFIL'}
+                </Text>
+                <View style={styles.buttonArrow}>
+                  <Ionicons name="arrow-forward" size={17} color={colors.brandInk} />
+                </View>
+              </>
+            )}
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.login}>
+            <Text style={styles.loginText}>Já possui uma conta?</Text>
+            <Text style={styles.loginLink}>FAÇA LOGIN</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+function Section({
+  title,
+  number,
+  children,
+}: {
+  title: string;
+  number: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <View style={styles.section}>
+      <View style={styles.sectionTitleRow}>
+        <Text style={styles.sectionNumber}>{number}</Text>
+        <View>
+          <Text style={styles.sectionKicker}>{title}</Text>
+          <View style={styles.sectionLine} />
+        </View>
+      </View>
+      {children}
+    </View>
   );
 }
 
@@ -227,7 +250,9 @@ function Field({
 } & React.ComponentProps<typeof TextInput>) {
   return (
     <View style={styles.inputWrap}>
-      <Ionicons name={icon} size={18} color={colors.muted} />
+      <View style={styles.inputIcon}>
+        <Ionicons name={icon} size={17} color={colors.brandInk} />
+      </View>
       <TextInput style={styles.input} placeholderTextColor={colors.muted} {...props} />
     </View>
   );
@@ -239,106 +264,171 @@ const styles = StyleSheet.create({
     backgroundColor: colors.brandPaper,
   },
   content: {
-    paddingBottom: 36,
+    paddingBottom: 42,
   },
   header: {
+    minHeight: 238,
     backgroundColor: colors.brandInk,
-    minHeight: 224,
     paddingHorizontal: 22,
-    paddingTop: 14,
-    paddingBottom: 26,
+    paddingTop: 15,
+    paddingBottom: 28,
     overflow: 'hidden',
     position: 'relative',
-  },
-  backButton: {
-    width: 38,
-    height: 38,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(246,241,232,0.25)',
-    marginBottom: 24,
   },
   headerShapes: {
     ...StyleSheet.absoluteFillObject,
   },
-  shapeBlue: {
+  yellowBlob: {
     position: 'absolute',
-    width: 124,
-    height: 124,
+    width: 118,
+    height: 82,
+    borderRadius: 55,
     right: -26,
-    bottom: -28,
-    borderRadius: 26,
-    transform: [{ rotate: '17deg' }],
+    top: -22,
+    backgroundColor: colors.brandSand,
+    transform: [{ rotate: '-8deg' }],
   },
-  shapeCoral: {
+  blueBlob: {
     position: 'absolute',
-    width: 62,
-    height: 138,
-    right: 88,
-    top: -26,
-    borderRadius: 10,
-    transform: [{ rotate: '3deg' }],
+    width: 132,
+    height: 112,
+    borderRadius: 60,
+    right: -35,
+    bottom: -40,
+    backgroundColor: colors.brandBlue,
+    transform: [{ rotate: '14deg' }],
+  },
+  orangeBlob: {
+    position: 'absolute',
+    width: 49,
+    height: 136,
+    borderRadius: 25,
+    right: 72,
+    top: -31,
+    backgroundColor: colors.brandTerracotta,
+    transform: [{ rotate: '5deg' }],
+  },
+  redDot: {
+    position: 'absolute',
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    left: -18,
+    bottom: 24,
+    backgroundColor: colors.brandCoral,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.brandSand,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 23,
   },
   headerKicker: {
     color: colors.brandSand,
-    fontSize: 10,
+    fontSize: 9,
     fontWeight: '900',
     letterSpacing: 1.8,
   },
   headerTitle: {
     color: colors.brandPaper,
-    fontSize: 32,
-    lineHeight: 35,
+    fontSize: 33,
+    lineHeight: 36,
     fontWeight: '900',
-    letterSpacing: -0.8,
-    marginTop: 10,
+    letterSpacing: -1,
+    marginTop: 9,
   },
   headerText: {
     color: colors.brandPaper,
-    opacity: 0.82,
+    opacity: 0.9,
     fontSize: 13,
     lineHeight: 19,
     marginTop: 9,
-    maxWidth: 290,
+    maxWidth: 280,
+  },
+  form: {
+    paddingHorizontal: 20,
   },
   section: {
-    paddingHorizontal: 20,
-    marginTop: 24,
+    marginTop: 27,
+  },
+  sectionTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 13,
+    gap: 10,
+  },
+  sectionNumber: {
+    color: colors.brandCoral,
+    fontSize: 11,
+    fontWeight: '900',
+    letterSpacing: 0.5,
+    width: 23,
+    height: 23,
+    borderRadius: 12,
+    backgroundColor: colors.brandSand,
+    textAlign: 'center',
+    textAlignVertical: 'center',
   },
   sectionKicker: {
     color: colors.brandInk,
     fontSize: 10,
     fontWeight: '900',
-    letterSpacing: 1.4,
-    marginBottom: 10,
+    letterSpacing: 1.5,
+  },
+  sectionHint: {
+    color: colors.muted,
+    fontSize: 11,
+    marginTop: 2,
+  },
+  sectionLine: {
+    height: 3,
+    width: 30,
+    borderRadius: 5,
+    backgroundColor: colors.brandBlue,
+    marginTop: 5,
   },
   roles: {
     flexDirection: 'row',
-    gap: 9,
+    gap: 10,
   },
   role: {
     flex: 1,
-    minHeight: 126,
+    minHeight: 132,
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.border,
-    padding: 13,
+    borderRadius: 22,
+    padding: 14,
+    overflow: 'hidden',
+    position: 'relative',
   },
   roleActive: {
     backgroundColor: colors.brandSand,
     borderColor: colors.brandInk,
+    transform: [{ rotate: '-1deg' }],
+  },
+  roleActiveContractor: {
+    backgroundColor: colors.surfaceStrong,
+    borderColor: colors.brandInk,
+    transform: [{ rotate: '1deg' }],
   },
   roleIcon: {
-    width: 34,
-    height: 34,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.surface,
-    marginBottom: 14,
+    marginBottom: 16,
   },
   roleIconActive: {
-    backgroundColor: colors.brandPaper,
+    backgroundColor: colors.white,
+  },
+  roleIconContractor: {
+    backgroundColor: colors.white,
   },
   roleTitle: {
     color: colors.brandInk,
@@ -350,16 +440,46 @@ const styles = StyleSheet.create({
     fontSize: 10,
     lineHeight: 14,
     marginTop: 3,
+    maxWidth: 105,
+  },
+  roleMark: {
+    position: 'absolute',
+    width: 42,
+    height: 7,
+    borderRadius: 8,
+    backgroundColor: colors.brandCoral,
+    right: 10,
+    bottom: 12,
+    transform: [{ rotate: '-4deg' }],
+  },
+  roleMarkBlue: {
+    position: 'absolute',
+    width: 42,
+    height: 7,
+    borderRadius: 8,
+    backgroundColor: colors.brandTerracotta,
+    right: 10,
+    bottom: 12,
+    transform: [{ rotate: '4deg' }],
   },
   inputWrap: {
-    minHeight: 51,
+    minHeight: 52,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.border,
-    paddingHorizontal: 13,
+    borderRadius: 15,
+    paddingHorizontal: 11,
     marginBottom: 10,
+  },
+  inputIcon: {
+    width: 31,
+    height: 31,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.surfaceStrong,
   },
   input: {
     flex: 1,
@@ -369,34 +489,45 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   textarea: {
-    minHeight: 110,
+    minHeight: 112,
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.border,
+    borderRadius: 18,
     padding: 13,
     color: colors.text,
     fontSize: 14,
     textAlignVertical: 'top',
   },
   button: {
-    height: 52,
-    marginHorizontal: 20,
-    marginTop: 28,
-    paddingHorizontal: 16,
-    backgroundColor: colors.brandInk,
+    minHeight: 58,
+    borderRadius: 29,
+    marginTop: 30,
+    paddingLeft: 21,
+    paddingRight: 7,
+    backgroundColor: colors.brandCoral,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    transform: [{ rotate: '0.5deg' }],
   },
   buttonText: {
     flex: 1,
-    color: colors.brandPaper,
+    color: colors.white,
     fontSize: 10,
     fontWeight: '900',
     letterSpacing: 1.1,
   },
+  buttonArrow: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: colors.brandSand,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   login: {
-    marginTop: 20,
+    marginTop: 21,
     alignItems: 'center',
     gap: 5,
   },
@@ -405,7 +536,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   loginLink: {
-    color: colors.brandCoral,
+    color: colors.brandTerracotta,
     fontSize: 10,
     fontWeight: '900',
     letterSpacing: 1.2,
