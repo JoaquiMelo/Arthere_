@@ -147,72 +147,71 @@ export function MapScreen() {
 
   return (
     <View style={styles.screen}>
-      <ScrollView
-        style={styles.scroll}
-        contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}
-        stickyHeaderIndices={[0]}
-      >
-        <View style={styles.header}>
-          <View style={styles.headerInner}>
-            <View style={styles.brandLine}>
-              <Text style={styles.brand}>Arthere</Text>
-              <Text style={styles.region}>BAIXADA SANTISTA</Text>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
+        <View style={styles.posterHero}>
+          <View style={styles.posterBlue} />
+          <View style={styles.posterYellow} />
+          <View style={styles.posterOrange} />
+          <View style={styles.posterRed} />
+          <View style={styles.posterCloudA}>
+            <View style={styles.cloudLine} />
+            <View style={[styles.cloudLine, styles.cloudLine2]} />
+            <View style={[styles.cloudLine, styles.cloudLine3]} />
+          </View>
+
+          <View style={styles.heroTop}>
+            <Text style={styles.micro}>ENCONTRO · TERRITÓRIO · CRIAÇÃO</Text>
+            <Text style={styles.menu} onPress={() => navigation.navigate('Profile')}>●</Text>
+          </View>
+
+          <Text style={styles.brand}>Arthere</Text>
+          <Text style={styles.heroStatement}>
+            Onde a cidade{'
+'}encontra quem{'
+'}faz.
+          </Text>
+
+          <View style={styles.heroUnderline}>
+            <View style={styles.underlineRed} />
+            <View style={styles.underlineYellow} />
+          </View>
+
+          <Text style={styles.heroCopy}>
+            Descubra talentos, projetos e encontros criativos pela Baixada Santista.
+          </Text>
+
+          <View style={styles.heroNumbers}>
+            <View>
+              <Text style={styles.heroNumber}>{agentesBaixadaSantista.length}</Text>
+              <Text style={styles.heroNumberLabel}>TALENTOS</Text>
             </View>
-            <View style={styles.headerActions}>
-              <Text style={styles.headerLink}>MAPA</Text>
-              <Text style={styles.profileButton}>CRIAR PERFIL</Text>
+            <View style={styles.heroNumberLine} />
+            <View>
+              <Text style={styles.heroNumber}>{Object.keys(CATEGORIAS).length}</Text>
+              <Text style={styles.heroNumberLabel}>LINGUAGENS</Text>
             </View>
           </View>
         </View>
 
-        <View style={styles.hero}>
-          <View style={styles.heroShapeYellow} />
-          <View style={styles.heroShapeBlue} />
-          <View style={styles.heroShapeOrange} />
-          <View style={styles.heroShapeRed} />
-          <Text style={styles.kicker}>ARTE, ENCONTRO E TERRITÓRIO</Text>
-
-          <Text style={styles.heroTitle}>
-            O mapa vivo dos{' '}
-            <Text style={styles.heroAccent}>talentos criativos</Text>
-            {'\n'}da Baixada Santista.
-          </Text>
-
-          <Text style={styles.heroDescription}>
-            Fotógrafos, DJs, videomakers, designers e artesãos abertos a novos projetos. Descubra quem está perto, veja o trabalho e comece a conversa.
-          </Text>
-
-          <View style={styles.stats}>
-            <View>
-              <Text style={styles.statNumber}>{agentesBaixadaSantista.length}</Text>
-              <Text style={styles.statLabel}>ARTISTAS</Text>
-            </View>
-            <View style={styles.statDivider} />
-            <View>
-              <Text style={styles.statNumber}>{Object.keys(CATEGORIAS).length}</Text>
-              <Text style={styles.statLabel}>ÁREAS CRIATIVAS</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.controls}>
-          <View style={styles.searchRow}>
-            <Ionicons name="search" size={17} color={colors.muted} />
+        <View style={styles.searchSection}>
+          <Text style={styles.sectionEyebrow}>01 · ENCONTRE</Text>
+          <Text style={styles.sectionTitle}>Quem está por perto?</Text>
+          <View style={styles.searchBox}>
+            <Ionicons name="search" size={18} color={colors.brandInk} />
             <TextInput
               value={busca}
               onChangeText={setBusca}
-              placeholder="Buscar artista, cidade ou especialidade"
+              placeholder="nome, cidade ou especialidade"
               placeholderTextColor={colors.muted}
               style={styles.searchInput}
             />
             {busca ? (
-              <Ionicons name="close" size={18} color={colors.muted} onPress={() => setBusca('')} />
+              <Ionicons name="close-circle" size={19} color={colors.brandTerracotta} onPress={() => setBusca('')} />
             ) : null}
           </View>
 
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
-            <FilterChip label="Todos" active={!categoria} onPress={() => setCategoria(null)} />
+            <FilterChip label="Tudo" active={!categoria} onPress={() => setCategoria(null)} />
             {Object.entries(CATEGORIAS).map(([id, item]) => (
               <FilterChip
                 key={id}
@@ -226,6 +225,14 @@ export function MapScreen() {
         </View>
 
         <View style={styles.mapSection}>
+          <View style={styles.sectionHeader}>
+            <View>
+              <Text style={styles.sectionEyebrow}>02 · TERRITÓRIO</Text>
+              <Text style={styles.sectionTitle}>A cidade é o estúdio.</Text>
+            </View>
+            <Text style={styles.mapCount}>{filtrados.length} NO MAPA</Text>
+          </View>
+
           <View style={styles.mapFrame}>
             <MapView
               style={StyleSheet.absoluteFill}
@@ -243,11 +250,9 @@ export function MapScreen() {
               ))}
             </MapView>
 
-            <View style={styles.mapBadge}>
-              <View style={styles.liveDot} />
-              <Text style={styles.mapBadgeText}>
-                {filtrados.length} {filtrados.length === 1 ? 'ARTISTA' : 'ARTISTAS'} NO MAPA
-              </Text>
+            <View style={styles.mapStamp}>
+              <Text style={styles.mapStampText}>BAIXADA{'
+'}SANTISTA</Text>
             </View>
           </View>
 
@@ -268,17 +273,27 @@ export function MapScreen() {
         </View>
 
         <View style={styles.featured}>
-          <View style={styles.featuredHeading}>
-            <Text style={styles.featuredTitle}>Em destaque</Text>
-            <Text style={styles.featuredCaption}>SELECIONADOS PELA AVALIAÇÃO</Text>
+          <View style={styles.sectionHeader}>
+            <View>
+              <Text style={styles.sectionEyebrow}>03 · GENTE</Text>
+              <Text style={styles.sectionTitle}>Feito por pessoas.</Text>
+            </View>
+            <Text style={styles.sideNote}>DESLIZE · DESCUBRA</Text>
           </View>
 
           {destaque.length === 0 ? (
             <Text style={styles.empty}>Nenhum artista encontrado com esses filtros.</Text>
           ) : (
-            destaque.map((agente) => (
-              <View key={agente.id} style={styles.card}>
+            destaque.map((agente, index) => (
+              <View
+                key={agente.id}
+                style={[
+                  styles.card,
+                  index % 2 === 0 ? styles.cardTiltLeft : styles.cardTiltRight,
+                ]}
+              >
                 <Image source={{ uri: agente.avatarUrl }} style={styles.cardImage} />
+                <View style={styles.cardColorBar} />
                 <View style={styles.cardBody}>
                   <View style={styles.cardTop}>
                     <Text style={styles.cardCategory}>
@@ -288,9 +303,11 @@ export function MapScreen() {
                   </View>
                   <Text style={styles.cardName}>{agente.nome}</Text>
                   <Text style={styles.cardCity}>{agente.cidade}</Text>
-                  <Text style={styles.cardDescription} numberOfLines={2}>{agente.descricao}</Text>
+                  <Text style={styles.cardDescription} numberOfLines={2}>
+                    {agente.descricao}
+                  </Text>
                   <Text style={styles.cardAction} onPress={() => setSelecionado(agente)}>
-                    VER NO MAPA →
+                    VER NO MAPA ↗
                   </Text>
                 </View>
               </View>
@@ -298,9 +315,20 @@ export function MapScreen() {
           )}
         </View>
 
+        <View style={styles.invite}>
+          <View style={styles.inviteBlob} />
+          <Text style={styles.inviteEyebrow}>VOCÊ TAMBÉM FAZ PARTE DISSO</Text>
+          <Text style={styles.inviteTitle}>Tem um trabalho{'
+'}para mostrar?</Text>
+          <Text style={styles.inviteCopy}>Crie seu perfil e deixe a cidade encontrar o que você faz.</Text>
+          <Text style={styles.inviteButton} onPress={() => navigation.navigate('Register')}>
+            CRIAR MEU PERFIL →
+          </Text>
+        </View>
+
         <View style={styles.footer}>
           <Text style={styles.footerBrand}>Arthere</Text>
-          <Text style={styles.footerText}>Conectando agentes criativos e contratantes na Baixada Santista.</Text>
+          <Text style={styles.footerText}>ARTE · ENCONTRO · TERRITÓRIO</Text>
         </View>
       </ScrollView>
     </View>
@@ -321,12 +349,9 @@ function FilterChip({
   return (
     <Text
       onPress={onPress}
-      style={[
-        styles.chip,
-        active ? styles.chipActive : styles.chipInactive,
-      ]}
+      style={[styles.chip, active ? styles.chipActive : styles.chipInactive]}
     >
-      {dot ? <Text style={{ color: dot }}>• </Text> : null}
+      {dot ? <Text style={{ color: dot }}>● </Text> : null}
       {label.toUpperCase()}
     </Text>
   );
@@ -334,181 +359,220 @@ function FilterChip({
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.brandPaper },
-  scroll: { flex: 1 },
   content: { paddingBottom: 0 },
-  header: {
-    backgroundColor: colors.brandPaper,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-    zIndex: 20,
-  },
-  headerInner: {
-    minHeight: 64,
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  brandLine: { flexDirection: 'row', alignItems: 'baseline', gap: 8 },
-  brand: {
-    fontFamily: 'serif',
-    fontSize: 25,
-    color: colors.brandInk,
-    letterSpacing: -0.7,
-  },
-  region: {
-    fontSize: 8,
-    fontWeight: '700',
-    color: colors.muted,
-    letterSpacing: 1.5,
-  },
-  headerActions: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  headerLink: {
-    fontSize: 8,
-    fontWeight: '800',
-    color: colors.muted,
-    letterSpacing: 1.2,
-  },
-  profileButton: {
-    backgroundColor: colors.brandCoral,
-    color: colors.white,
-    paddingHorizontal: 13,
-    paddingVertical: 9,
-    borderRadius: 18,
-    fontSize: 7,
-    fontWeight: '900',
-    letterSpacing: 1,
-  },
-  hero: {
-    paddingHorizontal: 20,
-    paddingTop: 38,
-    paddingBottom: 30,
+
+  posterHero: {
+    minHeight: 555,
+    backgroundColor: colors.brandInk,
+    paddingHorizontal: 24,
+    paddingTop: 52,
+    paddingBottom: 34,
     overflow: 'hidden',
     position: 'relative',
-    backgroundColor: colors.brandPaper,
   },
-  kicker: {
-    fontSize: 9,
-    fontWeight: '700',
-    color: colors.muted,
-    letterSpacing: 2.1,
-    marginBottom: 17,
+  heroTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    zIndex: 3,
   },
-  heroShapeYellow: {
-    position: 'absolute',
-    width: 115,
-    height: 58,
-    borderRadius: 40,
-    backgroundColor: colors.brandSand,
-    right: -34,
-    top: 16,
-    transform: [{ rotate: '12deg' }],
+  micro: {
+    color: colors.brandSand,
+    fontSize: 8,
+    fontWeight: '900',
+    letterSpacing: 2,
   },
-  heroShapeBlue: {
-    position: 'absolute',
-    width: 92,
-    height: 92,
-    borderRadius: 46,
-    backgroundColor: colors.brandBlue,
-    right: -24,
-    bottom: -35,
+  menu: {
+    color: colors.brandPaper,
+    fontSize: 20,
   },
-  heroShapeOrange: {
-    position: 'absolute',
-    width: 34,
-    height: 105,
-    borderRadius: 20,
-    backgroundColor: colors.brandTerracotta,
-    right: 72,
-    top: -28,
-    transform: [{ rotate: '6deg' }],
+  brand: {
+    color: colors.brandPaper,
+    fontSize: 57,
+    lineHeight: 62,
+    fontWeight: '900',
+    letterSpacing: -2.8,
+    marginTop: 38,
+    zIndex: 3,
   },
-  heroShapeRed: {
-    position: 'absolute',
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+  heroStatement: {
+    color: colors.brandPaper,
+    fontSize: 41,
+    lineHeight: 41,
+    fontWeight: '900',
+    letterSpacing: -1.5,
+    marginTop: 27,
+    zIndex: 3,
+  },
+  heroUnderline: {
+    flexDirection: 'row',
+    gap: 5,
+    marginTop: 17,
+    zIndex: 3,
+  },
+  underlineRed: {
+    width: 75,
+    height: 8,
+    borderRadius: 9,
     backgroundColor: colors.brandCoral,
-    left: -12,
-    bottom: 22,
+    transform: [{ rotate: '-2deg' }],
   },
-
-  heroTitle: {
-    fontFamily: 'serif',
-    color: colors.brandInk,
-    fontSize: 39,
-    lineHeight: 39,
-    letterSpacing: -1,
-    maxWidth: 330,
+  underlineYellow: {
+    width: 32,
+    height: 8,
+    borderRadius: 9,
+    backgroundColor: colors.brandSand,
+    transform: [{ rotate: '3deg' }],
   },
-  heroAccent: {
-    color: colors.brandCoral,
-    fontStyle: 'italic',
-  },
-  heroDescription: {
-    marginTop: 22,
-    color: colors.muted,
+  heroCopy: {
+    color: colors.brandPaper,
     fontSize: 14,
-    lineHeight: 21,
-    maxWidth: 500,
+    lineHeight: 20,
+    opacity: 0.92,
+    maxWidth: 285,
+    marginTop: 21,
+    zIndex: 3,
   },
-  stats: {
+  heroNumbers: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-    marginTop: 24,
-    paddingTop: 17,
-    gap: 20,
+    gap: 19,
+    marginTop: 29,
+    zIndex: 3,
   },
-  statNumber: {
-    fontFamily: 'serif',
-    color: colors.brandInk,
-    fontSize: 31,
-    lineHeight: 32,
+  heroNumber: {
+    color: colors.brandSand,
+    fontSize: 27,
+    fontWeight: '900',
   },
-  statLabel: {
-    color: colors.muted,
+  heroNumberLabel: {
+    color: colors.brandPaper,
+    fontSize: 7,
+    fontWeight: '900',
+    letterSpacing: 1.5,
+    marginTop: 1,
+  },
+  heroNumberLine: {
+    width: 1,
+    height: 32,
+    backgroundColor: colors.brandPaper,
+    opacity: 0.3,
+  },
+  posterBlue: {
+    position: 'absolute',
+    width: 165,
+    height: 150,
+    borderRadius: 80,
+    backgroundColor: colors.brandBlue,
+    right: -70,
+    top: -35,
+    transform: [{ rotate: '12deg' }],
+  },
+  posterYellow: {
+    position: 'absolute',
+    width: 100,
+    height: 64,
+    borderRadius: 50,
+    backgroundColor: colors.brandSand,
+    right: 12,
+    top: 102,
+    transform: [{ rotate: '-8deg' }],
+  },
+  posterOrange: {
+    position: 'absolute',
+    width: 48,
+    height: 164,
+    borderRadius: 24,
+    backgroundColor: colors.brandTerracotta,
+    right: 83,
+    top: 63,
+    transform: [{ rotate: '7deg' }],
+  },
+  posterRed: {
+    position: 'absolute',
+    width: 54,
+    height: 54,
+    borderRadius: 27,
+    backgroundColor: colors.brandCoral,
+    left: -27,
+    bottom: 72,
+  },
+  posterCloudA: {
+    position: 'absolute',
+    width: 190,
+    height: 76,
+    borderRadius: 50,
+    borderWidth: 4,
+    borderColor: colors.brandSand,
+    right: -74,
+    bottom: 58,
+    transform: [{ rotate: '-7deg' }],
+    opacity: 0.9,
+  },
+  cloudLine: {
+    position: 'absolute',
+    left: 12,
+    right: 12,
+    top: 20,
+    borderTopWidth: 3,
+    borderTopColor: colors.brandSand,
+    borderRadius: 50,
+    transform: [{ rotate: '2deg' }],
+  },
+  cloudLine2: { top: 31, transform: [{ rotate: '-2deg' }] },
+  cloudLine3: { top: 42, transform: [{ rotate: '1deg' }] },
+
+  searchSection: {
+    paddingHorizontal: 24,
+    paddingTop: 36,
+    paddingBottom: 28,
+    backgroundColor: colors.brandPaper,
+  },
+  sectionEyebrow: {
+    color: colors.brandTerracotta,
     fontSize: 8,
-    fontWeight: '800',
-    letterSpacing: 1.4,
-    marginTop: 2,
+    fontWeight: '900',
+    letterSpacing: 1.8,
   },
-  statDivider: { height: 34, width: 1, backgroundColor: colors.border },
-  controls: {
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.border,
-    paddingVertical: 13,
-    paddingHorizontal: 20,
+  sectionTitle: {
+    color: colors.brandInk,
+    fontSize: 29,
+    lineHeight: 32,
+    fontWeight: '900',
+    letterSpacing: -0.8,
+    marginTop: 7,
   },
-  searchRow: {
-    minHeight: 52,
+  searchBox: {
+    minHeight: 55,
+    marginTop: 20,
+    borderWidth: 2,
+    borderColor: colors.brandInk,
+    borderRadius: 28,
+    backgroundColor: colors.white,
+    paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 9,
-    paddingHorizontal: 15,
-    borderWidth: 1.5,
-    borderColor: colors.brandInk,
-    borderRadius: 26,
-    backgroundColor: colors.white,
   },
   searchInput: {
     flex: 1,
     color: colors.brandInk,
     fontSize: 13,
-    paddingVertical: 7,
+    paddingVertical: 8,
   },
-  chips: { paddingTop: 11, paddingRight: 20, gap: 7 },
+  chips: {
+    paddingTop: 13,
+    paddingRight: 24,
+    gap: 8,
+  },
   chip: {
-    overflow: 'hidden',
-    borderWidth: 1,
-    paddingHorizontal: 13,
+    borderWidth: 1.5,
+    borderRadius: 22,
+    paddingHorizontal: 14,
     paddingVertical: 9,
-    borderRadius: 20,
     fontSize: 8,
-    fontWeight: '800',
-    letterSpacing: 1,
+    fontWeight: '900',
+    letterSpacing: 1.1,
   },
   chipActive: {
     color: colors.brandPaper,
@@ -516,111 +580,228 @@ const styles = StyleSheet.create({
     borderColor: colors.brandInk,
   },
   chipInactive: {
-    color: colors.muted,
+    color: colors.brandInk,
     backgroundColor: colors.brandPaper,
-    borderColor: colors.border,
+    borderColor: colors.brandInk,
   },
-  mapSection: { paddingHorizontal: 20, paddingTop: 24 },
+
+  mapSection: {
+    paddingHorizontal: 24,
+    paddingTop: 30,
+    paddingBottom: 38,
+    backgroundColor: colors.surface,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    gap: 12,
+    marginBottom: 17,
+  },
+  mapCount: {
+    color: colors.brandInk,
+    fontSize: 7,
+    fontWeight: '900',
+    letterSpacing: 1.1,
+    marginBottom: 3,
+  },
   mapFrame: {
-    height: 420,
+    height: 390,
     width: '100%',
     overflow: 'hidden',
     backgroundColor: colors.muted,
     borderWidth: 2,
     borderColor: colors.brandInk,
-    borderRadius: 30,
+    borderRadius: 32,
     position: 'relative',
   },
-  mapBadge: {
+  mapStamp: {
     position: 'absolute',
-    top: 14,
-    right: 14,
-    backgroundColor: colors.brandPaper,
-    borderWidth: 1.5,
-    borderColor: colors.brandInk,
-    borderRadius: 18,
-    paddingHorizontal: 11,
-    paddingVertical: 9,
-    flexDirection: 'row',
+    left: 15,
+    bottom: 15,
+    width: 76,
+    height: 76,
+    borderRadius: 38,
+    backgroundColor: colors.brandSand,
     alignItems: 'center',
-    gap: 7,
+    justifyContent: 'center',
+    transform: [{ rotate: '-9deg' }],
   },
-  liveDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: colors.brandCoral,
-  },
-  mapBadgeText: {
+  mapStampText: {
     color: colors.brandInk,
+    textAlign: 'center',
     fontSize: 8,
-    fontWeight: '800',
-    letterSpacing: 1.2,
+    lineHeight: 10,
+    fontWeight: '900',
+    letterSpacing: 1,
   },
-  profileOverlay: { marginTop: -220, marginHorizontal: 12, zIndex: 5 },
-  featured: { paddingHorizontal: 20, paddingTop: 42, paddingBottom: 38 },
-  featuredHeading: {
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-    paddingBottom: 13,
-    marginBottom: 18,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-    gap: 10,
+  profileOverlay: { marginTop: -210, marginHorizontal: 10, zIndex: 5 },
+
+  featured: {
+    paddingHorizontal: 24,
+    paddingTop: 42,
+    paddingBottom: 44,
+    backgroundColor: colors.brandPaper,
   },
-  featuredTitle: {
-    fontFamily: 'serif',
-    fontSize: 30,
-    color: colors.brandInk,
-  },
-  featuredCaption: {
+  sideNote: {
     color: colors.muted,
     fontSize: 7,
-    fontWeight: '800',
+    fontWeight: '900',
     letterSpacing: 1.2,
+    marginBottom: 3,
   },
   card: {
-    borderWidth: 1.5,
+    borderWidth: 2,
     borderColor: colors.brandInk,
     backgroundColor: colors.white,
-    borderRadius: 28,
+    borderRadius: 27,
     overflow: 'hidden',
-    marginBottom: 16,
-    transform: [{ rotate: '-0.7deg' }],
+    marginBottom: 20,
+    position: 'relative',
   },
-  cardImage: { width: '100%', height: 190, backgroundColor: colors.muted },
+  cardTiltLeft: { transform: [{ rotate: '-1deg' }] },
+  cardTiltRight: { transform: [{ rotate: '1deg' }] },
+  cardImage: {
+    width: '100%',
+    height: 205,
+    backgroundColor: colors.muted,
+  },
+  cardColorBar: {
+    height: 7,
+    backgroundColor: colors.brandCoral,
+  },
   cardBody: { padding: 17 },
-  cardTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  cardCategory: { color: colors.muted, fontSize: 7, fontWeight: '800', letterSpacing: 1.2 },
-  rating: { color: colors.brandInk, fontSize: 10, fontWeight: '700' },
-  cardName: { color: colors.brandInk, fontFamily: 'serif', fontSize: 25, marginTop: 6 },
-  cardCity: { color: colors.muted, fontSize: 10, marginTop: 2 },
-  cardDescription: { color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 10 },
+  cardTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  cardCategory: {
+    color: colors.brandTerracotta,
+    fontSize: 7,
+    fontWeight: '900',
+    letterSpacing: 1.4,
+  },
+  rating: {
+    color: colors.brandInk,
+    fontSize: 10,
+    fontWeight: '900',
+  },
+  cardName: {
+    color: colors.brandInk,
+    fontSize: 27,
+    lineHeight: 30,
+    fontWeight: '900',
+    marginTop: 7,
+  },
+  cardCity: {
+    color: colors.muted,
+    fontSize: 10,
+    marginTop: 2,
+  },
+  cardDescription: {
+    color: colors.muted,
+    fontSize: 12,
+    lineHeight: 18,
+    marginTop: 11,
+  },
   cardAction: {
-    color: colors.brandCoral,
+    alignSelf: 'flex-start',
+    color: colors.brandInk,
+    backgroundColor: colors.brandSand,
+    borderRadius: 18,
+    paddingHorizontal: 13,
+    paddingVertical: 9,
     fontSize: 8,
-    fontWeight: '800',
-    letterSpacing: 1.1,
+    fontWeight: '900',
+    letterSpacing: 1,
     marginTop: 15,
   },
-  empty: { color: colors.muted, textAlign: 'center', paddingVertical: 35, fontSize: 13 },
-  footer: {
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-    paddingHorizontal: 20,
-    paddingVertical: 34,
-    gap: 7,
+  empty: {
+    color: colors.muted,
+    textAlign: 'center',
+    paddingVertical: 35,
+    fontSize: 13,
   },
-  footerBrand: { fontFamily: 'serif', color: colors.brandInk, fontSize: 22 },
-  footerText: { color: colors.muted, fontSize: 10, lineHeight: 16 },
+
+  invite: {
+    minHeight: 315,
+    backgroundColor: colors.brandInk,
+    paddingHorizontal: 24,
+    paddingTop: 37,
+    paddingBottom: 35,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  inviteBlob: {
+    position: 'absolute',
+    width: 180,
+    height: 180,
+    borderRadius: 90,
+    backgroundColor: colors.brandBlue,
+    right: -75,
+    top: -55,
+  },
+  inviteEyebrow: {
+    color: colors.brandSand,
+    fontSize: 8,
+    fontWeight: '900',
+    letterSpacing: 1.7,
+  },
+  inviteTitle: {
+    color: colors.brandPaper,
+    fontSize: 34,
+    lineHeight: 36,
+    fontWeight: '900',
+    marginTop: 18,
+  },
+  inviteCopy: {
+    color: colors.brandPaper,
+    opacity: 0.82,
+    fontSize: 13,
+    lineHeight: 19,
+    maxWidth: 290,
+    marginTop: 14,
+  },
+  inviteButton: {
+    alignSelf: 'flex-start',
+    color: colors.brandInk,
+    backgroundColor: colors.brandSand,
+    borderRadius: 23,
+    paddingHorizontal: 17,
+    paddingVertical: 12,
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 1.1,
+    marginTop: 22,
+  },
+  footer: {
+    backgroundColor: colors.brandInk,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(248,244,234,0.25)',
+    paddingHorizontal: 24,
+    paddingVertical: 28,
+    gap: 6,
+  },
+  footerBrand: {
+    color: colors.brandPaper,
+    fontSize: 25,
+    fontWeight: '900',
+  },
+  footerText: {
+    color: colors.brandSand,
+    fontSize: 7,
+    fontWeight: '900',
+    letterSpacing: 1.6,
+  },
+
   pinContainer: { alignItems: 'center', width: 54, height: 65 },
   pinActive: { transform: [{ scale: 1.16 }] },
   pinImageContainer: {
     width: 44,
     height: 44,
     borderRadius: 22,
-    borderWidth: 2.5,
+    borderWidth: 3,
     backgroundColor: colors.brandPaper,
     overflow: 'hidden',
     elevation: 5,
