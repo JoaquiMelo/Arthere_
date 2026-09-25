@@ -1,24 +1,26 @@
 export const colors = {
-  // Paleta oficial do Arthere.
-  background: '#F8F4EA',
-  surface: '#EFE9DD',
-  surfaceStrong: '#BED2DB',
-  primary: '#F00817',
+  // Base do design editorial do Arthere:
+  // papel + grafite + coral + terracota + areia + azul.
+  background: '#F6F1E8',
+  surface: '#EFE7DA',
+  surfaceStrong: '#90C8D8',
+  primary: '#EB6241',
   primaryDark: '#29242B',
-  secondary: '#FCC12E',
-  accent: '#2FB0C3',
-  orange: '#D75103',
-  danger: '#F00817',
+  secondary: '#F2CE99',
+  accent: '#90C8D8',
+  orange: '#D88160',
+  danger: '#C94F45',
   text: '#29242B',
   muted: '#6E6862',
-  border: '#D9D0C2',
-  white: '#FFFDF8',
+  border: '#D8CEC0',
+  white: '#FCFAF4',
 
+  // Tokens de identidade visual compartilhados com o projeto web.
   brandInk: '#29242B',
-  brandPaper: '#F8F4EA',
-  brandBlue: '#2FB0C3',
+  brandPaper: '#F6F1E8',
+  brandBlue: '#90C8D8',
   brandGreen: '#3E9B73',
-  brandSand: '#FCC12E',
-  brandTerracotta: '#D75103',
-  brandCoral: '#F00817',
+  brandSand: '#F2CE99',
+  brandTerracotta: '#D88160',
+  brandCoral: '#EB6241',
 } as const;
