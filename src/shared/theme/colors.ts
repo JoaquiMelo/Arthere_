@@ -21,11 +21,12 @@ export const colors = {
   brandTerracotta: '#D88160',
   brandCoral: '#EB6241',
 
-  // Paleta da nova experiência de autenticação, inspirada na referência enviada.
-  authSky: '#C5D9FA',
-  authBlue: '#0757C9',
-  authBlueDark: '#0648A8',
-  authWhite: '#FFFDF9',
-  authInk: '#123B78',
-  authLine: '#A9C4F0',
+  authBg: '#F3F6FB',
+  authPrimary: '#0A56D7',
+  authPrimaryDark: '#083F9F',
+  authWhite: '#FFFFFF',
+  authInk: '#102A43',
+  authMuted: '#64748B',
+  authBorder: '#DCE5F2',
+  authSoft: '#EEF4FF',
 } as const;
