@@ -25,6 +25,7 @@ const MESES = [
   'DEZEMBRO',
 ];
 
+const MESES_CURTOS = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
 const SEMANAS = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'];
 
 function dataDoEvento(data: string) {
@@ -95,7 +96,9 @@ export default function EventsScreen() {
 
   const eventosDoDia = useMemo(
     () =>
-      eventosDoMes.filter((evento) => dataDoEvento(evento.data).getDate() === diaSelecionado),
+      eventosDoMes.filter(
+        (evento) => dataDoEvento(evento.data).getDate() === diaSelecionado
+      ),
     [diaSelecionado, eventosDoMes]
   );
 
@@ -114,13 +117,16 @@ export default function EventsScreen() {
     ];
   }, [ano, mes]);
 
-  const datasComEvento = useMemo(
-    () =>
-      new Set(
-        eventosDoMes.map((evento) => dataDoEvento(evento.data).getDate())
-      ),
-    [eventosDoMes]
-  );
+  const eventosPorDia = useMemo(() => {
+    const mapa = new Map<number, number>();
+
+    eventosDoMes.forEach((evento) => {
+      const dia = dataDoEvento(evento.data).getDate();
+      mapa.set(dia, (mapa.get(dia) ?? 0) + 1);
+    });
+
+    return mapa;
+  }, [eventosDoMes]);
 
   const moverMes = (delta: number) => {
     const novaData = new Date(ano, mes + delta, 1);
@@ -155,7 +161,12 @@ export default function EventsScreen() {
 
         <View style={[styles.searchSection, { borderBottomColor: palette.border }]}>
           <Text style={[styles.searchHint, { color: palette.muted }]}>PESQUISAR NA AGENDA</Text>
-          <View style={[styles.searchBox, { backgroundColor: palette.brandPaper, borderColor: palette.brandInk }]}>
+          <View
+            style={[
+              styles.searchBox,
+              { backgroundColor: palette.brandPaper, borderColor: palette.brandInk },
+            ]}
+          >
             <Ionicons name="search-outline" size={20} color={palette.brandInk} />
             <TextInput
               value={busca}
@@ -175,9 +186,14 @@ export default function EventsScreen() {
 
         <View style={[styles.filtersHeader, { borderBottomColor: palette.border }]}>
           <Text style={[styles.searchHint, { color: palette.muted }]}>FILTRAR EVENTOS</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterContent}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.filterContent}
+          >
             {categorias.map((item) => {
               const ativo = filtro === item;
+
               return (
                 <TouchableOpacity
                   key={item}
@@ -211,45 +227,67 @@ export default function EventsScreen() {
           </ScrollView>
         </View>
 
-        <View style={[styles.calendarArea, { borderBottomColor: palette.border }]}>
-          <View style={styles.sectionLabelRow}>
-            <View>
-              <Text style={[styles.sectionLabel, { color: palette.muted }]}>CALENDÁRIO</Text>
-              <Text style={[styles.monthTitle, { color: palette.brandInk }]}>
-                {MESES[mes]} {ano}
+        <View style={[styles.calendarArea, { borderColor: palette.brandCoral }]}>
+          <View style={styles.calendarTop}>
+            <View style={styles.calendarHeadline}>
+              <Text style={[styles.calendarEyebrow, { color: palette.brandCoral }]}>CALENDÁRIO</Text>
+              <Text style={[styles.bigMonth, { color: palette.brandCoral }]}>
+                {MESES_CURTOS[mes]}
               </Text>
+              <Text style={[styles.yearText, { color: palette.brandInk }]}>{ano}</Text>
             </View>
 
             <View style={styles.monthControls}>
               <TouchableOpacity
                 onPress={() => moverMes(-1)}
-                style={[styles.controlButton, { borderColor: palette.border, backgroundColor: palette.brandPaper }]}
+                style={[styles.controlButton, { borderColor: palette.brandCoral }]}
               >
-                <Text style={[styles.controlText, { color: palette.brandInk }]}>‹</Text>
+                <Text style={[styles.controlText, { color: palette.brandCoral }]}>‹</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => moverMes(1)}
-                style={[styles.controlButton, { borderColor: palette.border, backgroundColor: palette.brandPaper }]}
+                style={[styles.controlButton, { borderColor: palette.brandCoral }]}
               >
-                <Text style={[styles.controlText, { color: palette.brandInk }]}>›</Text>
+                <Text style={[styles.controlText, { color: palette.brandCoral }]}>›</Text>
               </TouchableOpacity>
             </View>
           </View>
 
-          <View style={styles.weekHeader}>
+          <View style={[styles.weekHeader, { borderBottomColor: palette.brandCoral }]}>
             {SEMANAS.map((dia) => (
-              <Text key={dia} style={[styles.weekText, { color: palette.muted }]}>
+              <Text key={dia} style={[styles.weekText, { color: palette.brandCoral }]}>
                 {dia}
               </Text>
             ))}
           </View>
 
-          <View style={styles.calendarGrid}>
+          <View
+            style={[
+              styles.calendarGrid,
+              {
+                borderTopColor: palette.brandCoral,
+                borderLeftColor: palette.brandCoral,
+              },
+            ]}
+          >
             {diasDoMes.map((dia, index) => {
-              if (!dia) return <View key={'empty-' + index} style={styles.dayCell} />;
+              if (!dia) {
+                return (
+                  <View
+                    key={'empty-' + index}
+                    style={[
+                      styles.dayCell,
+                      {
+                        borderRightColor: palette.brandCoral,
+                        borderBottomColor: palette.brandCoral,
+                      },
+                    ]}
+                  />
+                );
+              }
 
               const selecionado = dia === diaSelecionado;
-              const temEvento = datasComEvento.has(dia);
+              const quantidade = eventosPorDia.get(dia) ?? 0;
 
               return (
                 <TouchableOpacity
@@ -257,48 +295,58 @@ export default function EventsScreen() {
                   onPress={() => setDiaSelecionado(dia)}
                   style={[
                     styles.dayCell,
-                    selecionado && {
-                      backgroundColor: palette.brandCoral,
-                      borderColor: palette.brandCoral,
+                    {
+                      borderRightColor: palette.brandCoral,
+                      borderBottomColor: palette.brandCoral,
                     },
-                    temEvento &&
-                      !selecionado && {
-                        backgroundColor: palette.brandBlue,
-                        borderColor: palette.brandBlue,
-                      },
+                    selecionado && { backgroundColor: palette.brandCoral },
                   ]}
                 >
                   <Text
                     style={[
                       styles.dayText,
-                      {
-                        color: selecionado ? palette.brandPaper : palette.brandInk,
-                      },
+                      { color: selecionado ? palette.brandPaper : palette.brandCoral },
                     ]}
                   >
-                    {dia}
+                    {String(dia).padStart(2, '0')}
                   </Text>
-                  {temEvento && (
-                    <View
-                      style={[
-                        styles.dayDot,
-                        {
-                          backgroundColor: selecionado
-                            ? palette.brandPaper
-                            : palette.brandCoral,
-                        },
-                      ]}
-                    />
+
+                  {quantidade > 0 && (
+                    <View style={styles.eventMarks}>
+                      {Array.from({ length: Math.min(quantidade, 3) }).map((_, markIndex) => (
+                        <View
+                          key={markIndex}
+                          style={[
+                            styles.eventDot,
+                            {
+                              backgroundColor: selecionado
+                                ? palette.brandPaper
+                                : palette.brandCoral,
+                            },
+                          ]}
+                        />
+                      ))}
+                    </View>
                   )}
                 </TouchableOpacity>
               );
             })}
           </View>
 
-          <View style={styles.calendarLegend}>
-            <View style={[styles.legendDot, { backgroundColor: palette.brandCoral }]} />
-            <Text style={[styles.legendText, { color: palette.muted }]}>
-              dias com eventos
+          <View style={styles.calendarFooter}>
+            <View style={styles.legendItems}>
+              <View style={styles.legendItem}>
+                <View style={[styles.legendDot, { backgroundColor: palette.brandCoral }]} />
+                <Text style={[styles.legendText, { color: palette.muted }]}>evento</Text>
+              </View>
+              <View style={styles.legendItem}>
+                <View style={[styles.legendDot, { backgroundColor: palette.brandInk }]} />
+                <Text style={[styles.legendText, { color: palette.muted }]}>fixado</Text>
+              </View>
+            </View>
+
+            <Text style={[styles.selectedDate, { color: palette.brandCoral }]}>
+              {String(diaSelecionado).padStart(2, '0')} · {MESES_CURTOS[mes]}
             </Text>
           </View>
         </View>
@@ -367,14 +415,26 @@ export default function EventsScreen() {
             </View>
           )}
 
-          <Text style={[styles.allEventsLabel, { color: palette.muted }]}>TODOS OS EVENTOS DA BUSCA</Text>
+          <Text style={[styles.allEventsLabel, { color: palette.muted }]}>
+            TODOS OS EVENTOS DA BUSCA
+          </Text>
+
           {eventosFiltrados.map((evento) => (
             <TouchableOpacity
               key={'all-' + evento.id}
               onPress={() => abrirEvento(evento.id)}
               style={[styles.eventListItem, { borderTopColor: palette.border }]}
             >
-              <View style={[styles.smallDate, { backgroundColor: evento.premium ? palette.brandSand : palette.brandBlue }]}>
+              <View
+                style={[
+                  styles.smallDate,
+                  {
+                    backgroundColor: evento.premium
+                      ? palette.brandSand
+                      : palette.brandBlue,
+                  },
+                ]}
+              >
                 <Text style={[styles.smallDateDay, { color: palette.brandInk }]}>
                   {String(dataDoEvento(evento.data).getDate()).padStart(2, '0')}
                 </Text>
@@ -385,7 +445,9 @@ export default function EventsScreen() {
 
               <View style={styles.eventListBody}>
                 <View style={styles.agendaTitleRow}>
-                  <Text style={[styles.eventListTitle, { color: palette.brandInk }]}>{evento.titulo}</Text>
+                  <Text style={[styles.eventListTitle, { color: palette.brandInk }]}>
+                    {evento.titulo}
+                  </Text>
                   {evento.destaque && (
                     <View style={[styles.fixedTag, { backgroundColor: palette.brandInk }]}>
                       <Ionicons name="pin" size={11} color={palette.brandPaper} />
@@ -408,7 +470,9 @@ export default function EventsScreen() {
           {!eventosFiltrados.length && (
             <View style={[styles.empty, { backgroundColor: palette.brandPaper, borderColor: palette.border }]}>
               <Ionicons name="search-outline" size={34} color={palette.brandCoral} />
-              <Text style={[styles.emptyTitle, { color: palette.brandInk }]}>Nenhum evento encontrado</Text>
+              <Text style={[styles.emptyTitle, { color: palette.brandInk }]}>
+                Nenhum evento encontrado
+              </Text>
               <Text style={[styles.emptyText, { color: palette.muted }]}>
                 Tente outro termo ou remova alguns filtros.
               </Text>
@@ -421,12 +485,18 @@ export default function EventsScreen() {
             <View style={styles.sectionLabelRow}>
               <View>
                 <Text style={[styles.sectionLabel, { color: palette.muted }]}>EM EVIDÊNCIA</Text>
-                <Text style={[styles.highlightsTitle, { color: palette.brandInk }]}>Destaques fixados</Text>
+                <Text style={[styles.highlightsTitle, { color: palette.brandInk }]}>
+                  Destaques fixados
+                </Text>
               </View>
               <Ionicons name="pin" size={18} color={palette.brandCoral} />
             </View>
 
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.highlightContent}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.highlightContent}
+            >
               {eventosDestaque.map((evento) => (
                 <TouchableOpacity
                   key={'highlight-' + evento.id}
@@ -450,18 +520,26 @@ export default function EventsScreen() {
                   </View>
 
                   <View style={[styles.featuredDivider, { backgroundColor: palette.brandCoral }]} />
-                  <Text style={[styles.featuredTitle, { color: palette.brandPaper }]}>{evento.titulo}</Text>
+                  <Text style={[styles.featuredTitle, { color: palette.brandPaper }]}>
+                    {evento.titulo}
+                  </Text>
                   <Text style={[styles.featuredDescription, { color: palette.muted }]}>
                     {evento.descricao}
                   </Text>
 
                   <View style={styles.featuredInfoRow}>
-                    <Text style={[styles.featuredInfo, { color: palette.brandPaper }]}>{evento.horario}</Text>
-                    <Text style={[styles.featuredInfo, { color: palette.brandPaper }]}>{evento.local}</Text>
+                    <Text style={[styles.featuredInfo, { color: palette.brandPaper }]}>
+                      {evento.horario}
+                    </Text>
+                    <Text style={[styles.featuredInfo, { color: palette.brandPaper }]}>
+                      {evento.local}
+                    </Text>
                   </View>
 
                   <View style={styles.featuredFooter}>
-                    <Text style={[styles.featuredLocation, { color: palette.muted }]}>{evento.cidade}</Text>
+                    <Text style={[styles.featuredLocation, { color: palette.muted }]}>
+                      {evento.cidade}
+                    </Text>
                     <View style={[styles.detailButton, { backgroundColor: palette.brandCoral }]}>
                       <Text style={[styles.detailButtonText, { color: palette.brandPaper }]}>
                         VER DETALHES →
@@ -509,12 +587,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1.5,
   },
-  searchInput: {
-    flex: 1,
-    marginLeft: 10,
-    fontSize: 14,
-    paddingVertical: 11,
-  },
+  searchInput: { flex: 1, marginLeft: 10, fontSize: 14, paddingVertical: 11 },
   clearSearch: { padding: 5 },
 
   filtersHeader: { paddingTop: 14, paddingBottom: 14, borderBottomWidth: 1 },
@@ -530,37 +603,91 @@ const styles = StyleSheet.create({
   },
   filterChipText: { fontSize: 9, fontWeight: '900', letterSpacing: 0.75 },
 
-  calendarArea: { paddingTop: 20, paddingBottom: 22, borderBottomWidth: 1 },
-  sectionLabelRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  sectionLabel: { fontSize: 8, fontWeight: '900', letterSpacing: 1.3 },
-  monthTitle: { fontSize: 22, fontWeight: '500', marginTop: 5 },
-  monthControls: { flexDirection: 'row', gap: 7 },
+  calendarArea: {
+    marginTop: 20,
+    padding: 11,
+    borderWidth: 1.5,
+  },
+  calendarTop: {
+    minHeight: 112,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    paddingHorizontal: 5,
+    paddingTop: 3,
+  },
+  calendarHeadline: { flex: 1 },
+  calendarEyebrow: { fontSize: 8, fontWeight: '900', letterSpacing: 1.6 },
+  bigMonth: {
+    fontSize: 76,
+    lineHeight: 74,
+    fontWeight: '900',
+    letterSpacing: -4,
+    marginTop: 1,
+  },
+  yearText: {
+    fontSize: 12,
+    fontWeight: '900',
+    letterSpacing: 1.6,
+    marginTop: -1,
+  },
+  monthControls: { flexDirection: 'row', gap: 6, paddingTop: 5 },
   controlButton: {
-    width: 40,
-    height: 40,
+    width: 38,
+    height: 38,
     borderWidth: 1.5,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  controlText: { fontSize: 23, lineHeight: 26, fontWeight: '400' },
+  controlText: { fontSize: 25, lineHeight: 28, fontWeight: '400' },
 
-  weekHeader: { flexDirection: 'row', marginTop: 18, marginBottom: 8 },
-  weekText: { flex: 1, textAlign: 'center', fontSize: 8, fontWeight: '900' },
-  calendarGrid: { flexDirection: 'row', flexWrap: 'wrap' },
+  weekHeader: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    paddingBottom: 7,
+    marginTop: 2,
+  },
+  weekText: { flex: 1, textAlign: 'center', fontSize: 8.5, fontWeight: '900', letterSpacing: 0.4 },
+
+  calendarGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+  },
   dayCell: {
     width: '14.285%',
-    height: 42,
+    height: 49,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
-    borderWidth: 1,
-    borderColor: 'transparent',
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    borderRightColor: 'transparent',
+    borderBottomColor: 'transparent',
   },
-  dayText: { fontSize: 11, fontWeight: '700' },
-  dayDot: { width: 5, height: 5, borderRadius: 3, marginTop: 3 },
-  calendarLegend: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 11 },
-  legendDot: { width: 6, height: 6, borderRadius: 3 },
-  legendText: { fontSize: 8, fontWeight: '600' },
+  dayText: { fontSize: 11, fontWeight: '900', letterSpacing: 0.2 },
+  eventMarks: {
+    position: 'absolute',
+    bottom: 6,
+    flexDirection: 'row',
+    gap: 3,
+  },
+  eventDot: { width: 4, height: 4, borderRadius: 2 },
+
+  calendarFooter: {
+    minHeight: 32,
+    paddingHorizontal: 4,
+    paddingTop: 9,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  legendItems: { flexDirection: 'row', gap: 12 },
+  legendItem: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  legendDot: { width: 5, height: 5, borderRadius: 3 },
+  legendText: { fontSize: 8, fontWeight: '700' },
+  selectedDate: { fontSize: 9, fontWeight: '900', letterSpacing: 1 },
 
   agendaSection: { paddingTop: 22 },
   agendaTitle: { fontSize: 22, fontWeight: '600', marginTop: 5 },
@@ -624,21 +751,12 @@ const styles = StyleSheet.create({
   highlightsSection: { marginTop: 28 },
   highlightsTitle: { fontSize: 22, fontWeight: '600', marginTop: 5 },
   highlightContent: { paddingTop: 13, paddingRight: 16, gap: 12 },
-  featured: {
-    width: 300,
-    paddingVertical: 20,
-    paddingHorizontal: 17,
-  },
+  featured: { width: 300, paddingVertical: 20, paddingHorizontal: 17 },
   featuredTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   featuredKicker: { fontSize: 8, fontWeight: '900', letterSpacing: 1.2 },
   featuredDay: { fontSize: 48, lineHeight: 50, fontWeight: '700', marginTop: 2 },
   featuredDateText: { fontSize: 9, fontWeight: '700', letterSpacing: 0.4 },
-  pinBadge: {
-    width: 30,
-    height: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  pinBadge: { width: 30, height: 30, alignItems: 'center', justifyContent: 'center' },
   featuredDivider: { height: 2, width: 54, marginTop: 14, marginBottom: 13 },
   featuredTitle: { fontSize: 21, lineHeight: 26, fontWeight: '700' },
   featuredDescription: { fontSize: 10, lineHeight: 15, marginTop: 8 },
