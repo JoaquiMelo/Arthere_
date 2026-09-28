@@ -55,18 +55,13 @@ const MOCK_EVENTOS_ANTERIORES: EventoAnterior[] = [
 export default function ContratanteProfileScreen() {
   const navigation = useNavigation<any>();
   const { user } = useUser();
-  const { vagas } = useManagement();
+  const { vagas, eventos } = useManagement();
 
   const [empresa, setEmpresa] = useState(
     user?.empresa || "Empresa não informada",
   );
   const [editando, setEditando] = useState(false);
   const [rascunhoEmpresa, setRascunhoEmpresa] = useState(empresa);
-  const [eventos, setEventos] = useState<EventoAnterior[]>(MOCK_EVENTOS_ANTERIORES);
-  const [adicionandoEvento, setAdicionandoEvento] = useState(false);
-  const [novoEventoTitulo, setNovoEventoTitulo] = useState("");
-  const [novoEventoData, setNovoEventoData] = useState("");
-  const [novoEventoImagem, setNovoEventoImagem] = useState("");
 
   const concluidas = vagas.filter((vaga) => vaga.status === "CONCLUIDA").length;
   const emAndamento = vagas.filter(
@@ -85,34 +80,6 @@ export default function ContratanteProfileScreen() {
   const salvarEmpresa = () => {
     setEmpresa(rascunhoEmpresa.trim() || empresa);
     setEditando(false);
-  };
-
-  const abrirAdicionarEvento = () => {
-    setNovoEventoTitulo("");
-    setNovoEventoData("");
-    setNovoEventoImagem("");
-    setAdicionandoEvento(true);
-  };
-
-  const salvarEvento = () => {
-    const titulo = novoEventoTitulo.trim();
-    const data = novoEventoData.trim();
-    const imagemUrl = novoEventoImagem.trim();
-
-    if (!titulo || !data) return;
-
-    setEventos((eventosAtuais) => [
-      ...eventosAtuais,
-      {
-        id: `evento-${Date.now()}`,
-        titulo,
-        data,
-        imagemUrl:
-          imagemUrl ||
-          "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=600&q=80",
-      },
-    ]);
-    setAdicionandoEvento(false);
   };
 
   const avatarSource =
@@ -250,14 +217,14 @@ export default function ContratanteProfileScreen() {
             {eventos.map((evento) => (
               <View key={evento.id} style={styles.eventCard}>
                 <Image
-                  source={{ uri: evento.imagemUrl }}
+                  source={{ uri: evento.imagemUrl || "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=600&q=80" }}
                   style={styles.eventImage}
                 />
                 <View style={styles.eventOverlay}>
                   <Text style={styles.eventTitle} numberOfLines={2}>
                     {evento.titulo}
                   </Text>
-                  <Text style={styles.eventDateText}>{evento.data}</Text>
+                  <Text style={styles.eventDateText}>{new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(evento.data + "T12:00:00")).replace(".", "")}</Text>
                 </View>
               </View>
             ))}
@@ -265,7 +232,7 @@ export default function ContratanteProfileScreen() {
             <TouchableOpacity
               style={styles.addEventCard}
               activeOpacity={0.75}
-              onPress={abrirAdicionarEvento}
+              onPress={() => navigation.navigate("CreateEvent")}
             >
               <View style={styles.addEventIcon}>
                 <Ionicons name="add" size={24} color={colors.brandInk} />
@@ -330,70 +297,6 @@ export default function ContratanteProfileScreen() {
           )}
         </View>
       </ScrollView>
-
-      <Modal
-        visible={adicionandoEvento}
-        animationType="fade"
-        transparent
-        onRequestClose={() => setAdicionandoEvento(false)}
-      >
-        <KeyboardAvoidingView
-          style={styles.overlay}
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
-        >
-          <View style={styles.editCard}>
-            <Text style={styles.editKicker}>PORTFÓLIO DE EVENTOS</Text>
-            <Text style={styles.editTitle}>Adicionar evento</Text>
-
-            <Text style={styles.fieldLabel}>NOME DO EVENTO</Text>
-            <TextInput
-              style={styles.editInput}
-              value={novoEventoTitulo}
-              onChangeText={setNovoEventoTitulo}
-              placeholder="Ex.: Festival de Música da Baixada"
-              placeholderTextColor={colors.muted}
-            />
-
-            <Text style={styles.fieldLabel}>DATA</Text>
-            <TextInput
-              style={styles.editInput}
-              value={novoEventoData}
-              onChangeText={setNovoEventoData}
-              placeholder="Ex.: Dez 2026"
-              placeholderTextColor={colors.muted}
-            />
-
-            <Text style={styles.fieldLabel}>URL DA IMAGEM (OPCIONAL)</Text>
-            <TextInput
-              style={styles.editInput}
-              value={novoEventoImagem}
-              onChangeText={setNovoEventoImagem}
-              placeholder="https://..."
-              placeholderTextColor={colors.muted}
-              autoCapitalize="none"
-              keyboardType="url"
-            />
-
-            <View style={styles.editActions}>
-              <TouchableOpacity onPress={() => setAdicionandoEvento(false)}>
-                <Text style={styles.cancel}>CANCELAR</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.save, (!novoEventoTitulo.trim() || !novoEventoData.trim()) && styles.saveDisabled]}
-                onPress={salvarEvento}
-                disabled={!novoEventoTitulo.trim() || !novoEventoData.trim()}
-              >
-                <Text style={styles.saveText}>ADICIONAR</Text>
-                <Ionicons
-                  name="add"
-                  size={14}
-                  color={colors.brandPaper}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </KeyboardAvoidingView>
-      </Modal>
 
       <Modal
         visible={editando}
