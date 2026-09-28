@@ -43,10 +43,10 @@ export function ReviewFormModal({ visible, agenteNome, onClose, onSubmit }: Prop
 
 const styles = StyleSheet.create({
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,.35)', justifyContent: 'flex-end' },
-  sheet: { borderRadius: 18,
+  sheet: { backgroundColor: colors.white, padding: 22, paddingBottom: 30, borderTopLeftRadius: 24, borderTopRightRadius: 24 },
   title: { fontSize: 18, fontWeight: '800', color: colors.text, marginBottom: 14 },
   label: { color: colors.text, fontSize: 13, fontWeight: '700', marginTop: 12, marginBottom: 8 },
-  input: { minHeight: 90, borderWidth: 1, borderColor: colors.border, borderRadius: 18, padding: 13, color: colors.text },
+  input: { minHeight: 90, borderWidth: 1, borderColor: colors.border, borderRadius: 12, padding: 13, color: colors.text },
   actions: { flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', gap: 20, marginTop: 22 },
   cancel: { color: colors.muted, fontWeight: '700' },
   submit: { backgroundColor: colors.primaryDark, paddingHorizontal: 18, paddingVertical: 12, borderRadius: 12 },
