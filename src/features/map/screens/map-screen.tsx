@@ -160,7 +160,7 @@ export function MapScreen() {
           <View style={[styles.headerInner, { paddingTop: insets.top + 8 }]}>
             <View style={styles.brandLine}>
               <Text style={styles.brand}>Arthere</Text>
-              <Text style={styles.region}>BAIXADA SANTISTA</Text>
+              <Text style={styles.region}>Conectando a Baixada Criativa.</Text>
             </View>
             <Text style={styles.headerLink}>MAPA</Text>
           </View>
@@ -367,17 +367,18 @@ const styles = StyleSheet.create({
   },
   brandLine: { flexDirection: 'row', alignItems: 'baseline', gap: 8 },
   brand: {
-    fontFamily: 'sans-serif',
-    fontWeight: '800',
-    fontSize: 24,
+    fontWeight: '900',
+    fontSize: 30,
     color: colors.brandInk,
-    letterSpacing: -0.7,
+    letterSpacing: -1.5,
   },
   region: {
-    fontSize: 8,
-    fontWeight: '700',
+    marginTop: 1,
+    fontSize: 11,
+    lineHeight: 14,
+    fontWeight: '600',
     color: colors.muted,
-    letterSpacing: 1.5,
+    letterSpacing: 0,
   },
   headerActions: {
     paddingHorizontal: 20,
