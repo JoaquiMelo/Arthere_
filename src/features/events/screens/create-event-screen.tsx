@@ -56,7 +56,7 @@ export default function CreateEventScreen() {
   const [data, setData] = useState("");
   const [horario, setHorario] = useState("");
   const [local, setLocal] = useState("");
-  const [cidade, setCidade] = useState(user?.cidade || "");
+  const [cidade, setCidade] = useState("");
   const [organizador, setOrganizador] = useState(
     user?.empresa || user?.nomeSocial || user?.nome || "",
   );
