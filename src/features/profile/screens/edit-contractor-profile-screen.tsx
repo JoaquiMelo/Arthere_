@@ -282,25 +282,25 @@ function Field({
 }
 
 const styles = StyleSheet.create({
-  container: { borderRadius: 18,
+  container: { flex: 1, backgroundColor: colors.background },
   flex: { flex: 1 },
-  header: { borderRadius: 18,
+  header: {
     height: 58,
     paddingHorizontal: 16,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
-  backButton: { borderRadius: 999,
+  backButton: {
     width: 38,
     height: 38,
     alignItems: "center",
     justifyContent: "center",
   },
-  headerTitle: { borderRadius: 18,
-  headerSpacer: { borderRadius: 18,
-  content: { borderRadius: 18,
-  photoSection: { borderRadius: 18,
+  headerTitle: { fontSize: 17, fontWeight: "900", color: colors.text },
+  headerSpacer: { width: 38 },
+  content: { paddingHorizontal: 20, paddingBottom: 45 },
+  photoSection: { alignItems: "center", paddingVertical: 16 },
   avatarWrapper: { position: "relative" },
   avatar: {
     width: 104,
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
   form: { gap: 15 },
   field: { gap: 6 },
   label: { fontSize: 13, fontWeight: "800", color: colors.text },
-  singleInputWrapper: { borderRadius: 18,
+  singleInputWrapper: {
     minHeight: 49,
     borderWidth: 1,
     borderColor: colors.border,
@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 13,
     justifyContent: "center",
   },
-  inputWithIcon: { borderRadius: 18,
+  inputWithIcon: {
     minHeight: 49,
     borderWidth: 1,
     borderColor: colors.border,
@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
     gap: 10,
     backgroundColor: colors.white,
   },
-  input: { borderRadius: 18,
+  input: { flex: 1, color: colors.text, fontSize: 14, paddingVertical: 10 },
   multiline: {
     minHeight: 110,
     borderWidth: 1,
@@ -375,7 +375,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
     marginTop: 2,
   },
-  button: { borderRadius: 999,
+  button: {
     height: 50,
     borderRadius: 11,
     backgroundColor: colors.primaryDark,
@@ -385,6 +385,6 @@ const styles = StyleSheet.create({
     gap: 8,
     marginTop: 26,
   },
-  buttonDisabled: { borderRadius: 999,
-  buttonText: { borderRadius: 999,
+  buttonDisabled: { opacity: 0.7 },
+  buttonText: { color: colors.white, fontWeight: "900", fontSize: 15 },
 });
