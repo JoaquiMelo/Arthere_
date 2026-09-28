@@ -142,11 +142,13 @@ export default function EventsScreen() {
   }, [ano, mes]);
 
   const eventosPorDia = useMemo(() => {
-    const mapa = new Map<number, number>();
+    const mapa = new Map<number, typeof MOCK_EVENTOS>();
 
     eventosDoMes.forEach((evento) => {
       const dia = dataDoEvento(evento.data).getDate();
-      mapa.set(dia, (mapa.get(dia) ?? 0) + 1);
+      const eventos = mapa.get(dia) ?? [];
+      eventos.push(evento);
+      mapa.set(dia, eventos);
     });
 
     return mapa;
@@ -381,7 +383,9 @@ export default function EventsScreen() {
               }
 
               const selecionado = dia === diaSelecionado;
-              const quantidade = eventosPorDia.get(dia) ?? 0;
+              const eventosDoDiaNoCalendario = eventosPorDia.get(dia) ?? [];
+              const temEvento = eventosDoDiaNoCalendario.length > 0;
+              const eventoPrincipal = eventosDoDiaNoCalendario[0];
 
               return (
                 <TouchableOpacity
@@ -392,41 +396,48 @@ export default function EventsScreen() {
                     {
                       borderRightColor: palette.brandCoral,
                       borderBottomColor: palette.brandCoral,
+                      backgroundColor: temEvento
+                        ? palette.brandCoral
+                        : "transparent",
                     },
-                    selecionado && { backgroundColor: palette.brandCoral },
+                    selecionado &&
+                      !temEvento && { backgroundColor: palette.brandSand },
+                    selecionado &&
+                      temEvento && {
+                        borderWidth: 2,
+                        borderColor: palette.brandInk,
+                      },
                   ]}
                 >
                   <Text
                     style={[
                       styles.dayText,
                       {
-                        color: selecionado
+                        color: temEvento
                           ? palette.brandPaper
-                          : palette.brandCoral,
+                          : selecionado
+                            ? palette.brandInk
+                            : palette.brandCoral,
                       },
                     ]}
                   >
                     {String(dia).padStart(2, "0")}
                   </Text>
 
-                  {quantidade > 0 && (
-                    <View style={styles.eventMarks}>
-                      {Array.from({ length: Math.min(quantidade, 3) }).map(
-                        (_, markIndex) => (
-                          <View
-                            key={markIndex}
-                            style={[
-                              styles.eventDot,
-                              {
-                                backgroundColor: selecionado
-                                  ? palette.brandPaper
-                                  : palette.brandCoral,
-                              },
-                            ]}
-                          />
-                        ),
-                      )}
-                    </View>
+                  {temEvento && (
+                    <Text
+                      numberOfLines={2}
+                      ellipsizeMode="tail"
+                      style={[
+                        styles.eventName,
+                        { color: palette.brandPaper },
+                      ]}
+                    >
+                      {eventoPrincipal.titulo}
+                      {eventosDoDiaNoCalendario.length > 1
+                        ? " +" + (eventosDoDiaNoCalendario.length - 1)
+                        : ""}
+                    </Text>
                   )}
                 </TouchableOpacity>
               );
