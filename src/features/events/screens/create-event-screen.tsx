@@ -416,7 +416,7 @@ export default function CreateEventScreen() {
                       </TouchableOpacity>
                     </View>
                   </View>
-                </Modal>{" "}
+                </Modal>
               </View>
               <View style={styles.column}>
                 <Text style={[styles.label, { color: palette.muted }]}>
@@ -499,7 +499,7 @@ export default function CreateEventScreen() {
                       </TouchableOpacity>
                     </View>
                   </View>
-                </Modal>{" "}
+                </Modal>
               </View>
             </View>
 
