@@ -84,11 +84,11 @@ function ConversationRow({
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: { borderRadius: 18,
     flex: 1,
     backgroundColor: colors.brandPaper,
   },
-  header: {
+  header: { borderRadius: 18,
     paddingHorizontal: 20,
     paddingTop: 18,
     paddingBottom: 14,
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.brandPaper,
   },
-  rowContent: {
+  rowContent: { borderRadius: 18,
     flex: 1,
     minWidth: 0,
   },
@@ -174,20 +174,20 @@ const styles = StyleSheet.create({
     fontSize: 9,
     fontWeight: '700',
   },
-  preview: {
+  preview: { borderRadius: 18,
     color: colors.muted,
     fontSize: 12,
     marginTop: 5,
   },
-  empty: {
+  empty: { borderRadius: 18,
     flexGrow: 1,
     justifyContent: 'center',
     paddingHorizontal: 36,
   },
-  emptyContent: {
+  emptyContent: { borderRadius: 18,
     alignItems: 'center',
   },
-  emptyGraphic: {
+  emptyGraphic: { borderRadius: 18,
     width: 72,
     height: 72,
     backgroundColor: colors.brandInk,
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     overflow: 'hidden',
   },
-  emptyGraphicCoral: {
+  emptyGraphicCoral: { borderRadius: 18,
     position: 'absolute',
     width: 42,
     height: 42,
@@ -206,13 +206,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.brandCoral,
     transform: [{ rotate: '20deg' }],
   },
-  emptyTitle: {
+  emptyTitle: { borderRadius: 18,
     color: colors.brandInk,
     fontSize: 17,
     fontWeight: '900',
     marginTop: 16,
   },
-  emptyText: {
+  emptyText: { borderRadius: 18,
     color: colors.muted,
     textAlign: 'center',
     lineHeight: 20,
