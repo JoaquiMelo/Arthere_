@@ -397,7 +397,9 @@ export default function EventsScreen() {
                       borderRightColor: palette.brandCoral,
                       borderBottomColor: palette.brandCoral,
                       backgroundColor: temEvento
-                        ? palette.brandCoral
+                        ? (eventoPrincipal?.destaque
+                          ? palette.brandGreen
+                          : palette.brandCoral)
                         : "transparent",
                     },
                     selecionado &&
@@ -704,7 +706,7 @@ export default function EventsScreen() {
                   onPress={() => abrirEvento(evento.id)}
                   style={[
                     styles.featured,
-                    { backgroundColor: palette.brandGreen },
+                    { backgroundColor: palette.brandInk },
                   ]}
                 >
                   <View style={styles.featuredTop}>
