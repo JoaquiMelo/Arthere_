@@ -190,7 +190,7 @@ export function MapScreen() {
           <Text style={styles.kicker}>ARTE, ENCONTRO E TERRITÓRIO</Text>
 
           <View style={styles.heroBrandBlock}>
-            <Text style={styles.heroBrand}>Arthere</Text>
+            <Text style={styles.heroBrand}>ARTHERE</Text>
             <Text style={styles.heroRegion}>Conectando a Baixada Criativa.</Text>
           </View>
 
@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
   heroBrand: {
     fontFamily: Platform.select({ ios: 'Georgia', android: 'serif', default: 'serif' }),
     fontSize: 44,
-    color: colors.brandInk,
+    color: colors.brandCoral,
     letterSpacing: -2,
     lineHeight: 48,
   },
