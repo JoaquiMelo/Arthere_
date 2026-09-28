@@ -189,11 +189,10 @@ export function MapScreen() {
         <View style={styles.hero}>
           <Text style={styles.kicker}>ARTE, ENCONTRO E TERRITÓRIO</Text>
 
-          <Text style={styles.heroTitle}>
-            O mapa vivo dos{' '}
-            <Text style={styles.heroAccent}>talentos criativos</Text>
-            {'\n'}da Baixada Santista.
-          </Text>
+          <View style={styles.heroBrandBlock}>
+            <Text style={styles.heroBrand}>Arthere</Text>
+            <Text style={styles.heroRegion}>Conectando a Baixada Criativa.</Text>
+          </View>
 
           <Text style={styles.heroDescription}>
             Fotógrafos, DJs, videomakers, designers e artesãos abertos a novos projetos. Descubra quem está perto, veja o trabalho e comece a conversa.
@@ -440,17 +439,21 @@ const styles = StyleSheet.create({
     letterSpacing: 2.1,
     marginBottom: 17,
   },
-  heroTitle: {
-    fontFamily: 'sans-serif',
-    fontWeight: '800',
-    color: colors.brandInk,
-    fontSize: 39,
-    lineHeight: 39,
-    letterSpacing: -1,
+  heroBrandBlock: {
+    gap: 4,
   },
-  heroAccent: {
-    color: colors.brandCoral,
-    fontStyle: 'normal',
+  heroBrand: {
+    fontFamily: Platform.select({ ios: 'Georgia', android: 'serif', default: 'serif' }),
+    fontSize: 44,
+    color: colors.brandInk,
+    letterSpacing: -2,
+    lineHeight: 48,
+  },
+  heroRegion: {
+    color: colors.muted,
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '600',
   },
   heroDescription: {
     marginTop: 22,
