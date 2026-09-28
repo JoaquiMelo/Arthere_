@@ -336,9 +336,9 @@ export default function ContratanteProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { borderRadius: 18,
-  scrollContent: { borderRadius: 18,
-  coverContainer: { borderRadius: 18,
+  container: { flex: 1, backgroundColor: colors.brandPaper },
+  scrollContent: { paddingBottom: 42 },
+  coverContainer: {
     height: 178,
     overflow: "hidden",
     backgroundColor: colors.brandInk,
@@ -420,7 +420,7 @@ const styles = StyleSheet.create({
     marginTop: 7,
   },
   location: { color: colors.muted, fontSize: 12 },
-  statsCard: { borderRadius: 18,
+  statsCard: {
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
@@ -440,13 +440,13 @@ const styles = StyleSheet.create({
     letterSpacing: 0.8,
   },
   statDivider: { width: 1, height: 24, backgroundColor: colors.border },
-  actionButtonsRow: { borderRadius: 999,
+  actionButtonsRow: {
     width: "100%",
     flexDirection: "row",
     gap: 9,
     marginTop: 16,
   },
-  manageButton: { borderRadius: 999,
+  manageButton: {
     flex: 1,
     minHeight: 44,
     backgroundColor: colors.brandInk,
@@ -455,13 +455,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 6,
   },
-  manageButtonText: { borderRadius: 999,
+  manageButtonText: {
     color: colors.brandPaper,
     fontSize: 8.5,
     fontWeight: "900",
     letterSpacing: 0.8,
   },
-  editProfileButton: { borderRadius: 999,
+  editProfileButton: {
     flex: 1,
     minHeight: 44,
     borderWidth: 1,
@@ -472,31 +472,31 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 6,
   },
-  editProfileButtonText: { borderRadius: 999,
+  editProfileButtonText: {
     color: colors.brandInk,
     fontSize: 8.5,
     fontWeight: "900",
     letterSpacing: 0.8,
   },
-  section: { borderRadius: 18,
-  sectionHeader: { borderRadius: 18,
+  section: { marginTop: 24, paddingHorizontal: 20 },
+  sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
     gap: 10,
     marginBottom: 11,
   },
-  sectionKicker: { borderRadius: 18,
+  sectionKicker: {
     color: colors.brandCoral,
     fontSize: 8,
     fontWeight: "900",
     letterSpacing: 1.3,
     marginBottom: 2,
   },
-  sectionTitle: { borderRadius: 18,
-  sectionSubtitle: { borderRadius: 18,
-  galleryContainer: { borderRadius: 18,
-  eventCard: { borderRadius: 18,
+  sectionTitle: { color: colors.brandInk, fontSize: 18, fontWeight: "900" },
+  sectionSubtitle: { color: colors.muted, fontSize: 9, fontWeight: "700" },
+  galleryContainer: { gap: 10, paddingRight: 20 },
+  eventCard: {
     width: 158,
     height: 184,
     overflow: "hidden",
@@ -524,7 +524,7 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     marginTop: 5,
   },
-  addEventCard: { borderRadius: 18,
+  addEventCard: {
     width: 118,
     height: 184,
     borderWidth: 1,
@@ -550,7 +550,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.9,
     marginTop: 9,
   },
-  emptyStateContainer: { borderRadius: 18,
+  emptyStateContainer: {
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: colors.white,
@@ -558,13 +558,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  emptyTitle: { borderRadius: 18,
+  emptyTitle: {
     color: colors.brandInk,
     fontSize: 15,
     fontWeight: "900",
     marginTop: 10,
   },
-  emptyText: { borderRadius: 18,
+  emptyText: {
     color: colors.muted,
     fontSize: 11.5,
     lineHeight: 18,
@@ -572,7 +572,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     maxWidth: 290,
   },
-  vagaCard: { borderRadius: 18,
+  vagaCard: {
     minHeight: 78,
     flexDirection: "row",
     alignItems: "center",
@@ -615,7 +615,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 22,
   },
-  editCard: { borderRadius: 18,
+  editCard: {
     backgroundColor: colors.brandPaper,
     borderTopWidth: 2,
     borderTopColor: colors.brandCoral,
@@ -634,7 +634,7 @@ const styles = StyleSheet.create({
     marginTop: 3,
     marginBottom: 13,
   },
-  editInput: { borderRadius: 18,
+  editInput: {
     minHeight: 48,
     borderWidth: 1,
     borderColor: colors.border,
