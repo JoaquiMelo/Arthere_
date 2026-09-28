@@ -351,7 +351,7 @@ function FilterChip({
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.brandPaper },
   scroll: { flex: 1 },
-  content: {
+  content: { paddingBottom: 0 },
   header: {
     backgroundColor: colors.brandPaper,
     borderBottomWidth: 1,
@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
     color: colors.muted,
     letterSpacing: 1.2,
   },
-  loginButton: { borderRadius: 999,
+  loginButton: {
     flex: 1,
     minHeight: 44,
     borderWidth: 1,
@@ -403,13 +403,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.brandPaper,
   },
-  loginButtonText: { borderRadius: 999,
+  loginButtonText: {
     color: colors.brandInk,
     fontSize: 10,
     fontWeight: '900',
     letterSpacing: 1.3,
   },
-  profileButton: { borderRadius: 999,
+  profileButton: {
     flex: 1,
     minHeight: 44,
     backgroundColor: colors.brandInk,
@@ -417,13 +417,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  profileButtonText: { borderRadius: 999,
+  profileButtonText: {
     color: colors.brandPaper,
     fontSize: 10,
     fontWeight: '900',
     letterSpacing: 1.2,
   },
-  buttonPressed: { borderRadius: 999,
+  buttonPressed: {
     opacity: 0.72,
     transform: [{ scale: 0.98 }],
   },
@@ -506,8 +506,8 @@ const styles = StyleSheet.create({
     fontSize: 13,
     paddingVertical: 7,
   },
-  chips: { borderRadius: 999,
-  chip: { borderRadius: 999, borderRadius: 999,
+  chips: { paddingTop: 11, paddingRight: 20, gap: 7 },
+  chip: {
     overflow: 'hidden',
     borderWidth: 1,
     borderRadius: 999,
@@ -517,17 +517,17 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     letterSpacing: 1,
   },
-  chipActive: { borderRadius: 999,
+  chipActive: {
     color: colors.brandPaper,
     backgroundColor: colors.brandInk,
     borderColor: colors.brandInk,
   },
-  chipInactive: { borderRadius: 999,
+  chipInactive: {
     color: colors.muted,
     backgroundColor: colors.brandPaper,
     borderColor: colors.border,
   },
-  mapSection: {
+  mapSection: { paddingHorizontal: 20, paddingTop: 28 },
   mapFrame: {
     height: 520,
     width: '100%',
@@ -563,7 +563,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1.2,
   },
   profileOverlay: { marginTop: -200, marginHorizontal: 12, zIndex: 5 },
-  featured: {
+  featured: { paddingHorizontal: 20, paddingTop: 42, paddingBottom: 38 },
   featuredHeading: {
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
@@ -594,16 +594,16 @@ const styles = StyleSheet.create({
     marginBottom: 14,
     overflow: 'hidden',
   },
-  cardImage: {
-  cardBody: {
-  cardTop: {
-  cardCategory: {
+  cardImage: { width: '100%', height: 190, backgroundColor: colors.muted },
+  cardBody: { padding: 16 },
+  cardTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  cardCategory: { color: colors.muted, fontSize: 7, fontWeight: '800', letterSpacing: 1.2 },
   rating: { color: colors.brandInk, fontSize: 10, fontWeight: '700' },
-  cardName: {
-  cardCity: {
-  cardDescription: {
-  cardAction: {
-  empty: {
+  cardName: { color: colors.brandInk, fontFamily: 'sans-serif', fontWeight: '800', fontSize: 25, marginTop: 6 },
+  cardCity: { color: colors.muted, fontSize: 10, marginTop: 2 },
+  cardDescription: { color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 10 },
+  cardAction: { color: colors.brandCoral, fontSize: 8, fontWeight: '800', letterSpacing: 1.1, marginTop: 15 },
+  empty: { color: colors.muted, textAlign: 'center', paddingVertical: 35, fontSize: 13 },
   footer: {
     borderTopWidth: 1,
     borderTopColor: colors.border,
@@ -611,9 +611,9 @@ const styles = StyleSheet.create({
     paddingVertical: 34,
     gap: 7,
   },
-  footerBrand: {
-  footerText: {
-  pinContainer: {
+  footerBrand: { fontFamily: 'sans-serif', fontWeight: '800', color: colors.brandInk, fontSize: 22 },
+  footerText: { color: colors.muted, fontSize: 10, lineHeight: 16 },
+  pinContainer: { alignItems: 'center', width: 54, height: 65 },
   pinActive: { transform: [{ scale: 1.16 }] },
   pinImageContainer: {
     width: 44,
