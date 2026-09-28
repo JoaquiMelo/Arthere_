@@ -1,6 +1,10 @@
 import React, { createContext, useMemo, useState } from 'react';
 import { MOCK_VAGAS_GERENCIADAS } from '../features/opportunities/screens/data/mock-management';
 import type { Candidato, VagaGerenciada } from '../features/opportunities/screens/types/management';
+import { MOCK_EVENTOS } from '../features/events/types/event';
+import type { Evento } from '../features/events/types/event';
+
+type NovoEvento = Omit<Evento, 'id'>;
 
 type NovaVaga = { titulo: string; categoria: string; orcamento?: number };
 
@@ -17,8 +21,10 @@ export type SolicitacaoEvento = {
 
 type ManagementContextType = {
   vagas: VagaGerenciada[];
+  eventos: Evento[];
   solicitacoesEvento: SolicitacaoEvento[];
   publicarVaga: (dados: NovaVaga) => void;
+  criarEvento: (dados: NovoEvento) => void;
   aceitarCandidato: (vagaId: string, candidatoId: string) => void;
   recusarCandidato: (vagaId: string, candidatoId: string) => void;
   concluirVaga: (vagaId: string) => void;
@@ -32,10 +38,15 @@ const ManagementContext = createContext<ManagementContextType>({} as ManagementC
 
 export function ManagementProvider({ children }: { children: React.ReactNode }) {
   const [vagas, setVagas] = useState<VagaGerenciada[]>(MOCK_VAGAS_GERENCIADAS);
+  const [eventos, setEventos] = useState<Evento[]>(MOCK_EVENTOS);
   const [solicitacoesEvento, setSolicitacoesEvento] = useState<SolicitacaoEvento[]>([]);
 
   const publicarVaga = ({ titulo, categoria, orcamento }: NovaVaga) => {
     setVagas((current) => [{ id: `vaga-${Date.now()}`, titulo, categoria, orcamento, status: 'ABERTA', avaliado: false, candidatos: [] }, ...current]);
+  };
+
+  const criarEvento = (dados: NovoEvento) => {
+    setEventos((current) => [{ ...dados, id: `evt-${Date.now()}` }, ...current]);
   };
 
   const atualizarCandidato = (vagaId: string, candidatoId: string, status: Candidato['status']) => {
@@ -72,8 +83,10 @@ export function ManagementProvider({ children }: { children: React.ReactNode }) 
 
   const value = useMemo(() => ({
     vagas,
+    eventos,
     solicitacoesEvento,
     publicarVaga,
+    criarEvento,
     aceitarCandidato,
     recusarCandidato,
     concluirVaga,
@@ -81,7 +94,7 @@ export function ManagementProvider({ children }: { children: React.ReactNode }) 
     enviarSolicitacaoEvento,
     aceitarSolicitacaoEvento,
     recusarSolicitacaoEvento,
-  }), [vagas, solicitacoesEvento]);
+  }), [vagas, eventos, solicitacoesEvento]);
 
   return <ManagementContext.Provider value={value}>{children}</ManagementContext.Provider>;
 }
