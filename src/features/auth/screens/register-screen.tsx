@@ -16,8 +16,8 @@ import {
   View,
 } from 'react-native';
 
+import { useTheme } from '@/providers/theme-provider';
 import { useUser } from '@/providers/user-provider';
-import { colors } from '@/shared/theme/colors';
 
 type TipoUsuario = 'AGENTE' | 'CONTRATANTE';
 
@@ -29,6 +29,7 @@ const displayFont = Platform.select({
 
 export default function RegisterScreen() {
   const navigation = useNavigation<any>();
+  const { palette } = useTheme();
   const { updateProfile } = useUser();
   const [tipoUsuario, setTipoUsuario] = useState<TipoUsuario>('AGENTE');
   const [documento, setDocumento] = useState('');
@@ -65,10 +66,7 @@ export default function RegisterScreen() {
       });
       navigation.navigate(tipoUsuario === 'AGENTE' ? 'CreatePortfolio' : 'CustomizeProfile');
     } catch (e) {
-      Alert.alert(
-        'Não foi possível cadastrar',
-        e instanceof Error ? e.message : 'Tente novamente.',
-      );
+      Alert.alert('Não foi possível cadastrar', e instanceof Error ? e.message : 'Tente novamente.');
     } finally {
       setCarregando(false);
     }
@@ -76,352 +74,327 @@ export default function RegisterScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.authBg} />
       <ScrollView
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.content}
         keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={19} color={colors.authInk} />
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+            accessibilityLabel="Voltar"
+          >
+            <Ionicons name="arrow-back" size={20} color={colors.brandPaper} />
           </TouchableOpacity>
-          <View>
-            <Text style={styles.eyebrow}>COMECE POR AQUI</Text>
-            <Text style={styles.title}>Crie seu perfil.</Text>
+          <View style={styles.headerShapes}>
+            <View style={[styles.shapeBlue, { backgroundColor: colors.brandBlue }]} />
+            <View style={[styles.shapeCoral, { backgroundColor: colors.brandCoral }]} />
           </View>
+          <Text style={styles.headerKicker}>NOVO PERFIL</Text>
+          <Text style={styles.headerTitle}>Faça parte do Arthere.</Text>
+          <Text style={styles.headerText}>
+            Crie um perfil para encontrar pessoas, projetos e oportunidades.
+          </Text>
         </View>
 
-        <View style={styles.brandCard}>
-          <View style={styles.logoShadow}>
-            <View style={styles.logoFrame}>
-              <Image
-                source={require('../../../../assets/images/icon.png')}
-                style={styles.logo}
-                resizeMode="contain"
-                accessibilityLabel="Logo do Arthere"
-              />
-            </View>
-          </View>
-          <View style={styles.brandCopy}>
-            <Text style={styles.brandTitle}>Faça parte do Arthere</Text>
-            <Text style={styles.brandText}>
-              Apresente seu trabalho ou encontre profissionais criativos perto de você.
-            </Text>
-          </View>
-        </View>
-
-        <View style={styles.form}>
-          <Text style={styles.sectionTitle}>COMO VOCÊ VAI USAR?</Text>
+        <View style={styles.section}>
+          <Text style={styles.sectionKicker}>01 · TIPO DE PERFIL</Text>
           <View style={styles.roles}>
             <TouchableOpacity
-              style={[styles.role, tipoUsuario === 'AGENTE' && styles.roleActive]}
+              style={[
+                styles.role,
+                tipoUsuario === 'AGENTE' && styles.roleActive,
+              ]}
               onPress={() => setTipoUsuario('AGENTE')}
             >
-              <View style={[styles.roleIcon, tipoUsuario === 'AGENTE' && styles.roleIconActive]}>
+              <View
+                style={[
+                  styles.roleIcon,
+                  tipoUsuario === 'AGENTE' && styles.roleIconActive,
+                ]}
+              >
                 <Ionicons
                   name="color-palette-outline"
                   size={20}
-                  color={tipoUsuario === 'AGENTE' ? colors.authPrimary : colors.authMuted}
+                  color={tipoUsuario === 'AGENTE' ? colors.brandInk : colors.muted}
                 />
               </View>
-              <View style={styles.roleCopy}>
-                <Text style={[styles.roleTitle, tipoUsuario === 'AGENTE' && styles.roleTitleActive]}>
-                  Agente criativo
-                </Text>
-                <Text style={[styles.roleSub, tipoUsuario === 'AGENTE' && styles.roleSubActive]}>
-                  Artista ou profissional
-                </Text>
-              </View>
-              {tipoUsuario === 'AGENTE' && <Ionicons name="checkmark-circle" size={22} color={colors.authPrimary} />}
+              <Text style={styles.roleTitle}>Agente criativo</Text>
+              <Text style={styles.roleSub}>Artista ou profissional</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles.role, tipoUsuario === 'CONTRATANTE' && styles.roleActive]}
+              style={[
+                styles.role,
+                tipoUsuario === 'CONTRATANTE' && styles.roleActive,
+              ]}
               onPress={() => setTipoUsuario('CONTRATANTE')}
             >
-              <View style={[styles.roleIcon, tipoUsuario === 'CONTRATANTE' && styles.roleIconActive]}>
+              <View
+                style={[
+                  styles.roleIcon,
+                  tipoUsuario === 'CONTRATANTE' && styles.roleIconActive,
+                ]}
+              >
                 <Ionicons
                   name="briefcase-outline"
                   size={20}
-                  color={tipoUsuario === 'CONTRATANTE' ? colors.authPrimary : colors.authMuted}
+                  color={tipoUsuario === 'CONTRATANTE' ? colors.brandInk : colors.muted}
                 />
               </View>
-              <View style={styles.roleCopy}>
-                <Text style={[styles.roleTitle, tipoUsuario === 'CONTRATANTE' && styles.roleTitleActive]}>
-                  Contratante
-                </Text>
-                <Text style={[styles.roleSub, tipoUsuario === 'CONTRATANTE' && styles.roleSubActive]}>
-                  Empresa ou organização
-                </Text>
-              </View>
-              {tipoUsuario === 'CONTRATANTE' && <Ionicons name="checkmark-circle" size={22} color={colors.authPrimary} />}
+              <Text style={styles.roleTitle}>Contratante</Text>
+              <Text style={styles.roleSub}>Empresa ou organização</Text>
             </TouchableOpacity>
           </View>
 
-          <Text style={styles.sectionTitle}>SEUS DADOS</Text>
+        <View style={styles.section}>
+          <Text style={styles.sectionKicker}>02 · DADOS PESSOAIS</Text>
           <Field icon="card-outline" placeholder="CPF ou CNPJ *" value={documento} onChangeText={setDocumento} keyboardType="numeric" />
           <Field icon="person-outline" placeholder="Nome completo *" value={nome} onChangeText={setNome} />
           <Field icon="person-add-outline" placeholder="Nome social (opcional)" value={nomeSocial} onChangeText={setNomeSocial} />
           <Field icon="people-outline" placeholder="Pronomes (opcional)" value={pronomes} onChangeText={setPronomes} />
+        </View>
 
-          <Text style={styles.sectionTitle}>ACESSO</Text>
-          <Field icon="mail-outline" placeholder="E-mail *" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
-          <Field icon="lock-closed-outline" placeholder="Senha *" value={senha} onChangeText={setSenha} secureTextEntry />
+        <View style={styles.section}>
+          <Text style={styles.sectionKicker}>03 · ACESSO</Text>
+          <Field icon="mail-outline" placeholder="E-mail" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
+          <Field icon="lock-closed-outline" placeholder="Senha" value={senha} onChangeText={setSenha} secureTextEntry />
+        </View>
 
-          {tipoUsuario === 'CONTRATANTE' ? (
-            <>
-              <Text style={styles.sectionTitle}>ORGANIZAÇÃO</Text>
-              <Field icon="business-outline" placeholder="Empresa / organização *" value={empresa} onChangeText={setEmpresa} />
-              <Field icon="pricetag-outline" placeholder="Categoria de atuação" value={categoria} onChangeText={setCategoria} />
-              <Field icon="call-outline" placeholder="Telefone" value={telefone} onChangeText={setTelefone} keyboardType="phone-pad" />
-              <Field icon="location-outline" placeholder="Cidade" value={cidade} onChangeText={setCidade} />
-              <Field icon="navigate-outline" placeholder="Endereço" value={endereco} onChangeText={setEndereco} />
-              <Field icon="globe-outline" placeholder="Site ou rede social" value={site} onChangeText={setSite} />
-              <TextInput
-                style={styles.textarea}
-                placeholder="Conte um pouco sobre a empresa, eventos e serviços..."
-                placeholderTextColor={colors.authMuted}
-                value={descricao}
-                onChangeText={setDescricao}
-                multiline
-                maxLength={500}
-              />
-            </>
+        {tipoUsuario === 'CONTRATANTE' ? (
+          <View style={styles.section}>
+            <Text style={styles.sectionKicker}>04 · ORGANIZAÇÃO</Text>
+            <Field icon="business-outline" placeholder="Empresa / organização *" value={empresa} onChangeText={setEmpresa} />
+            <Field icon="pricetag-outline" placeholder="Categoria de atuação" value={categoria} onChangeText={setCategoria} />
+            <Field icon="call-outline" placeholder="Telefone" value={telefone} onChangeText={setTelefone} keyboardType="phone-pad" />
+            <Field icon="location-outline" placeholder="Cidade" value={cidade} onChangeText={setCidade} />
+            <Field icon="navigate-outline" placeholder="Endereço" value={endereco} onChangeText={setEndereco} />
+            <Field icon="globe-outline" placeholder="Site ou rede social" value={site} onChangeText={setSite} />
+            <TextInput
+              style={styles.textarea}
+              placeholder="Descreva a empresa, eventos e serviços..."
+              placeholderTextColor={colors.muted}
+              value={descricao}
+              onChangeText={setDescricao}
+              multiline
+              maxLength={500}
+            />
+          </View>
+        ) : (
+          <View style={styles.section}>
+            <Text style={styles.sectionKicker}>04 · PERFIL PROFISSIONAL</Text>
+            <Field icon="sparkles-outline" placeholder="Especialidade" value={especialidade} onChangeText={setEspecialidade} />
+            <Field icon="location-outline" placeholder="Cidade" value={cidade} onChangeText={setCidade} />
+          </View>
+        )}
+
+        <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={carregando}>
+          {carregando ? (
+            <ActivityIndicator color={colors.brandPaper} />
           ) : (
             <>
-              <Text style={styles.sectionTitle}>PERFIL PROFISSIONAL</Text>
-              <Field icon="sparkles-outline" placeholder="Especialidade" value={especialidade} onChangeText={setEspecialidade} />
-              <Field icon="location-outline" placeholder="Cidade" value={cidade} onChangeText={setCidade} />
+              <Text style={styles.buttonText}>
+                {tipoUsuario === 'AGENTE' ? 'CONTINUAR PARA PORTFÓLIO' : 'PERSONALIZAR PERFIL'}
+              </Text>
+              <Ionicons name="arrow-forward" size={17} color={colors.brandPaper} />
             </>
           )}
+        </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={carregando}>
-            {carregando ? (
-              <ActivityIndicator color={colors.authWhite} />
-            ) : (
-              <>
-                <Text style={styles.buttonText}>
-                  {tipoUsuario === 'AGENTE' ? 'CONTINUAR PARA PORTFÓLIO' : 'PERSONALIZAR PERFIL'}
-                </Text>
-                <View style={styles.arrowCircle}>
-                  <Ionicons name="arrow-forward" size={16} color={colors.authPrimary} />
-                </View>
-              </>
-            )}
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.login}>
-            <Text style={styles.loginText}>Já possui uma conta?</Text>
-            <Text style={styles.loginLink}>FAÇA LOGIN</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.login}>
+          <Text style={styles.loginText}>Já possui uma conta?</Text>
+          <Text style={styles.loginLink}>FAÇA LOGIN</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-function Field({
-  icon,
-  ...props
-}: {
-  icon: keyof typeof Ionicons.glyphMap;
-} & React.ComponentProps<typeof TextInput>) {
+function Field({ icon, ...props }: { icon: keyof typeof Ionicons.glyphMap } & React.ComponentProps<typeof TextInput>) {
+  const { palette } = useTheme();
   return (
     <View style={styles.inputWrap}>
-      <Ionicons name={icon} size={18} color={colors.authPrimary} />
-      <TextInput style={styles.input} placeholderTextColor={colors.authMuted} {...props} />
+      <Ionicons name={icon} size={18} color={colors.muted} />
+      <TextInput style={styles.input} placeholderTextColor={colors.muted} {...props} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.authBg },
-  content: { paddingHorizontal: 20, paddingTop: 14, paddingBottom: 34 },
+  container: {
+    flex: 1,
+    backgroundColor: colors.brandPaper,
+  },
+  content: {
+    paddingBottom: 36,
+  },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 14,
-    marginBottom: 22,
+    backgroundColor: colors.brandInk,
+    minHeight: 224,
+    paddingHorizontal: 22,
+    paddingTop: 14,
+    paddingBottom: 26,
+    overflow: 'hidden',
+    position: 'relative',
   },
   backButton: {
-    width: 42,
-    height: 42,
-    borderRadius: 15,
-    backgroundColor: colors.authWhite,
-    borderWidth: 1,
-    borderColor: colors.authBorder,
+    width: 38,
+    height: 38,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  eyebrow: {
-    color: colors.authPrimary,
-    fontSize: 9,
-    fontWeight: '900',
-    letterSpacing: 1.5,
-    marginBottom: 4,
-  },
-  title: {
-    color: colors.authInk,
-    fontFamily: displayFont,
-    fontSize: 34,
-    lineHeight: 36,
-    fontWeight: '900',
-    letterSpacing: -1.1,
-  },
-  brandCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-    padding: 14,
-    marginBottom: 18,
-    borderRadius: 24,
-    backgroundColor: colors.authPrimary,
-  },
-  logoShadow: {
-    borderRadius: 20,
-    shadowColor: '#071B3A',
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 5 },
-    elevation: 5,
-  },
-  logoFrame: {
-    width: 78,
-    height: 78,
-    borderRadius: 20,
-    overflow: 'hidden',
-    backgroundColor: colors.authWhite,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logo: {
-    width: 72,
-    height: 72,
-    transform: [{ scale: 1.15 }],
-  },
-  brandCopy: { flex: 1 },
-  brandTitle: {
-    color: colors.authWhite,
-    fontSize: 16,
-    fontWeight: '900',
-    marginBottom: 5,
-  },
-  brandText: {
-    color: '#DCE9FF',
-    fontSize: 12,
-    lineHeight: 17,
-  },
-  form: {
-    padding: 18,
-    borderRadius: 28,
-    backgroundColor: colors.authWhite,
     borderWidth: 1,
-    borderColor: colors.authBorder,
-    shadowColor: '#102A43',
-    shadowOpacity: 0.07,
-    shadowRadius: 18,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 3,
+    borderColor: 'rgba(246,241,232,0.25)',
+    marginBottom: 24,
   },
-  sectionTitle: {
-    marginTop: 6,
-    marginBottom: 10,
-    color: colors.authInk,
-    fontSize: 9,
+  headerShapes: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  shapeBlue: {
+    position: 'absolute',
+    width: 124,
+    height: 124,
+    right: -26,
+    bottom: -28,
+    borderRadius: 26,
+    transform: [{ rotate: '17deg' }],
+  },
+  shapeCoral: {
+    position: 'absolute',
+    width: 62,
+    height: 138,
+    right: 88,
+    top: -26,
+    borderRadius: 10,
+    transform: [{ rotate: '3deg' }],
+  },
+  headerKicker: {
+    color: colors.brandSand,
+    fontSize: 10,
+    fontWeight: '900',
+    letterSpacing: 1.8,
+  },
+  headerTitle: {
+    color: colors.brandPaper,
+    fontSize: 32,
+    lineHeight: 35,
+    fontWeight: '900',
+    letterSpacing: -0.8,
+    marginTop: 10,
+  },
+  headerText: {
+    color: colors.brandPaper,
+    opacity: 0.82,
+    fontSize: 13,
+    lineHeight: 19,
+    marginTop: 9,
+    maxWidth: 290,
+  },
+  section: {
+    paddingHorizontal: 20,
+    marginTop: 24,
+  },
+  sectionKicker: {
+    color: colors.brandInk,
+    fontSize: 10,
     fontWeight: '900',
     letterSpacing: 1.4,
+    marginBottom: 10,
   },
-  roles: { gap: 9, marginBottom: 15 },
-  role: {
-    minHeight: 72,
+  roles: {
     flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    borderRadius: 18,
+    gap: 9,
+  },
+  role: {
+    flex: 1,
+    minHeight: 126,
+    backgroundColor: colors.white,
     borderWidth: 1,
-    borderColor: colors.authBorder,
-    backgroundColor: colors.authWhite,
+    borderColor: colors.border,
+    padding: 13,
   },
   roleActive: {
-    borderColor: '#B9D0FF',
-    backgroundColor: colors.authSoft,
+    backgroundColor: colors.brandSand,
+    borderColor: colors.brandInk,
   },
   roleIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
-    backgroundColor: '#F4F6F9',
+    width: 34,
+    height: 34,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: colors.surface,
+    marginBottom: 14,
   },
-  roleIconActive: { backgroundColor: colors.authWhite },
-  roleCopy: { flex: 1, marginLeft: 11 },
-  roleTitle: { color: colors.authInk, fontSize: 13, fontWeight: '900' },
-  roleTitleActive: { color: colors.authPrimary },
-  roleSub: { marginTop: 2, color: colors.authMuted, fontSize: 10 },
-  roleSubActive: { color: colors.authMuted },
+  roleIconActive: {
+    backgroundColor: colors.brandPaper,
+  },
+  roleTitle: {
+    color: colors.brandInk,
+    fontSize: 13,
+    fontWeight: '900',
+  },
+  roleSub: {
+    color: colors.muted,
+    fontSize: 10,
+    lineHeight: 14,
+    marginTop: 3,
+  },
   inputWrap: {
-    minHeight: 54,
+    minHeight: 51,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 14,
-    marginBottom: 10,
-    borderRadius: 16,
+    backgroundColor: colors.white,
     borderWidth: 1,
-    borderColor: colors.authBorder,
-    backgroundColor: colors.authSoft,
+    borderColor: colors.border,
+    paddingHorizontal: 13,
+    marginBottom: 10,
   },
   input: {
     flex: 1,
+    color: colors.text,
+    fontSize: 14,
     marginLeft: 9,
     paddingVertical: 12,
-    color: colors.authInk,
-    fontSize: 14,
   },
   textarea: {
-    minHeight: 105,
-    marginBottom: 4,
-    padding: 14,
-    borderRadius: 16,
+    minHeight: 110,
+    backgroundColor: colors.white,
     borderWidth: 1,
-    borderColor: colors.authBorder,
-    backgroundColor: colors.authSoft,
-    color: colors.authInk,
+    borderColor: colors.border,
+    padding: 13,
+    color: colors.text,
     fontSize: 14,
     textAlignVertical: 'top',
   },
   button: {
-    height: 56,
-    marginTop: 18,
-    paddingLeft: 19,
-    paddingRight: 8,
-    borderRadius: 19,
-    backgroundColor: colors.authPrimary,
+    height: 52,
+    marginHorizontal: 20,
+    marginTop: 28,
+    paddingHorizontal: 16,
+    backgroundColor: colors.brandInk,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   buttonText: {
     flex: 1,
-    color: colors.authWhite,
+    color: colors.brandPaper,
     fontSize: 10,
     fontWeight: '900',
-    letterSpacing: 1,
+    letterSpacing: 1.1,
   },
-  arrowCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.authWhite,
+  login: {
+    marginTop: 20,
     alignItems: 'center',
-    justifyContent: 'center',
+    gap: 5,
   },
-  login: { alignItems: 'center', marginTop: 18, gap: 4 },
-  loginText: { color: colors.authMuted, fontSize: 11 },
+  loginText: {
+    color: colors.muted,
+    fontSize: 12,
+  },
   loginLink: {
-    color: colors.authPrimary,
-    fontSize: 9,
+    color: colors.brandCoral,
+    fontSize: 10,
     fontWeight: '900',
     letterSpacing: 1.2,
   },

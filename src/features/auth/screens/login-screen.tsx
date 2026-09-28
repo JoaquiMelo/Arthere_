@@ -16,17 +16,13 @@ import {
   View,
 } from 'react-native';
 
+import { useTheme } from '@/providers/theme-provider';
 import { useUser } from '@/providers/user-provider';
 import { colors } from '@/shared/theme/colors';
 
-const displayFont = Platform.select({
-  ios: 'Arial Rounded MT Bold',
-  android: 'sans-serif-black',
-  default: 'sans-serif-black',
-});
-
 export default function LoginScreen() {
   const navigation = useNavigation<any>();
+  const { palette } = useTheme();
   const { login } = useUser();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
@@ -52,69 +48,48 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.authBg} />
-      <ScrollView
-        contentContainerStyle={styles.content}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.topRow}>
-          <View style={styles.brandDot}>
-            <View style={styles.brandDotInner} />
-          </View>
-          <Text style={styles.topLabel}>ARTHERE</Text>
-        </View>
-
-        <View style={styles.hero}>
-          <View style={styles.logoShadow}>
-            <View style={styles.logoFrame}>
-              <Image
-                source={require('../../../../assets/images/icon.png')}
-                style={styles.logo}
-                resizeMode="contain"
-                accessibilityLabel="Logo do Arthere"
-              />
-            </View>
-          </View>
-
-          <View style={styles.copy}>
-            <Text style={styles.eyebrow}>BEM-VINDO DE VOLTA</Text>
-            <Text style={styles.title}>Entre no{'
-'}Arthere.</Text>
-            <Text style={styles.description}>
-              Conecte-se à comunidade criativa da Baixada Santista e continue descobrindo novos talentos.
+      <View style={styles.page}>
+        <View style={styles.brandPanel}>
+          <View style={[styles.shapeBlue, { backgroundColor: colors.brandBlue }]} />
+          <View style={[styles.shapeSand, { backgroundColor: colors.brandSand }]} />
+          <View style={[styles.shapeCoral, { backgroundColor: colors.brandCoral }]} />
+          <View style={styles.brandCopy}>
+            <Text style={styles.kicker}>ARTE · ENCONTRO · TERRITÓRIO</Text>
+            <Text style={styles.brand}>Arthere</Text>
+            <View style={styles.brandRule} />
+            <Text style={styles.brandDescription}>
+              Conectando talentos criativos e projetos na Baixada Santista.
             </Text>
           </View>
         </View>
 
-        <View style={styles.form}>
+        <View style={styles.content}>
+          <View style={styles.heading}>
+            <Text style={styles.title}>Entrar</Text>
+            <Text style={styles.subtitle}>Acesse seu espaço criativo.</Text>
+          </View>
+
           <Text style={styles.label}>E-MAIL</Text>
           <View style={styles.inputContainer}>
-            <Ionicons name="mail-outline" size={19} color={colors.authPrimary} />
+            <Ionicons name="mail-outline" size={19} color={colors.muted} />
             <TextInput
               style={styles.input}
               placeholder="seu@email.com"
-              placeholderTextColor={colors.authMuted}
+              placeholderTextColor={colors.muted}
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
               autoCapitalize="none"
-              autoCorrect={false}
             />
           </View>
 
-          <View style={styles.labelRow}>
-            <Text style={styles.label}>SENHA</Text>
-            <TouchableOpacity>
-              <Text style={styles.forgot}>ESQUECI</Text>
-            </TouchableOpacity>
-          </View>
+          <Text style={styles.label}>SENHA</Text>
           <View style={styles.inputContainer}>
-            <Ionicons name="lock-closed-outline" size={19} color={colors.authPrimary} />
+            <Ionicons name="lock-closed-outline" size={19} color={colors.muted} />
             <TextInput
               style={styles.input}
               placeholder="Digite sua senha"
-              placeholderTextColor={colors.authMuted}
+              placeholderTextColor={colors.muted}
               value={senha}
               onChangeText={setSenha}
               secureTextEntry
@@ -123,29 +98,21 @@ export default function LoginScreen() {
 
           <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={carregando}>
             {carregando ? (
-              <ActivityIndicator color={colors.authWhite} />
+              <ActivityIndicator color={colors.brandPaper} />
             ) : (
               <>
                 <Text style={styles.buttonText}>ENTRAR</Text>
-                <View style={styles.arrowCircle}>
-                  <Ionicons name="arrow-forward" size={16} color={colors.authPrimary} />
-                </View>
+                <Ionicons name="arrow-forward" size={17} color={colors.brandPaper} />
               </>
             )}
           </TouchableOpacity>
 
-          <View style={styles.dividerRow}>
-            <View style={styles.divider} />
-            <Text style={styles.dividerText}>OU</Text>
-            <View style={styles.divider} />
+          <View style={styles.registerRow}>
+            <Text style={styles.registerText}>Ainda não tem uma conta?</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+              <Text style={styles.registerLink}>CRIAR PERFIL</Text>
+            </TouchableOpacity>
           </View>
-
-          <TouchableOpacity
-            style={styles.secondaryButton}
-            onPress={() => navigation.navigate('Register')}
-          >
-            <Text style={styles.secondaryButtonText}>CRIAR NOVO PERFIL</Text>
-          </TouchableOpacity>
         </View>
 
         <Text style={styles.footer}>ARTHERE · ARTE, CULTURA E CONEXÕES</Text>
@@ -155,197 +122,154 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.authBg },
-  content: {
-    flexGrow: 1,
-    paddingHorizontal: 22,
-    paddingTop: 18,
-    paddingBottom: 28,
+  container: {
+    flex: 1,
+    backgroundColor: colors.brandPaper,
   },
-  topRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 9,
-    marginBottom: 30,
+  page: {
+    flex: 1,
   },
-  brandDot: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: colors.authPrimary,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  brandDotInner: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: colors.authWhite,
-  },
-  topLabel: {
-    color: colors.authInk,
-    fontSize: 11,
-    fontWeight: '900',
-    letterSpacing: 2,
-  },
-  hero: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 18,
-    marginBottom: 28,
-  },
-  logoShadow: {
-    borderRadius: 25,
-    shadowColor: '#0A56D7',
-    shadowOpacity: 0.16,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 7,
-  },
-  logoFrame: {
-    width: 94,
-    height: 94,
-    borderRadius: 25,
+  brandPanel: {
+    minHeight: 245,
+    backgroundColor: colors.brandInk,
     overflow: 'hidden',
-    backgroundColor: colors.authWhite,
-    alignItems: 'center',
-    justifyContent: 'center',
+    position: 'relative',
   },
-  logo: {
-    width: 86,
-    height: 86,
-    transform: [{ scale: 1.15 }],
+  brandCopy: {
+    zIndex: 2,
+    paddingHorizontal: 24,
+    paddingTop: 28,
+    paddingBottom: 24,
+    maxWidth: 340,
   },
-  copy: { flex: 1 },
-  eyebrow: {
-    color: colors.authPrimary,
-    fontSize: 9,
+  kicker: {
+    color: colors.brandSand,
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 1.8,
+  },
+  brand: {
+    color: colors.brandPaper,
+    fontSize: 54,
+    lineHeight: 56,
     fontWeight: '900',
-    letterSpacing: 1.5,
-    marginBottom: 6,
+    letterSpacing: -1.8,
+    marginTop: 18,
+  },
+  brandRule: {
+    width: 86,
+    height: 7,
+    backgroundColor: colors.brandCoral,
+    marginTop: 12,
+    marginBottom: 14,
+  },
+  brandDescription: {
+    color: colors.brandPaper,
+    fontSize: 13,
+    lineHeight: 19,
+    fontWeight: '500',
+    maxWidth: 250,
+  },
+  shapeBlue: {
+    position: 'absolute',
+    width: 130,
+    height: 130,
+    borderRadius: 28,
+    right: -18,
+    bottom: -20,
+    transform: [{ rotate: '20deg' }],
+  },
+  shapeSand: {
+    position: 'absolute',
+    width: 88,
+    height: 55,
+    borderRadius: 12,
+    right: 34,
+    top: 34,
+    transform: [{ rotate: '-5deg' }],
+  },
+  shapeCoral: {
+    position: 'absolute',
+    width: 58,
+    height: 150,
+    borderRadius: 10,
+    right: 100,
+    top: -28,
+    transform: [{ rotate: '2deg' }],
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingTop: 28,
+    paddingBottom: 26,
+  },
+  heading: {
+    marginBottom: 24,
   },
   title: {
-    color: colors.authInk,
-    fontFamily: displayFont,
-    fontSize: 38,
-    lineHeight: 37,
+    color: colors.brandInk,
+    fontSize: 31,
+    lineHeight: 34,
     fontWeight: '900',
-    letterSpacing: -1.3,
+    letterSpacing: -0.8,
   },
-  description: {
-    marginTop: 10,
-    color: colors.authMuted,
-    fontSize: 13,
-    lineHeight: 18,
-  },
-  form: {
-    padding: 18,
-    borderRadius: 28,
-    backgroundColor: colors.authWhite,
-    borderWidth: 1,
-    borderColor: colors.authBorder,
-    shadowColor: '#102A43',
-    shadowOpacity: 0.07,
-    shadowRadius: 18,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 3,
-  },
-  labelRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  subtitle: {
+    color: colors.muted,
+    fontSize: 14,
+    marginTop: 4,
   },
   label: {
-    marginBottom: 8,
-    color: colors.authInk,
-    fontSize: 9,
-    fontWeight: '900',
+    color: colors.muted,
+    fontSize: 10,
+    fontWeight: '800',
     letterSpacing: 1.4,
-  },
-  forgot: {
-    marginBottom: 8,
-    color: colors.authPrimary,
-    fontSize: 8,
-    fontWeight: '900',
-    letterSpacing: 1,
+    marginBottom: 7,
   },
   inputContainer: {
-    minHeight: 56,
+    minHeight: 52,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 15,
-    marginBottom: 16,
-    borderRadius: 17,
+    backgroundColor: colors.white,
     borderWidth: 1,
-    borderColor: colors.authBorder,
-    backgroundColor: colors.authSoft,
+    borderColor: colors.border,
+    paddingHorizontal: 14,
+    marginBottom: 18,
   },
   input: {
     flex: 1,
+    color: colors.text,
+    fontSize: 15,
     marginLeft: 10,
     paddingVertical: 13,
-    color: colors.authInk,
-    fontSize: 14,
   },
   button: {
-    height: 56,
-    marginTop: 3,
-    paddingLeft: 20,
-    paddingRight: 8,
-    borderRadius: 19,
-    backgroundColor: colors.authPrimary,
+    height: 52,
+    backgroundColor: colors.brandInk,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   buttonText: {
-    color: colors.authWhite,
+    color: colors.brandPaper,
     fontSize: 11,
     fontWeight: '900',
     letterSpacing: 1.5,
   },
-  arrowCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.authWhite,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  dividerRow: {
+  registerRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    marginVertical: 18,
-  },
-  divider: { flex: 1, height: 1, backgroundColor: colors.authBorder },
-  dividerText: {
-    color: colors.authMuted,
-    fontSize: 8,
-    fontWeight: '900',
-    letterSpacing: 1,
-  },
-  secondaryButton: {
-    height: 52,
-    borderRadius: 18,
-    borderWidth: 1.5,
-    borderColor: colors.authPrimary,
-    alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.authWhite,
-  },
-  secondaryButtonText: {
-    color: colors.authPrimary,
-    fontSize: 10,
-    fontWeight: '900',
-    letterSpacing: 1.2,
-  },
-  footer: {
+    alignItems: 'center',
+    gap: 7,
     marginTop: 22,
-    color: colors.authMuted,
-    textAlign: 'center',
-    fontSize: 8,
-    fontWeight: '800',
+  },
+  registerText: {
+    color: colors.muted,
+    fontSize: 13,
+  },
+  registerLink: {
+    color: colors.brandCoral,
+    fontSize: 11,
+    fontWeight: '900',
     letterSpacing: 1.1,
   },
 });
