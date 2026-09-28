@@ -1,18 +1,24 @@
-import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
-import { Alert } from 'react-native';
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { RouteProp } from '@react-navigation/native';
-import { useTheme } from '@/providers/theme-provider';
-import { useUser } from '@/providers/user-provider';
-import { useManagement } from '@/providers/management-provider';
-import { MOCK_EVENTOS } from '../types/event';
-import type { RootStackParamList } from '../../../navigation/app-navigator';
+import { useManagement } from "@/providers/management-provider";
+import { useTheme } from "@/providers/theme-provider";
+import { useUser } from "@/providers/user-provider";
+import { Ionicons } from "@expo/vector-icons";
+import type { RouteProp } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import {
+  Alert,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import type { RootStackParamList } from "../../../navigation/app-navigator";
+import { MOCK_EVENTOS } from "../types/event";
 
-type Navigation = NativeStackNavigationProp<RootStackParamList, 'EventDetails'>;
-type EventRoute = RouteProp<RootStackParamList, 'EventDetails'>;
+type Navigation = NativeStackNavigationProp<RootStackParamList, "EventDetails">;
+type EventRoute = RouteProp<RootStackParamList, "EventDetails">;
 
 export default function EventDetailsScreen() {
   const navigation = useNavigation<Navigation>();
@@ -25,43 +31,59 @@ export default function EventDetailsScreen() {
 
   if (!evento) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: palette.background }]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: palette.background }]}
+      >
         <View style={styles.center}>
-          <Text style={[styles.errorTitle, { color: palette.brandInk }]}>Evento não encontrado</Text>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.backButton, { backgroundColor: palette.brandCoral }]}>
-            <Text style={[styles.buttonText, { color: palette.brandPaper }]}>Voltar</Text>
+          <Text style={[styles.errorTitle, { color: palette.brandInk }]}>
+            Evento não encontrado
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={[styles.backButton, { backgroundColor: palette.brandCoral }]}
+          >
+            <Text style={[styles.buttonText, { color: palette.brandPaper }]}>
+              Voltar
+            </Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
     );
   }
 
-  const data = new Date(evento.data + 'T12:00:00');
-  const dia = String(data.getDate()).padStart(2, '0');
-  const mes = new Intl.DateTimeFormat('pt-BR', { month: 'long' }).format(data);
-  const semana = new Intl.DateTimeFormat('pt-BR', { weekday: 'long' }).format(data);
-  const isAgente = user.tipo === 'AGENTE';
-  const solicitacao = solicitacoesEvento.find((item) => item.eventId === evento.id && item.agenteId === user.id);
+  const data = new Date(evento.data + "T12:00:00");
+  const dia = String(data.getDate()).padStart(2, "0");
+  const mes = new Intl.DateTimeFormat("pt-BR", { month: "long" }).format(data);
+  const semana = new Intl.DateTimeFormat("pt-BR", { weekday: "long" }).format(
+    data,
+  );
+  const isAgente = user.tipo === "AGENTE";
+  const solicitacao = solicitacoesEvento.find(
+    (item) => item.eventId === evento.id && item.agenteId === user.id,
+  );
   const statusSolicitacao = solicitacao?.status;
 
   const solicitarParticipacao = () => {
-    if (statusSolicitacao === 'PENDENTE' || statusSolicitacao === 'ACEITA') return;
+    if (statusSolicitacao === "PENDENTE" || statusSolicitacao === "ACEITA")
+      return;
 
     Alert.alert(
-      'Enviar solicitação',
+      "Enviar solicitação",
       `Deseja enviar uma solicitação ao contratante para participar de "${evento.titulo}"?`,
       [
-        { text: 'Cancelar', style: 'cancel' },
+        { text: "Cancelar", style: "cancel" },
         {
-          text: 'Enviar',
+          text: "Enviar",
           onPress: () => {
             enviarSolicitacaoEvento({
               eventId: evento.id,
               eventoTitulo: evento.titulo,
               agenteId: user.id,
               agenteNome: user.nomeSocial || user.nome,
-              agenteEspecialidade: user.especialidade || 'Profissional criativo',
-              mensagem: 'Olá! Gostaria de participar deste projeto como agente criativo.',
+              agenteEspecialidade:
+                user.especialidade || "Profissional criativo",
+              mensagem:
+                "Olá! Gostaria de participar deste projeto como agente criativo.",
             });
           },
         },
@@ -70,94 +92,211 @@ export default function EventDetailsScreen() {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: palette.background }]}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: palette.background }]}
+    >
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.content}
+      >
         <View style={[styles.hero, { backgroundColor: palette.brandInk }]}>
-          <View style={[styles.shapeBlue, { backgroundColor: palette.brandBlue }]} />
-          <View style={[styles.shapeGreen, { backgroundColor: palette.brandGreen }]} />
-          <View style={[styles.shapeCoral, { backgroundColor: palette.brandCoral }]} />
-          <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.backCircle, { backgroundColor: palette.brandPaper }]}>
+          <View
+            style={[styles.shapeBlue, { backgroundColor: palette.brandBlue }]}
+          />
+          <View
+            style={[styles.shapeGreen, { backgroundColor: palette.brandGreen }]}
+          />
+          <View
+            style={[styles.shapeCoral, { backgroundColor: palette.brandCoral }]}
+          />
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={[styles.backCircle, { backgroundColor: palette.brandPaper }]}
+          >
             <Ionicons name="arrow-back" size={22} color={palette.brandInk} />
           </TouchableOpacity>
           <View style={styles.heroContent}>
-            <Text style={[styles.kicker, { color: palette.brandSand }]}>{evento.categoria.toUpperCase()}</Text>
-            <Text style={[styles.heroTitle, { color: palette.brandPaper }]}>{evento.titulo}</Text>
+            <Text style={[styles.kicker, { color: palette.brandSand }]}>
+              {evento.categoria.toUpperCase()}
+            </Text>
+            <Text style={[styles.heroTitle, { color: palette.brandPaper }]}>
+              {evento.titulo}
+            </Text>
             {evento.premium && (
-              <View style={[styles.premium, { backgroundColor: palette.brandGreen }]}>
+              <View
+                style={[
+                  styles.premium,
+                  { backgroundColor: palette.brandGreen },
+                ]}
+              >
                 <Ionicons name="star" size={12} color={palette.brandPaper} />
-                <Text style={[styles.premiumText, { color: palette.brandPaper }]}>EVENTO PREMIUM</Text>
+                <Text
+                  style={[styles.premiumText, { color: palette.brandPaper }]}
+                >
+                  EVENTO PREMIUM
+                </Text>
               </View>
             )}
           </View>
         </View>
 
-        <View style={[styles.datePanel, { backgroundColor: palette.brandSand, borderColor: palette.brandInk }]}>
+        <View
+          style={[
+            styles.datePanel,
+            {
+              backgroundColor: palette.brandSand,
+              borderColor: palette.brandInk,
+            },
+          ]}
+        >
           <Text style={[styles.day, { color: palette.brandInk }]}>{dia}</Text>
           <View style={styles.dateInfo}>
-            <Text style={[styles.weekday, { color: palette.brandInk }]}>{semana.toUpperCase()}</Text>
-            <Text style={[styles.month, { color: palette.brandInk }]}>{mes.toUpperCase()}</Text>
-            <Text style={[styles.time, { color: palette.brandInk }]}>{evento.horario}</Text>
+            <Text style={[styles.weekday, { color: palette.brandInk }]}>
+              {semana.toUpperCase()}
+            </Text>
+            <Text style={[styles.month, { color: palette.brandInk }]}>
+              {mes.toUpperCase()}
+            </Text>
+            <Text style={[styles.time, { color: palette.brandInk }]}>
+              {evento.horario}
+            </Text>
           </View>
         </View>
 
-        <View style={[styles.card, { backgroundColor: palette.brandPaper, borderColor: palette.brandInk }]}>
-          <Text style={[styles.sectionTitle, { color: palette.brandInk }]}>SOBRE O EVENTO</Text>
-          <Text style={[styles.description, { color: palette.muted }]}>{evento.descricao}</Text>
+        <View
+          style={[
+            styles.card,
+            {
+              backgroundColor: palette.brandPaper,
+              borderColor: palette.brandInk,
+            },
+          ]}
+        >
+          <Text style={[styles.sectionTitle, { color: palette.brandInk }]}>
+            SOBRE O EVENTO
+          </Text>
+          <Text style={[styles.description, { color: palette.muted }]}>
+            {evento.descricao}
+          </Text>
 
           <View style={styles.infoRow}>
-            <View style={[styles.iconBox, { backgroundColor: palette.brandBlue }]}>
+            <View
+              style={[styles.iconBox, { backgroundColor: palette.brandBlue }]}
+            >
               <Ionicons name="location" size={18} color={palette.brandInk} />
             </View>
             <View style={styles.infoCopy}>
-              <Text style={[styles.infoLabel, { color: palette.muted }]}>LOCAL</Text>
-              <Text style={[styles.infoValue, { color: palette.brandInk }]}>{evento.local}</Text>
-              <Text style={[styles.infoSecondary, { color: palette.muted }]}>{evento.cidade}</Text>
+              <Text style={[styles.infoLabel, { color: palette.muted }]}>
+                LOCAL
+              </Text>
+              <Text style={[styles.infoValue, { color: palette.brandInk }]}>
+                {evento.local}
+              </Text>
+              <Text style={[styles.infoSecondary, { color: palette.muted }]}>
+                {evento.cidade}
+              </Text>
             </View>
           </View>
 
           <View style={styles.infoRow}>
-            <View style={[styles.iconBox, { backgroundColor: palette.brandGreen }]}>
+            <View
+              style={[styles.iconBox, { backgroundColor: palette.brandGreen }]}
+            >
               <Ionicons name="people" size={18} color={palette.brandPaper} />
             </View>
             <View style={styles.infoCopy}>
-              <Text style={[styles.infoLabel, { color: palette.muted }]}>ORGANIZAÇÃO</Text>
-              <Text style={[styles.infoValue, { color: palette.brandInk }]}>{evento.organizador}</Text>
+              <Text style={[styles.infoLabel, { color: palette.muted }]}>
+                ORGANIZAÇÃO
+              </Text>
+              <Text style={[styles.infoValue, { color: palette.brandInk }]}>
+                {evento.organizador}
+              </Text>
             </View>
           </View>
         </View>
 
         {isAgente ? (
-          <View style={[styles.registration, { backgroundColor: palette.brandInk }]}>
+          <View
+            style={[styles.registration, { backgroundColor: palette.brandInk }]}
+          >
             <View style={styles.registrationCopy}>
-              <Text style={[styles.registrationTitle, { color: palette.brandPaper }]}>
-                {statusSolicitacao === 'ACEITA' ? 'Solicitação aceita!' : statusSolicitacao === 'PENDENTE' ? 'Solicitação enviada!' : 'Quer participar?'}
+              <Text
+                style={[
+                  styles.registrationTitle,
+                  { color: palette.brandPaper },
+                ]}
+              >
+                {statusSolicitacao === "ACEITA"
+                  ? "Solicitação aceita!"
+                  : statusSolicitacao === "PENDENTE"
+                    ? "Solicitação enviada!"
+                    : "Quer participar?"}
               </Text>
-              <Text style={[styles.registrationText, { color: palette.brandPaper }]}>
-                {statusSolicitacao === 'ACEITA'
-                  ? 'O contratante aceitou sua solicitação para este projeto.'
-                  : statusSolicitacao === 'PENDENTE'
-                    ? 'Aguarde o contratante analisar sua solicitação.'
-                    : 'Envie uma solicitação ao contratante para participar deste projeto.'}
+              <Text
+                style={[styles.registrationText, { color: palette.brandPaper }]}
+              >
+                {statusSolicitacao === "ACEITA"
+                  ? "O contratante aceitou sua solicitação para este projeto."
+                  : statusSolicitacao === "PENDENTE"
+                    ? "Aguarde o contratante analisar sua solicitação."
+                    : "Envie uma solicitação ao contratante para participar deste projeto."}
               </Text>
             </View>
             <TouchableOpacity
               onPress={solicitarParticipacao}
               style={[
                 styles.registerButton,
-                { backgroundColor: statusSolicitacao === 'ACEITA' ? palette.brandGreen : palette.brandCoral },
+                {
+                  backgroundColor:
+                    statusSolicitacao === "ACEITA"
+                      ? palette.brandGreen
+                      : palette.brandCoral,
+                },
               ]}
             >
-              <Ionicons name={statusSolicitacao === 'ACEITA' ? 'checkmark-circle' : statusSolicitacao === 'PENDENTE' ? 'time-outline' : 'send-outline'} size={19} color={palette.brandPaper} />
-              <Text style={[styles.registerButtonText, { color: palette.brandPaper }]}>
-                {statusSolicitacao === 'ACEITA' ? 'ACEITO' : statusSolicitacao === 'PENDENTE' ? 'PENDENTE' : 'SOLICITAR'}
+              <Ionicons
+                name={
+                  statusSolicitacao === "ACEITA"
+                    ? "checkmark-circle"
+                    : statusSolicitacao === "PENDENTE"
+                      ? "time-outline"
+                      : "send-outline"
+                }
+                size={19}
+                color={palette.brandPaper}
+              />
+              <Text
+                style={[
+                  styles.registerButtonText,
+                  { color: palette.brandPaper },
+                ]}
+              >
+                {statusSolicitacao === "ACEITA"
+                  ? "ACEITO"
+                  : statusSolicitacao === "PENDENTE"
+                    ? "PENDENTE"
+                    : "SOLICITAR"}
               </Text>
             </TouchableOpacity>
           </View>
         ) : (
-          <View style={[styles.restriction, { backgroundColor: palette.brandPaper, borderColor: palette.brandInk }]}>
-            <Ionicons name="information-circle-outline" size={22} color={palette.brandCoral} />
+          <View
+            style={[
+              styles.restriction,
+              {
+                backgroundColor: palette.brandPaper,
+                borderColor: palette.brandInk,
+              },
+            ]}
+          >
+            <Ionicons
+              name="information-circle-outline"
+              size={22}
+              color={palette.brandCoral}
+            />
             <Text style={[styles.restrictionText, { color: palette.brandInk }]}>
-              O cadastro em eventos está disponível para perfis de agente criativo.
+              O cadastro em eventos está disponível para perfis de agente
+              criativo.
             </Text>
           </View>
         )}
@@ -167,43 +306,150 @@ export default function EventDetailsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { borderRadius: 18,
-  content: { borderRadius: 18,
-  hero: { minHeight: 290, borderRadius: 18, overflow: 'hidden', position: 'relative', marginBottom: 14 },
-  heroContent: { borderRadius: 18,
-  kicker: { fontSize: 11, fontWeight: '900', letterSpacing: 1.8, marginBottom: 8 },
-  heroTitle: { borderRadius: 18,
-  shapeBlue: { position: 'absolute', width: 115, height: 115, borderRadius: 30, right: -18, bottom: 20, transform: [{ rotate: '20deg' }] },
-  shapeGreen: { position: 'absolute', width: 90, height: 48, borderRadius: 10, right: 20, top: 38 },
-  shapeCoral: { position: 'absolute', width: 62, height: 135, borderRadius: 10, right: 100, top: -30 },
-  backCircle: { position: 'absolute', top: 18, left: 18, width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center', zIndex: 3 },
-  premium: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', gap: 5, paddingHorizontal: 9, paddingVertical: 6, borderRadius: 8, marginTop: 14 },
-  premiumText: { fontSize: 9, fontWeight: '900', letterSpacing: 0.5 },
-  datePanel: { borderWidth: 1.5, borderRadius: 18, padding: 14, flexDirection: 'row', alignItems: 'center', marginBottom: 14 },
-  day: { fontSize: 54, lineHeight: 58, fontWeight: '900', width: 88, textAlign: 'center' },
-  dateInfo: { borderLeftWidth: 1, borderLeftColor: '#29242B', paddingLeft: 14, flex: 1 },
-  weekday: { fontSize: 11, fontWeight: '900', letterSpacing: 1 },
-  month: { fontSize: 15, fontWeight: '900', marginTop: 2 },
-  time: { fontSize: 13, fontWeight: '700', marginTop: 5 },
+  container: { flex: 1 },
+  content: { paddingHorizontal: 18, paddingBottom: 26 },
+  hero: {
+    minHeight: 290,
+    borderRadius: 18,
+    overflow: "hidden",
+    position: "relative",
+    marginBottom: 14,
+  },
+  heroContent: { paddingHorizontal: 18, paddingTop: 92, paddingBottom: 22 },
+  kicker: {
+    fontSize: 11,
+    fontWeight: "900",
+    letterSpacing: 1.8,
+    marginBottom: 8,
+  },
+  heroTitle: { fontSize: 28, fontWeight: "900", lineHeight: 33 },
+  shapeBlue: {
+    position: "absolute",
+    width: 115,
+    height: 115,
+    borderRadius: 30,
+    right: -18,
+    bottom: 20,
+    transform: [{ rotate: "20deg" }],
+  },
+  shapeGreen: {
+    position: "absolute",
+    width: 90,
+    height: 48,
+    borderRadius: 10,
+    right: 20,
+    top: 38,
+  },
+  shapeCoral: {
+    position: "absolute",
+    width: 62,
+    height: 135,
+    borderRadius: 10,
+    right: 100,
+    top: -30,
+  },
+  backCircle: {
+    position: "absolute",
+    top: 18,
+    left: 18,
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 3,
+  },
+  premium: {
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    paddingHorizontal: 9,
+    paddingVertical: 6,
+    borderRadius: 8,
+    marginTop: 14,
+  },
+  premiumText: { fontSize: 9, fontWeight: "900", letterSpacing: 0.5 },
+  datePanel: {
+    borderWidth: 1.5,
+    borderRadius: 18,
+    padding: 14,
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 14,
+  },
+  day: {
+    fontSize: 54,
+    lineHeight: 58,
+    fontWeight: "900",
+    width: 88,
+    textAlign: "center",
+  },
+  dateInfo: {
+    borderLeftWidth: 1,
+    borderLeftColor: "#29242B",
+    paddingLeft: 14,
+    flex: 1,
+  },
+  weekday: { fontSize: 11, fontWeight: "900", letterSpacing: 1 },
+  month: { fontSize: 15, fontWeight: "900", marginTop: 2 },
+  time: { fontSize: 13, fontWeight: "700", marginTop: 5 },
   card: { borderWidth: 1.5, borderRadius: 18, padding: 16, marginBottom: 14 },
-  sectionTitle: { borderRadius: 18,
+  sectionTitle: {
+    fontSize: 12,
+    fontWeight: "900",
+    letterSpacing: 1.3,
+    marginBottom: 10,
+  },
   description: { fontSize: 14, lineHeight: 21 },
-  infoRow: { flexDirection: 'row', alignItems: 'center', marginTop: 16 },
-  iconBox: { width: 42, height: 42, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
+  infoRow: { flexDirection: "row", alignItems: "center", marginTop: 16 },
+  iconBox: {
+    width: 42,
+    height: 42,
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   infoCopy: { flex: 1, marginLeft: 11 },
-  infoLabel: { fontSize: 9, fontWeight: '900', letterSpacing: 1 },
-  infoValue: { fontSize: 14, fontWeight: '900', marginTop: 2 },
+  infoLabel: { fontSize: 9, fontWeight: "900", letterSpacing: 1 },
+  infoValue: { fontSize: 14, fontWeight: "900", marginTop: 2 },
   infoSecondary: { fontSize: 12, marginTop: 1 },
-  registration: { borderRadius: 14, padding: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  registration: {
+    borderRadius: 14,
+    padding: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
   registrationCopy: { flex: 1 },
-  registrationTitle: { fontSize: 17, fontWeight: '900' },
+  registrationTitle: { fontSize: 17, fontWeight: "900" },
   registrationText: { fontSize: 11, lineHeight: 16, marginTop: 4 },
-  registerButton: { minHeight: 46, paddingHorizontal: 14, borderRadius: 999, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
-  registerButtonText: { borderRadius: 999,
-  restriction: { borderWidth: 1.5, borderRadius: 14, padding: 16, flexDirection: 'row', alignItems: 'center', gap: 10 },
-  restrictionText: { flex: 1, fontSize: 12, lineHeight: 17, fontWeight: '600' },
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 },
-  errorTitle: { fontSize: 20, fontWeight: '900', marginBottom: 16 },
+  registerButton: {
+    minHeight: 46,
+    paddingHorizontal: 14,
+    borderRadius: 999,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 6,
+  },
+  registerButtonText: { fontSize: 11, fontWeight: "900", letterSpacing: 0.8 },
+  restriction: {
+    borderWidth: 1.5,
+    borderRadius: 14,
+    padding: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  restrictionText: { flex: 1, fontSize: 12, lineHeight: 17, fontWeight: "600" },
+  center: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 24,
+  },
+  errorTitle: { fontSize: 20, fontWeight: "900", marginBottom: 16 },
   backButton: { paddingHorizontal: 24, paddingVertical: 12, borderRadius: 999 },
-  buttonText: { borderRadius: 999,
+  buttonText: { fontSize: 14, fontWeight: "900" },
 });

@@ -1,11 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from "react-native";
 
-import { colors } from '@/shared/theme/colors';
-import type { Avaliacao } from '../types/review';
-import { StarRating } from './star-rating';
+import { colors } from "@/shared/theme/colors";
+import type { Avaliacao } from "../types/review";
+import { StarRating } from "./star-rating";
 
 export function ReviewList({ avaliacoes }: { avaliacoes: Avaliacao[] }) {
-  if (!avaliacoes.length) return <Text style={styles.empty}>Ainda não há avaliações.</Text>;
+  if (!avaliacoes.length)
+    return <Text style={styles.empty}>Ainda não há avaliações.</Text>;
   return (
     <View style={styles.list}>
       {avaliacoes.map((item) => (
@@ -14,8 +15,12 @@ export function ReviewList({ avaliacoes }: { avaliacoes: Avaliacao[] }) {
             <Text style={styles.autor}>{item.autorNome}</Text>
             <StarRating value={item.nota} size={13} />
           </View>
-          {item.comentario && <Text style={styles.comentario}>{item.comentario}</Text>}
-          <Text style={styles.data}>{item.criadoEm.toLocaleDateString('pt-BR')}</Text>
+          {item.comentario && (
+            <Text style={styles.comentario}>{item.comentario}</Text>
+          )}
+          <Text style={styles.data}>
+            {item.criadoEm.toLocaleDateString("pt-BR")}
+          </Text>
         </View>
       ))}
     </View>
@@ -23,10 +28,21 @@ export function ReviewList({ avaliacoes }: { avaliacoes: Avaliacao[] }) {
 }
 
 const styles = StyleSheet.create({
-  list: { gap: 10 }, empty: { color: colors.muted, fontSize: 13 },
+  list: { gap: 10 },
+  empty: { color: colors.muted, fontSize: 13 },
   card: { backgroundColor: colors.surface, borderRadius: 12, padding: 12 },
-  header: { borderRadius: 18,
-  autor: { color: colors.text, fontWeight: '700', fontSize: 13 },
-  comentario: { color: colors.text, fontSize: 13, lineHeight: 18, marginTop: 6 },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 8,
+  },
+  autor: { color: colors.text, fontWeight: "700", fontSize: 13 },
+  comentario: {
+    color: colors.text,
+    fontSize: 13,
+    lineHeight: 18,
+    marginTop: 6,
+  },
   data: { color: colors.muted, fontSize: 11, marginTop: 6 },
 });

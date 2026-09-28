@@ -2,17 +2,17 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import {
-    Image,
-    KeyboardAvoidingView,
-    Modal,
-    Platform,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Image,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 import { useManagement } from "@/providers/management-provider";
@@ -336,15 +336,23 @@ export default function ContratanteProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { borderRadius: 18,
-  scrollContent: { borderRadius: 18,
-  coverContainer: { borderRadius: 18,
+  container: {
+    flex: 1,
+    backgroundColor: colors.brandPaper,
+  },
+  scrollContent: {
+    paddingBottom: 32,
+  },
+  coverContainer: {
     height: 178,
     overflow: "hidden",
     backgroundColor: colors.brandInk,
     position: "relative",
   },
-  coverImage: { width: "100%", height: "100%" },
+  coverImage: {
+    width: "100%",
+    height: "100%",
+  },
   coverOverlay: {
     ...StyleSheet.absoluteFill,
     backgroundColor: "rgba(41,36,43,0.50)",
@@ -419,8 +427,11 @@ const styles = StyleSheet.create({
     gap: 5,
     marginTop: 7,
   },
-  location: { color: colors.muted, fontSize: 12 },
-  statsCard: { borderRadius: 18,
+  location: {
+    color: colors.muted,
+    fontSize: 12,
+  },
+  statsCard: {
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
@@ -430,8 +441,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: colors.border,
   },
-  stat: { flex: 1, alignItems: "center" },
-  statNumber: { color: colors.brandInk, fontSize: 18, fontWeight: "900" },
+  stat: {
+    flex: 1,
+    alignItems: "center",
+  },
+  statNumber: {
+    color: colors.brandInk,
+    fontSize: 18,
+    fontWeight: "900",
+  },
   statLabel: {
     marginTop: 2,
     color: colors.muted,
@@ -439,14 +457,18 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     letterSpacing: 0.8,
   },
-  statDivider: { width: 1, height: 24, backgroundColor: colors.border },
-  actionButtonsRow: { borderRadius: 999,
+  statDivider: {
+    width: 1,
+    height: 24,
+    backgroundColor: colors.border,
+  },
+  actionButtonsRow: {
     width: "100%",
     flexDirection: "row",
     gap: 9,
     marginTop: 16,
   },
-  manageButton: { borderRadius: 999,
+  manageButton: {
     flex: 1,
     minHeight: 44,
     backgroundColor: colors.brandInk,
@@ -455,13 +477,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 6,
   },
-  manageButtonText: { borderRadius: 999,
+  manageButtonText: {
     color: colors.brandPaper,
     fontSize: 8.5,
     fontWeight: "900",
     letterSpacing: 0.8,
   },
-  editProfileButton: { borderRadius: 999,
+  editProfileButton: {
     flex: 1,
     minHeight: 44,
     borderWidth: 1,
@@ -472,38 +494,56 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 6,
   },
-  editProfileButtonText: { borderRadius: 999,
+  editProfileButtonText: {
     color: colors.brandInk,
     fontSize: 8.5,
     fontWeight: "900",
     letterSpacing: 0.8,
   },
-  section: { borderRadius: 18,
-  sectionHeader: { borderRadius: 18,
+  section: {
+    paddingHorizontal: 20,
+    marginTop: 24,
+  },
+  sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
     gap: 10,
     marginBottom: 11,
   },
-  sectionKicker: { borderRadius: 18,
+  sectionKicker: {
     color: colors.brandCoral,
     fontSize: 8,
     fontWeight: "900",
     letterSpacing: 1.3,
     marginBottom: 2,
   },
-  sectionTitle: { borderRadius: 18,
-  sectionSubtitle: { borderRadius: 18,
-  galleryContainer: { borderRadius: 18,
-  eventCard: { borderRadius: 18,
+  sectionTitle: {
+    color: colors.brandInk,
+    fontSize: 18,
+    fontWeight: "900",
+    letterSpacing: -0.3,
+  },
+  sectionSubtitle: {
+    color: colors.muted,
+    fontSize: 9,
+    fontWeight: "700",
+  },
+  galleryContainer: {
+    paddingRight: 12,
+    gap: 12,
+  },
+  eventCard: {
     width: 158,
     height: 184,
     overflow: "hidden",
     position: "relative",
     backgroundColor: colors.surface,
   },
-  eventImage: { width: "100%", height: "100%" },
+  eventImage: {
+    width: "100%",
+    height: "100%",
+  },
   eventOverlay: {
     position: "absolute",
     bottom: 0,
@@ -524,7 +564,7 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     marginTop: 5,
   },
-  addEventCard: { borderRadius: 18,
+  addEventCard: {
     width: 118,
     height: 184,
     borderWidth: 1,
@@ -550,7 +590,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.9,
     marginTop: 9,
   },
-  emptyStateContainer: { borderRadius: 18,
+  emptyStateContainer: {
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: colors.white,
@@ -558,13 +598,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  emptyTitle: { borderRadius: 18,
+  emptyTitle: {
     color: colors.brandInk,
     fontSize: 15,
     fontWeight: "900",
     marginTop: 10,
   },
-  emptyText: { borderRadius: 18,
+  emptyText: {
     color: colors.muted,
     fontSize: 11.5,
     lineHeight: 18,
@@ -572,7 +612,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     maxWidth: 290,
   },
-  vagaCard: { borderRadius: 18,
+  vagaCard: {
     minHeight: 78,
     flexDirection: "row",
     alignItems: "center",
@@ -583,7 +623,10 @@ const styles = StyleSheet.create({
     padding: 13,
     marginBottom: 9,
   },
-  flex1: { flex: 1, minWidth: 0 },
+  flex1: {
+    flex: 1,
+    minWidth: 0,
+  },
   vagaCategoria: {
     color: colors.brandCoral,
     fontSize: 8,
@@ -598,8 +641,15 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     marginTop: 3,
   },
-  vagaMeta: { color: colors.muted, fontSize: 10.5, marginTop: 4 },
-  vagaRight: { alignItems: "flex-end", gap: 7 },
+  vagaMeta: {
+    color: colors.muted,
+    fontSize: 10.5,
+    marginTop: 4,
+  },
+  vagaRight: {
+    alignItems: "flex-end",
+    gap: 7,
+  },
   statusBadge: {
     color: colors.brandInk,
     backgroundColor: colors.brandSand,
@@ -615,7 +665,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 22,
   },
-  editCard: { borderRadius: 18,
+  editCard: {
     backgroundColor: colors.brandPaper,
     borderTopWidth: 2,
     borderTopColor: colors.brandCoral,
@@ -634,7 +684,7 @@ const styles = StyleSheet.create({
     marginTop: 3,
     marginBottom: 13,
   },
-  editInput: { borderRadius: 18,
+  editInput: {
     minHeight: 48,
     borderWidth: 1,
     borderColor: colors.border,

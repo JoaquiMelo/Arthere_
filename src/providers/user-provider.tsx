@@ -1,7 +1,7 @@
-import React, { createContext, useState, useContext } from 'react';
-import { MOCK_USUARIO_LOGADO } from '../shared/data/mock-data';
+import React, { createContext, useContext, useState } from "react";
+import { MOCK_USUARIO_LOGADO } from "../shared/data/mock-data";
 
-export type TipoUsuario = 'AGENTE' | 'CONTRATANTE' | 'ADMIN';
+export type TipoUsuario = "AGENTE" | "CONTRATANTE" | "ADMIN";
 
 export interface LocalUser {
   id: string;
@@ -35,21 +35,26 @@ interface UserContextType {
 
 const UserContext = createContext<UserContextType>({} as UserContextType);
 
-export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<LocalUser>(MOCK_USUARIO_LOGADO);
+export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [user, setUser] = useState<LocalUser>(MOCK_USUARIO_LOGADO as LocalUser);
   const [registeredUser, setRegisteredUser] = useState<LocalUser | null>(null);
 
   const login = async (email: string, _senha: string) => {
     const emailNormalizado = email.trim().toLowerCase();
 
-    if (registeredUser && registeredUser.email.toLowerCase() === emailNormalizado) {
+    if (
+      registeredUser &&
+      registeredUser.email.toLowerCase() === emailNormalizado
+    ) {
       setUser(registeredUser);
       return true;
     }
 
     setUser((prev) => ({
       ...prev,
-      id: prev.id || 'local-user',
+      id: prev.id || "local-user",
       email: emailNormalizado,
     }));
 
@@ -65,7 +70,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
-    setUser(MOCK_USUARIO_LOGADO);
+    setUser(MOCK_USUARIO_LOGADO as LocalUser);
   };
 
   return (
