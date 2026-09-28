@@ -1,46 +1,23 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import {
-  ActivityIndicator,
-  Alert,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-
-import { useTheme } from '@/providers/theme-provider';
+import { ActivityIndicator, Alert, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useUser } from '@/providers/user-provider';
 
 type TipoUsuario = 'AGENTE' | 'CONTRATANTE';
 
 export default function RegisterScreen() {
   const navigation = useNavigation<any>();
-  const { palette } = useTheme();
   const { updateProfile } = useUser();
   const [tipoUsuario, setTipoUsuario] = useState<TipoUsuario>('AGENTE');
-  const [documento, setDocumento] = useState('');
   const [nome, setNome] = useState('');
-  const [nomeSocial, setNomeSocial] = useState('');
-  const [pronomes, setPronomes] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [empresa, setEmpresa] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [categoria, setCategoria] = useState('');
-  const [cidade, setCidade] = useState('');
-  const [endereco, setEndereco] = useState('');
-  const [site, setSite] = useState('');
-  const [descricao, setDescricao] = useState('');
-  const [especialidade, setEspecialidade] = useState('');
   const [carregando, setCarregando] = useState(false);
 
   const handleRegister = async () => {
-    if (!documento.trim() || !nome.trim() || !email.trim() || !senha.trim()) {
+    if (!nome.trim() || !email.trim() || !senha) {
       Alert.alert('Atenção', 'Preencha nome, e-mail e senha.');
       return;
     }
@@ -48,168 +25,101 @@ export default function RegisterScreen() {
       Alert.alert('Atenção', 'Informe o nome da empresa ou organização.');
       return;
     }
-
-    setCarregando(true);
     try {
-      updateProfile({
-        documento, nome, nomeSocial, pronomes, email, tipo: tipoUsuario,
-        empresa, telefone, categoria, cidade, endereco, site, descricao, especialidade,
-      });
+      setCarregando(true);
+      await new Promise((resolve) => setTimeout(resolve, 600));
+      updateProfile({ nome, email, tipo: tipoUsuario, empresa });
       navigation.navigate(tipoUsuario === 'AGENTE' ? 'CreatePortfolio' : 'CustomizeProfile');
-    } catch (e) {
-      Alert.alert('Não foi possível cadastrar', e instanceof Error ? e.message : 'Tente novamente.');
+    } catch {
+      Alert.alert('Erro', 'Não foi possível concluir o cadastro.');
     } finally {
       setCarregando(false);
     }
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: palette.background }]}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-        <View style={[styles.miniHeader, { borderBottomColor: palette.border }]}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.backButton, { borderColor: palette.brandInk }]}>
-            <Ionicons name="arrow-back" size={18} color={palette.brandInk} />
+    <SafeAreaView style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
+        <View style={styles.visualHeader}>
+          <TouchableOpacity style={styles.back} onPress={() => navigation.goBack()}>
+            <Ionicons name="arrow-back" size={18} color="#fff" />
           </TouchableOpacity>
-          <View style={styles.brandLockup}>
-            <Text style={[styles.brand, { color: palette.brandInk }]}>ARTHERE</Text>
-            <Text style={[styles.brandSub, { color: palette.muted }]}>NOVO PERFIL</Text>
+          <View style={styles.headerText}>
+            <Text style={styles.eyebrow}>ENCONTRO · TERRITÓRIO</Text>
+            <Text style={styles.brand}>Arthere</Text>
+            <View style={styles.brandLine} />
+            <Text style={styles.headerDescription}>Crie seu espaço na rede criativa{'
+'}da Baixada Santista.</Text>
           </View>
-          <Text style={[styles.headerLabel, { color: palette.muted }]}>CADASTRO</Text>
+          <View style={styles.shapeCoral} /><View style={styles.shapeYellow} /><View style={styles.shapeBlue} />
         </View>
 
-        <View style={[styles.hero, { borderBottomColor: palette.border }]}>
-          <Text style={[styles.kicker, { color: palette.muted }]}>CRIAR CONEXÕES</Text>
-          <Text style={[styles.heroTitle, { color: palette.brandInk }]}>Faça parte da</Text>
-          <Text style={[styles.heroTitleAccent, { color: palette.brandCoral }]}>cena criativa.</Text>
-          <Text style={[styles.heroDescription, { color: palette.muted }]}>
-            Crie um perfil para encontrar pessoas, projetos e oportunidades.
-          </Text>
-        </View>
+        <View style={styles.form}>
+          <Text style={styles.title}>Criar perfil</Text>
+          <Text style={styles.subtitle}>Faça parte da cena criativa.</Text>
 
-        <View style={styles.section}>
-          <Text style={[styles.sectionKicker, { color: palette.muted }]}>01 · TIPO DE PERFIL</Text>
+          <Text style={styles.label}>TIPO DE PERFIL</Text>
           <View style={styles.roles}>
-            <TouchableOpacity
-              style={[styles.role, { backgroundColor: palette.brandPaper, borderColor: palette.border }, tipoUsuario === 'AGENTE' && { backgroundColor: palette.brandSand, borderColor: palette.brandInk }]}
-              onPress={() => setTipoUsuario('AGENTE')}
-            >
-              <View style={[styles.roleIcon, { backgroundColor: palette.surface }, tipoUsuario === 'AGENTE' && { backgroundColor: palette.brandPaper }]}>
-                <Ionicons name="color-palette-outline" size={20} color={tipoUsuario === 'AGENTE' ? palette.brandInk : palette.muted} />
-              </View>
-              <Text style={[styles.roleTitle, { color: palette.brandInk }]}>Agente criativo</Text>
-              <Text style={[styles.roleSub, { color: palette.muted }]}>Artista ou profissional</Text>
+            <TouchableOpacity style={[styles.role, tipoUsuario === 'AGENTE' && styles.roleActive]} onPress={() => setTipoUsuario('AGENTE')}>
+              <Ionicons name="color-palette-outline" size={16} color={tipoUsuario === 'AGENTE' ? '#28232b' : '#77716d'} />
+              <Text style={styles.roleTitle}>AGENTE CRIATIVO</Text>
+              <Text style={styles.roleSub}>Artista / profissional</Text>
             </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.role, { backgroundColor: palette.brandPaper, borderColor: palette.border }, tipoUsuario === 'CONTRATANTE' && { backgroundColor: palette.brandSand, borderColor: palette.brandInk }]}
-              onPress={() => setTipoUsuario('CONTRATANTE')}
-            >
-              <View style={[styles.roleIcon, { backgroundColor: palette.surface }, tipoUsuario === 'CONTRATANTE' && { backgroundColor: palette.brandPaper }]}>
-                <Ionicons name="briefcase-outline" size={20} color={tipoUsuario === 'CONTRATANTE' ? palette.brandInk : palette.muted} />
-              </View>
-              <Text style={[styles.roleTitle, { color: palette.brandInk }]}>Contratante</Text>
-              <Text style={[styles.roleSub, { color: palette.muted }]}>Empresa ou organização</Text>
+            <TouchableOpacity style={[styles.role, tipoUsuario === 'CONTRATANTE' && styles.roleActive]} onPress={() => setTipoUsuario('CONTRATANTE')}>
+              <Ionicons name="briefcase-outline" size={16} color={tipoUsuario === 'CONTRATANTE' ? '#28232b' : '#77716d'} />
+              <Text style={styles.roleTitle}>CONTRATANTE</Text>
+              <Text style={styles.roleSub}>Empresa / organização</Text>
             </TouchableOpacity>
           </View>
+
+          <Text style={styles.label}>NOME</Text>
+          <View style={styles.inputWrap}><Ionicons name="person-outline" size={15} color="#77716d" /><TextInput style={styles.input} placeholder="Nome completo" placeholderTextColor="#77716d" value={nome} onChangeText={setNome} /></View>
+          {tipoUsuario === 'CONTRATANTE' && <><Text style={styles.label}>EMPRESA</Text><View style={styles.inputWrap}><Ionicons name="business-outline" size={15} color="#77716d" /><TextInput style={styles.input} placeholder="Empresa ou organização" placeholderTextColor="#77716d" value={empresa} onChangeText={setEmpresa} /></View></>}
+          <Text style={styles.label}>E-MAIL</Text>
+          <View style={styles.inputWrap}><Ionicons name="mail-outline" size={15} color="#77716d" /><TextInput style={styles.input} placeholder="seu@email.com" placeholderTextColor="#77716d" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" /></View>
+          <Text style={styles.label}>SENHA</Text>
+          <View style={styles.inputWrap}><Ionicons name="lock-closed-outline" size={15} color="#77716d" /><TextInput style={styles.input} placeholder="Digite sua senha" placeholderTextColor="#77716d" value={senha} onChangeText={setSenha} secureTextEntry /></View>
+
+          <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={carregando}>
+            {carregando ? <ActivityIndicator color="#f7f2e9" /> : <><Text style={styles.buttonText}>{tipoUsuario === 'AGENTE' ? 'CONTINUAR PARA PORTFÓLIO' : 'PERSONALIZAR PERFIL'}</Text><Ionicons name="arrow-forward" size={16} color="#f7f2e9" /></>}
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.registerRow}>
+            <Text style={styles.registerText}>Já possui uma conta?</Text><Text style={styles.registerLink}>FAÇA LOGIN</Text>
+          </TouchableOpacity>
         </View>
-
-        <View style={styles.section}>
-          <Text style={[styles.sectionKicker, { color: palette.muted }]}>02 · DADOS PESSOAIS</Text>
-          <Field icon="card-outline" placeholder="CPF ou CNPJ *" value={documento} onChangeText={setDocumento} keyboardType="numeric" />
-          <Field icon="person-outline" placeholder="Nome completo *" value={nome} onChangeText={setNome} />
-          <Field icon="person-add-outline" placeholder="Nome social (opcional)" value={nomeSocial} onChangeText={setNomeSocial} />
-          <Field icon="people-outline" placeholder="Pronomes (opcional)" value={pronomes} onChangeText={setPronomes} />
-        </View>
-
-        <View style={styles.section}>
-          <Text style={[styles.sectionKicker, { color: palette.muted }]}>03 · ACESSO</Text>
-          <Field icon="mail-outline" placeholder="E-mail" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
-          <Field icon="lock-closed-outline" placeholder="Senha" value={senha} onChangeText={setSenha} secureTextEntry />
-        </View>
-
-        {tipoUsuario === 'CONTRATANTE' ? (
-          <View style={styles.section}>
-            <Text style={[styles.sectionKicker, { color: palette.muted }]}>04 · ORGANIZAÇÃO</Text>
-            <Field icon="business-outline" placeholder="Empresa / organização *" value={empresa} onChangeText={setEmpresa} />
-            <Field icon="pricetag-outline" placeholder="Categoria de atuação" value={categoria} onChangeText={setCategoria} />
-            <Field icon="call-outline" placeholder="Telefone" value={telefone} onChangeText={setTelefone} keyboardType="phone-pad" />
-            <Field icon="location-outline" placeholder="Cidade" value={cidade} onChangeText={setCidade} />
-            <Field icon="navigate-outline" placeholder="Endereço" value={endereco} onChangeText={setEndereco} />
-            <Field icon="globe-outline" placeholder="Site ou rede social" value={site} onChangeText={setSite} />
-            <TextInput style={[styles.textarea, { backgroundColor: palette.brandPaper, borderColor: palette.border, color: palette.brandInk }]} placeholder="Descreva a empresa, eventos e serviços..." placeholderTextColor={palette.muted} value={descricao} onChangeText={setDescricao} multiline maxLength={500} />
-          </View>
-        ) : (
-          <View style={styles.section}>
-            <Text style={[styles.sectionKicker, { color: palette.muted }]}>04 · PERFIL PROFISSIONAL</Text>
-            <Field icon="sparkles-outline" placeholder="Especialidade" value={especialidade} onChangeText={setEspecialidade} />
-            <Field icon="location-outline" placeholder="Cidade" value={cidade} onChangeText={setCidade} />
-          </View>
-        )}
-
-        <TouchableOpacity style={[styles.button, { backgroundColor: palette.brandInk }]} onPress={handleRegister} disabled={carregando}>
-          {carregando ? <ActivityIndicator color={palette.brandPaper} /> : (
-            <>
-              <Text style={[styles.buttonText, { color: palette.brandPaper }]}>
-                {tipoUsuario === 'AGENTE' ? 'CONTINUAR PARA PORTFÓLIO' : 'PERSONALIZAR PERFIL'}
-              </Text>
-              <Ionicons name="arrow-forward" size={17} color={palette.brandPaper} />
-            </>
-          )}
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.login}>
-          <Text style={[styles.loginText, { color: palette.muted }]}>Já possui uma conta?</Text>
-          <Text style={[styles.loginLink, { color: palette.brandCoral }]}>FAÇA LOGIN</Text>
-        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-function Field({ icon, ...props }: { icon: keyof typeof Ionicons.glyphMap } & React.ComponentProps<typeof TextInput>) {
-  const { palette } = useTheme();
-  return (
-    <View style={[styles.inputWrap, { backgroundColor: palette.brandPaper, borderColor: palette.border }]}>
-      <Ionicons name={icon} size={18} color={palette.muted} />
-      <TextInput style={[styles.input, { color: palette.brandInk }]} placeholderTextColor={palette.muted} {...props} />
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  content: { paddingBottom: 36 },
-  miniHeader: {
-    minHeight: 62,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  backButton: { width: 34, height: 34, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
-  brandLockup: { flex: 1, marginLeft: 12 },
-  brand: { fontSize: 18, fontWeight: '900', letterSpacing: 1.5 },
-  brandSub: { fontSize: 7, fontWeight: '800', letterSpacing: 1.1, marginTop: 2 },
-  headerLabel: { fontSize: 8, fontWeight: '900', letterSpacing: 1.4 },
-  hero: { paddingHorizontal: 20, paddingTop: 24, paddingBottom: 24, borderBottomWidth: 1 },
-  kicker: { fontSize: 9, fontWeight: '900', letterSpacing: 1.5, marginBottom: 8 },
-  heroTitle: { fontSize: 30, lineHeight: 33, fontWeight: '600', letterSpacing: -0.7 },
-  heroTitleAccent: { fontSize: 30, lineHeight: 33, fontWeight: '800', letterSpacing: -0.7 },
-  heroDescription: { fontSize: 12, lineHeight: 18, marginTop: 9, maxWidth: 310 },
-  section: { paddingHorizontal: 20, marginTop: 22 },
-  sectionKicker: { fontSize: 9, fontWeight: '900', letterSpacing: 1.3, marginBottom: 9 },
-  roles: { flexDirection: 'row', gap: 9 },
-  role: { flex: 1, minHeight: 122, borderWidth: 1, padding: 13 },
-  roleIcon: { width: 34, height: 34, alignItems: 'center', justifyContent: 'center', marginBottom: 13 },
-  roleTitle: { fontSize: 13, fontWeight: '900' },
-  roleSub: { fontSize: 10, lineHeight: 14, marginTop: 3 },
-  inputWrap: { minHeight: 50, flexDirection: 'row', alignItems: 'center', borderWidth: 1, paddingHorizontal: 13, marginBottom: 9 },
-  input: { flex: 1, fontSize: 14, marginLeft: 9, paddingVertical: 12 },
-  textarea: { minHeight: 110, borderWidth: 1, padding: 13, fontSize: 14, textAlignVertical: 'top' },
-  button: { height: 52, marginHorizontal: 20, marginTop: 27, paddingHorizontal: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  buttonText: { flex: 1, fontSize: 9, fontWeight: '900', letterSpacing: 1.1 },
-  login: { marginTop: 20, alignItems: 'center', gap: 5 },
-  loginText: { fontSize: 11 },
-  loginLink: { fontSize: 9, fontWeight: '900', letterSpacing: 1.1 },
+  container: { flex: 1, backgroundColor: '#f7f2e9' },
+  scroll: { flexGrow: 1 },
+  visualHeader: { height: 151, backgroundColor: '#28232b', overflow: 'hidden', position: 'relative' },
+  back: { position: 'absolute', left: 12, top: 10, width: 34, height: 34, borderRadius: 17, backgroundColor: '#0878df', borderWidth: 2, borderColor: '#8fd0ff', alignItems: 'center', justifyContent: 'center', zIndex: 5 },
+  headerText: { marginLeft: 15, marginTop: 14, zIndex: 2 },
+  eyebrow: { color: '#f2c75c', fontSize: 6.5, fontWeight: '900', letterSpacing: 1.1 },
+  brand: { color: '#f7f2e9', fontSize: 31, lineHeight: 36, fontWeight: '900', letterSpacing: -1.3, marginTop: 3 },
+  brandLine: { width: 53, height: 4, backgroundColor: '#f25b43', marginTop: 5, marginBottom: 10 },
+  headerDescription: { color: '#f7f2e9', fontSize: 8.5, lineHeight: 13, opacity: 0.92 },
+  shapeCoral: { position: 'absolute', right: 62, top: 0, width: 37, height: 76, backgroundColor: '#f25b43', borderBottomLeftRadius: 5, borderBottomRightRadius: 5, transform: [{ rotate: '1deg' }] },
+  shapeYellow: { position: 'absolute', right: -2, top: 20, width: 70, height: 34, backgroundColor: '#f2d28b', borderRadius: 7, transform: [{ rotate: '-4deg' }] },
+  shapeBlue: { position: 'absolute', right: -7, bottom: -21, width: 62, height: 76, backgroundColor: '#8ac6d8', borderTopLeftRadius: 24, transform: [{ rotate: '20deg' }] },
+  form: { paddingHorizontal: 15, paddingTop: 16, paddingBottom: 24 },
+  title: { color: '#302a31', fontSize: 20, lineHeight: 23, fontWeight: '900', marginBottom: 2 },
+  subtitle: { color: '#77716d', fontSize: 9, marginBottom: 14 },
+  label: { color: '#514b4a', fontSize: 6.5, fontWeight: '900', letterSpacing: 1.3, marginBottom: 5, marginTop: 1 },
+  roles: { flexDirection: 'row', gap: 7, marginBottom: 12 },
+  role: { flex: 1, minHeight: 66, backgroundColor: '#fbf8f2', borderWidth: 1, borderColor: '#ddd7cf', padding: 8, justifyContent: 'center' },
+  roleActive: { borderColor: '#28232b', backgroundColor: '#eee8dd' },
+  roleTitle: { color: '#302a31', fontSize: 7, fontWeight: '900', letterSpacing: .7, marginTop: 4 },
+  roleSub: { color: '#77716d', fontSize: 7, marginTop: 2 },
+  inputWrap: { height: 32, backgroundColor: '#fbf8f2', borderWidth: 1, borderColor: '#ddd7cf', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 8, marginBottom: 10 },
+  input: { flex: 1, color: '#302a31', fontSize: 9, marginLeft: 7, paddingVertical: 5 },
+  button: { height: 32, backgroundColor: '#28232b', paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 2 },
+  buttonText: { color: '#f7f2e9', fontSize: 7, fontWeight: '900', letterSpacing: 1 },
+  registerRow: { flexDirection: 'row', justifyContent: 'center', gap: 5, marginTop: 14 },
+  registerText: { color: '#77716d', fontSize: 8 },
+  registerLink: { color: '#f25b43', fontSize: 7, fontWeight: '900', letterSpacing: 1 },
 });
