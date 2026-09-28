@@ -704,7 +704,7 @@ export default function EventsScreen() {
                   onPress={() => abrirEvento(evento.id)}
                   style={[
                     styles.featured,
-                    { backgroundColor: palette.brandInk },
+                    { backgroundColor: palette.brandGreen },
                   ]}
                 >
                   <View style={styles.featuredTop}>
@@ -720,7 +720,7 @@ export default function EventsScreen() {
                       <Text
                         style={[
                           styles.featuredDay,
-                          { color: palette.brandCoral },
+                          { color: palette.brandPaper },
                         ]}
                       >
                         {String(dataDoEvento(evento.data).getDate()).padStart(
