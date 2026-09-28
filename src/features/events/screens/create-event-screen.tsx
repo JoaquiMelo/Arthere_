@@ -6,6 +6,7 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useMemo, useState } from "react";
 import {
   KeyboardAvoidingView,
+  Modal,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -64,6 +65,42 @@ export default function CreateEventScreen() {
 
   const dataValida = useMemo(() => /^\d{4}-\d{2}-\d{2}$/.test(data), [data]);
   const horarioValido = useMemo(() => /^\d{2}:\d{2}$/.test(horario), [horario]);
+
+  const dataParaDate = () => {
+    if (dataValida) {
+      const [ano, mes, dia] = data.split("-").map(Number);
+      return new Date(ano, mes - 1, dia);
+    }
+    return new Date();
+  };
+
+  const horarioParaDate = () => {
+    const [hora, minuto] = horarioValido ? horario.split(":").map(Number) : [12, 0];
+    const date = new Date();
+    date.setHours(hora, minuto, 0, 0);
+    return date;
+  };
+
+  const selecionarData = (_event: DateTimePickerEvent, selectedDate?: Date) => {
+    setDataPickerAberto(false);
+    if (selectedDate) {
+      const ano = selectedDate.getFullYear();
+      const mes = String(selectedDate.getMonth() + 1).padStart(2, "0");
+      const dia = String(selectedDate.getDate()).padStart(2, "0");
+      setData(ano + "-" + mes + "-" + dia);
+      setErro("");
+    }
+  };
+
+  const selecionarHorario = (_event: DateTimePickerEvent, selectedTime?: Date) => {
+    setHorarioPickerAberto(false);
+    if (selectedTime) {
+      const hora = String(selectedTime.getHours()).padStart(2, "0");
+      const minuto = String(selectedTime.getMinutes()).padStart(2, "0");
+      setHorario(hora + ":" + minuto);
+      setErro("");
+    }
+  };
 
   const publicar = () => {
     if (!titulo.trim() || !descricao.trim() || !data || !horario || !local.trim() || !cidade.trim() || !organizador.trim()) {
@@ -198,7 +235,7 @@ export default function CreateEventScreen() {
               <View style={styles.column}>
                 <Text style={[styles.label, { color: palette.muted }]}>DATA *</Text>
                 <TouchableOpacity
-                  onPress={() => setDataPickerAberto(true)}
+                  onPress={() => { setHorarioPickerAberto(false); setDataPickerAberto(true); }}
                   style={[styles.inputButton, { borderColor: palette.border, backgroundColor: palette.brandPaper }]}
                   activeOpacity={0.8}
                 >
@@ -207,20 +244,21 @@ export default function CreateEventScreen() {
                     {data ? data.split("-").reverse().join("/") : "Selecionar data"}
                   </Text>
                 </TouchableOpacity>
-                {dataPickerAberto && (
-                  <DateTimePicker
-                    value={dataParaDate()}
-                    mode="date"
-                    display={Platform.OS === "ios" ? "inline" : "default"}
-                    minimumDate={new Date()}
-                    onChange={selecionarData}
-                  />
-                )}
-              </View>
+                <Modal visible={dataPickerAberto} transparent animationType="fade" onRequestClose={() => setDataPickerAberto(false)}>
+                  <View style={styles.pickerOverlay}>
+                    <View style={[styles.pickerCard, { backgroundColor: palette.brandPaper, borderColor: palette.border }]}>
+                      <Text style={[styles.pickerTitle, { color: palette.brandInk }]}>Selecionar data</Text>
+                      <DateTimePicker value={dataParaDate()} mode="date" display={Platform.OS === "ios" ? "inline" : "default"} minimumDate={new Date()} onChange={selecionarData} />
+                      <TouchableOpacity onPress={() => setDataPickerAberto(false)} style={[styles.pickerDone, { backgroundColor: palette.brandInk }]}>
+                        <Text style={[styles.pickerDoneText, { color: palette.brandPaper }]}>CONFIRMAR DATA</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </Modal>             </View>
               <View style={styles.column}>
                 <Text style={[styles.label, { color: palette.muted }]}>HORÁRIO *</Text>
                 <TouchableOpacity
-                  onPress={() => setHorarioPickerAberto(true)}
+                  onPress={() => { setDataPickerAberto(false); setHorarioPickerAberto(true); }}
                   style={[styles.inputButton, { borderColor: palette.border, backgroundColor: palette.brandPaper }]}
                   activeOpacity={0.8}
                 >
@@ -229,16 +267,17 @@ export default function CreateEventScreen() {
                     {horario || "Selecionar horário"}
                   </Text>
                 </TouchableOpacity>
-                {horarioPickerAberto && (
-                  <DateTimePicker
-                    value={horarioParaDate()}
-                    mode="time"
-                    display={Platform.OS === "ios" ? "spinner" : "default"}
-                    is24Hour
-                    onChange={selecionarHorario}
-                  />
-                )}
-              </View>
+                <Modal visible={horarioPickerAberto} transparent animationType="fade" onRequestClose={() => setHorarioPickerAberto(false)}>
+                  <View style={styles.pickerOverlay}>
+                    <View style={[styles.pickerCard, { backgroundColor: palette.brandPaper, borderColor: palette.border }]}>
+                      <Text style={[styles.pickerTitle, { color: palette.brandInk }]}>Selecionar horário</Text>
+                      <DateTimePicker value={horarioParaDate()} mode="time" display="spinner" is24Hour onChange={selecionarHorario} />
+                      <TouchableOpacity onPress={() => setHorarioPickerAberto(false)} style={[styles.pickerDone, { backgroundColor: palette.brandInk }]}>
+                        <Text style={[styles.pickerDoneText, { color: palette.brandPaper }]}>CONFIRMAR HORÁRIO</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </Modal>             </View>
             </View>
 
             <Text style={[styles.label, { color: palette.muted }]}>LOCAL *</Text>
@@ -371,6 +410,11 @@ const styles = StyleSheet.create({
   input: { minHeight: 48, borderWidth: 1, borderRadius: 12, paddingHorizontal: 12, fontSize: 13 },
   inputButton: { minHeight: 48, borderWidth: 1, borderRadius: 12, paddingHorizontal: 12, flexDirection: "row", alignItems: "center", gap: 8 },
   inputButtonText: { flex: 1, fontSize: 12.5, fontWeight: "700" },
+  pickerOverlay: { flex: 1, backgroundColor: "rgba(0,0,0,0.45)", alignItems: "center", justifyContent: "center", padding: 20 },
+  pickerCard: { width: "100%", maxWidth: 360, borderRadius: 20, borderWidth: 1, padding: 18, alignItems: "center", elevation: 10, shadowOpacity: 0.2, shadowRadius: 14, shadowOffset: { width: 0, height: 6 } },
+  pickerTitle: { width: "100%", fontSize: 17, fontWeight: "900", marginBottom: 8 },
+  pickerDone: { width: "100%", minHeight: 46, borderRadius: 12, alignItems: "center", justifyContent: "center", marginTop: 10 },
+  pickerDoneText: { fontSize: 9, fontWeight: "900", letterSpacing: 1 },
   textarea: { minHeight: 118, paddingTop: 12, paddingBottom: 12 },
   chips: { gap: 7, paddingBottom: 2 },
   chip: { minHeight: 36, paddingHorizontal: 12, borderRadius: 11, borderWidth: 1, alignItems: "center", justifyContent: "center" },
