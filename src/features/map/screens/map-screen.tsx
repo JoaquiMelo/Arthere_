@@ -154,6 +154,8 @@ export function MapScreen() {
         style={styles.scroll}
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="none"
         stickyHeaderIndices={[0]}
       >
         <View style={styles.header}>
@@ -220,6 +222,9 @@ export function MapScreen() {
               placeholder="Buscar artista, cidade ou especialidade"
               placeholderTextColor={colors.muted}
               style={styles.searchInput}
+              editable={true}
+              autoComplete="off"
+              importantForAutofill="no"
             />
             {busca ? (
               <Ionicons name="close" size={18} color={colors.muted} onPress={() => setBusca('')} />
@@ -487,6 +492,8 @@ const styles = StyleSheet.create({
   },
   statDivider: { height: 34, width: 1, backgroundColor: colors.border },
   controls: {
+    zIndex: 30,
+    elevation: 30,
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: colors.border,
