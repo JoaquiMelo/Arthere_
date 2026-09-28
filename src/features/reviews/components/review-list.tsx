@@ -25,7 +25,7 @@ export function ReviewList({ avaliacoes }: { avaliacoes: Avaliacao[] }) {
 const styles = StyleSheet.create({
   list: { gap: 10 }, empty: { color: colors.muted, fontSize: 13 },
   card: { backgroundColor: colors.surface, borderRadius: 12, padding: 12 },
-  header: { borderRadius: 18,
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   autor: { color: colors.text, fontWeight: '700', fontSize: 13 },
   comentario: { color: colors.text, fontSize: 13, lineHeight: 18, marginTop: 6 },
   data: { color: colors.muted, fontSize: 11, marginTop: 6 },
