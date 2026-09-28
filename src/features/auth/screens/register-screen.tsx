@@ -2,7 +2,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { ActivityIndicator, Alert, Image, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { register as registerAccount } from '@/services/api';
 import { useUser } from '@/providers/user-provider';
 import { ARTHERE_LOGO } from '@/shared/assets/artHere-logo';
 
@@ -53,43 +52,27 @@ export default function RegisterScreen() {
       return;
     }
 
-    try {
-      setCarregando(true);
-      const result = await registerAccount({
-        nome: nome.trim(),
-        email: email.trim().toLowerCase(),
-        senha,
-        tipo: tipoUsuario,
-        especialidade: especialidade.trim() || undefined,
-        empresa: empresa.trim() || undefined,
-        telefone: telefone.trim() || undefined,
-        descricao: bio.trim() || undefined,
-        site: site.trim() || undefined,
-        cidade: cidade.trim(),
-        endereco: endereco.trim() || undefined,
-        categoria: categoria.trim() || undefined,
-      });
+    setCarregando(true);
 
-      updateProfile({
-        nome: nome.trim(),
-        email: result.usuario.email,
-        tipo: tipoUsuario,
-        especialidade: especialidade.trim(),
-        empresa: empresa.trim(),
-        telefone: telefone.trim(),
-        descricao: bio.trim(),
-        site: site.trim(),
-        cidade: cidade.trim(),
-        endereco: endereco.trim(),
-        categoria: categoria.trim(),
-      });
+    // Cadastro temporário: os dados ficam apenas no estado local do app.
+    updateProfile({
+      id: `local-${Date.now()}`,
+      nome: nome.trim(),
+      email: email.trim().toLowerCase(),
+      tipo: tipoUsuario,
+      especialidade: especialidade.trim(),
+      empresa: empresa.trim(),
+      telefone: telefone.trim(),
+      descricao: bio.trim(),
+      bio: bio.trim(),
+      site: site.trim(),
+      cidade: cidade.trim(),
+      endereco: endereco.trim(),
+      categoria: categoria.trim(),
+    });
 
-      navigation.navigate(tipoUsuario === 'AGENTE' ? 'CreatePortfolio' : 'CustomizeProfile');
-    } catch (error: any) {
-      Alert.alert('Não foi possível criar a conta', error?.message ?? 'Verifique os dados e tente novamente.');
-    } finally {
-      setCarregando(false);
-    }
+    setCarregando(false);
+    navigation.navigate(tipoUsuario === 'AGENTE' ? 'CreatePortfolio' : 'CustomizeProfile');
   };
 
   const renderInput = (
