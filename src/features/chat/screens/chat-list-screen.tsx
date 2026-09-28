@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
   },
   header: {
     marginHorizontal: 12,
+    borderRadius: 24,
     marginTop: 8,
     paddingHorizontal: 18,
     paddingTop: 18,
@@ -124,6 +125,8 @@ const styles = StyleSheet.create({
   },
   row: {
     minHeight: 76,
+    borderRadius: 20,
+    backgroundColor: colors.surface,
     marginBottom: 10,
     paddingHorizontal: 14,
     flexDirection: 'row',
