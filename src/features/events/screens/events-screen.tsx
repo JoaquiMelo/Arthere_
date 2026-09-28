@@ -13,8 +13,9 @@ import {
 } from "react-native";
 
 import { useTheme } from "@/providers/theme-provider";
+import { useManagement } from "@/providers/management-provider";
 import type { RootStackParamList } from "../../../navigation/app-navigator";
-import { MOCK_EVENTOS } from "../types/event";
+import { eventos } from "../types/event";
 
 type Filtro = "TODOS" | "PREMIUM" | string;
 
@@ -67,8 +68,9 @@ export default function EventsScreen() {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, "Events">>();
   const { palette } = useTheme();
+  const { eventos } = useManagement();
 
-  const primeiroEvento = MOCK_EVENTOS[0];
+  const primeiroEvento = eventos[0];
   const dataInicial = dataDoEvento(primeiroEvento.data);
 
   const [filtro, setFiltro] = useState<Filtro>("TODOS");
@@ -79,7 +81,7 @@ export default function EventsScreen() {
 
   const categorias = useMemo(() => {
     const unicas = Array.from(
-      new Set(MOCK_EVENTOS.map((evento) => evento.categoria)),
+      new Set(eventos.map((evento) => evento.categoria)),
     );
     return ["TODOS", ...unicas, "PREMIUM"];
   }, []);
@@ -87,7 +89,7 @@ export default function EventsScreen() {
   const eventosFiltrados = useMemo(() => {
     const termo = busca.trim().toLowerCase();
 
-    return MOCK_EVENTOS.filter((evento) => {
+    return eventos.filter((evento) => {
       const atendeFiltro =
         filtro === "TODOS"
           ? true
@@ -127,7 +129,7 @@ export default function EventsScreen() {
   );
 
   const eventosDestaque = useMemo(
-    () => MOCK_EVENTOS.filter((evento) => evento.destaque),
+    () => eventos.filter((evento) => evento.destaque),
     [],
   );
 
@@ -142,7 +144,7 @@ export default function EventsScreen() {
   }, [ano, mes]);
 
   const eventosPorDia = useMemo(() => {
-    const mapa = new Map<number, typeof MOCK_EVENTOS>();
+    const mapa = new Map<number, typeof eventos>();
 
     eventosDoMes.forEach((evento) => {
       const dia = dataDoEvento(evento.data).getDate();
