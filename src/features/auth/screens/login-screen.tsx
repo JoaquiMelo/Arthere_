@@ -41,7 +41,9 @@ export default function LoginScreen() {
 '}projetos na Baixada Santista.
           </Text>
         </View>
-        <Image source={{ uri: ARTHERE_LOGO }} style={styles.logo} resizeMode="contain" />
+        <View style={styles.logoBadge}>
+          <Image source={{ uri: ARTHERE_LOGO }} style={styles.logo} resizeMode="contain" />
+        </View>
         <View style={styles.shapeCoral} />
         <View style={styles.shapeYellow} />
         <View style={styles.shapeBlue} />
@@ -113,12 +115,13 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f7f2e9' },
   visualHeader: { height: 190, backgroundColor: '#28232b', overflow: 'hidden', position: 'relative' },
-  headerText: { marginLeft: 24, marginTop: 28, zIndex: 2 },
+  headerText: { marginLeft: 24, marginTop: 28, paddingRight: 70, zIndex: 2 },
   eyebrow: { color: '#f2c75c', fontSize: 10, fontWeight: '900', letterSpacing: 1.7 },
   brand: { color: '#f7f2e9', fontSize: 44, lineHeight: 48, fontWeight: '900', letterSpacing: -1.8, marginTop: 5 },
   brandLine: { width: 72, height: 5, backgroundColor: '#f25b43', marginTop: 8, marginBottom: 14 },
   headerDescription: { color: '#f7f2e9', fontSize: 14, lineHeight: 20, opacity: 0.92 },
-  logo: { position: 'absolute', right: 12, top: 12, width: 88, height: 154, zIndex: 1 },
+  logoBadge: { position: 'absolute', right: 14, top: 70, width: 54, height: 88, borderRadius: 18, backgroundColor: '#f7f2e9', alignItems: 'center', justifyContent: 'center', zIndex: 3, overflow: 'hidden', borderWidth: 1, borderColor: '#d5cec4' },
+  logo: { width: 48, height: 82 },
   shapeCoral: { position: 'absolute', right: 82, top: 0, width: 52, height: 96, backgroundColor: '#f25b43', borderBottomLeftRadius: 7, borderBottomRightRadius: 7, transform: [{ rotate: '1deg' }] },
   shapeYellow: { position: 'absolute', right: -4, top: 32, width: 94, height: 46, backgroundColor: '#f2d28b', borderRadius: 9, transform: [{ rotate: '-4deg' }] },
   shapeBlue: { position: 'absolute', right: -12, bottom: -27, width: 84, height: 102, backgroundColor: '#8ac6d8', borderTopLeftRadius: 30, transform: [{ rotate: '20deg' }] },
