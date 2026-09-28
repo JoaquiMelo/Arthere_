@@ -511,8 +511,12 @@ export default function CreateEventScreen() {
               onChangeText={setLocal}
               editable={true}
               focusable={true}
+              selectTextOnFocus={false}
               autoCorrect={false}
+              autoCapitalize="sentences"
               autoComplete="off"
+              textContentType="none"
+              keyboardType="default"
               importantForAutofill="no"
               placeholder="Ex.: Centro Cultural"
               placeholderTextColor={palette.muted}
@@ -534,8 +538,12 @@ export default function CreateEventScreen() {
               onChangeText={setCidade}
               editable={true}
               focusable={true}
+              selectTextOnFocus={false}
               autoCorrect={false}
+              autoCapitalize="sentences"
               autoComplete="off"
+              textContentType="none"
+              keyboardType="default"
               importantForAutofill="no"
               placeholder="Ex.: Santos - SP"
               placeholderTextColor={palette.muted}
