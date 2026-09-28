@@ -159,9 +159,6 @@ const styles = StyleSheet.create({
   },
   sheet: {
     position: 'absolute',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    overflow: 'hidden',
     left: 0,
     right: 0,
     bottom: 0,
@@ -180,7 +177,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 15,
   },
-  closeButton: { borderRadius: 999,
+  closeButton: {
     position: 'absolute',
     top: 15,
     right: 14,
@@ -193,14 +190,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     zIndex: 2,
   },
-  header: { borderRadius: 18,
+  header: {
     flexDirection: 'row',
     gap: 14,
     paddingRight: 40,
   },
   avatarFrame: {
     width: 70,
-    borderRadius: 20,
     height: 70,
     borderWidth: 2,
     borderColor: colors.brandInk,
@@ -211,13 +207,12 @@ const styles = StyleSheet.create({
   avatar: {
     width: 64,
     height: 64,
-    borderRadius: 17,
   },
-  headerInfo: { borderRadius: 18,
+  headerInfo: {
     flex: 1,
     minWidth: 0,
   },
-  categoryRow: { borderRadius: 18,
+  categoryRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
@@ -259,7 +254,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.9,
     marginTop: 7,
   },
-  metaRow: { borderRadius: 18,
+  metaRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
@@ -269,7 +264,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginTop: 16,
   },
-  metaItem: { borderRadius: 18,
+  metaItem: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
@@ -294,66 +289,64 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     marginTop: 13,
   },
-  sectionHeader: { borderRadius: 18,
+  sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
     marginTop: 17,
     marginBottom: 9,
   },
-  sectionTitle: { borderRadius: 18,
+  sectionTitle: {
     color: colors.brandInk,
     fontSize: 9,
     fontWeight: '900',
     letterSpacing: 1.3,
   },
-  sectionRule: { borderRadius: 18,
+  sectionRule: {
     flex: 1,
     height: 1,
     backgroundColor: colors.border,
   },
-  portfolioList: { borderRadius: 18,
+  portfolioList: {
     paddingRight: 4,
     gap: 10,
   },
-  portfolioItem: { borderRadius: 18,
+  portfolioItem: {
     width: 102,
   },
   portfolioImagem: {
     width: 102,
     height: 76,
-    borderRadius: 18,
     backgroundColor: colors.surface,
   },
   placeholder: {
     width: 102,
-    borderRadius: 18,
     height: 76,
     backgroundColor: colors.surface,
   },
-  portfolioTexto: { borderRadius: 18,
+  portfolioTexto: {
     color: colors.muted,
     fontSize: 9,
     marginTop: 4,
   },
-  reviewItem: { borderRadius: 18,
+  reviewItem: {
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.border,
     padding: 10,
     marginBottom: 7,
   },
-  reviewHeader: { borderRadius: 18,
+  reviewHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  reviewAutor: { borderRadius: 18,
+  reviewAutor: {
     color: colors.brandInk,
     fontSize: 11,
     fontWeight: '800',
   },
-  reviewTexto: { borderRadius: 18,
+  reviewTexto: {
     color: colors.muted,
     fontSize: 11,
     lineHeight: 16,
@@ -366,7 +359,6 @@ const styles = StyleSheet.create({
   },
   agendar: {
     flex: 1,
-    borderRadius: 999,
     minHeight: 46,
     backgroundColor: colors.brandInk,
     paddingHorizontal: 14,
@@ -382,7 +374,6 @@ const styles = StyleSheet.create({
   },
   chat: {
     minHeight: 46,
-    borderRadius: 999,
     paddingHorizontal: 12,
     borderWidth: 1,
     borderColor: colors.brandInk,
