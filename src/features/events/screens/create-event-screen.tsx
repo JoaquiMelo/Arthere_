@@ -8,6 +8,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useMemo, useState } from "react";
 import {
   Alert,
+  Image,
   KeyboardAvoidingView,
   Modal,
   Platform,
@@ -573,41 +574,76 @@ export default function CreateEventScreen() {
               style={[
                 styles.imagePicker,
                 {
-                  borderColor: palette.border,
+                  borderColor: imagemUrl ? palette.brandCoral : palette.border,
                   backgroundColor: palette.brandPaper,
                 },
               ]}
-              activeOpacity={0.82}
+              activeOpacity={0.9}
             >
-              <View
-                style={[
-                  styles.imagePickerIcon,
-                  { backgroundColor: palette.brandCoral },
-                ]}
-              >
-                <Ionicons
-                  name="image-outline"
-                  size={20}
-                  color={palette.brandPaper}
-                />
-              </View>
+              {imagemUrl ? (
+                <View style={styles.selectedImageWrap}>
+                  <Image
+                    source={{ uri: imagemUrl }}
+                    style={styles.selectedImage}
+                  />
+                  <View
+                    style={[
+                      styles.imageChangeBadge,
+                      { backgroundColor: palette.brandInk },
+                    ]}
+                  >
+                    <Ionicons
+                      name="camera"
+                      size={13}
+                      color={palette.brandPaper}
+                    />
+                  </View>
+                </View>
+              ) : (
+                <View
+                  style={[
+                    styles.imagePickerIcon,
+                    { backgroundColor: palette.brandCoral },
+                  ]}
+                >
+                  <Ionicons
+                    name="images-outline"
+                    size={22}
+                    color={palette.brandPaper}
+                  />
+                </View>
+              )}
+
               <View style={styles.imagePickerCopy}>
-                <Text style={[styles.optionTitle, { color: palette.brandInk }]}>
+                <Text
+                  style={[styles.optionTitle, { color: palette.brandInk }]}
+                >
                   {imagemUrl
-                    ? "Imagem selecionada"
-                    : "Selecionar imagem do celular"}
+                    ? "Capa selecionada"
+                    : "Escolher imagem da galeria"}
                 </Text>
                 <Text style={[styles.optionText, { color: palette.muted }]}>
                   {imagemUrl
-                    ? "Toque para escolher outra imagem."
-                    : "Escolha uma foto da sua galeria para a capa."}
+                    ? "Toque para trocar a imagem da capa."
+                    : "Escolha uma foto do celular para a capa do evento."}
                 </Text>
               </View>
-              <Ionicons
-                name="chevron-forward"
-                size={20}
-                color={palette.muted}
-              />
+
+              <View
+                style={[
+                  styles.imageAction,
+                  {
+                    borderColor: palette.border,
+                    backgroundColor: palette.brandPaper,
+                  },
+                ]}
+              >
+                <Ionicons
+                  name={imagemUrl ? "create-outline" : "add"}
+                  size={18}
+                  color={palette.brandInk}
+                />
+              </View>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -891,18 +927,48 @@ const styles = StyleSheet.create({
   optionTitle: { fontSize: 12, fontWeight: "900" },
   optionText: { fontSize: 9.5, lineHeight: 14, marginTop: 3 },
   imagePicker: {
-    minHeight: 72,
+    minHeight: 92,
     borderWidth: 1,
-    borderRadius: 14,
-    padding: 11,
+    borderRadius: 16,
+    padding: 10,
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
+    gap: 11,
+    overflow: "hidden",
+  },
+  selectedImageWrap: {
+    width: 88,
+    height: 70,
+    borderRadius: 11,
+    overflow: "hidden",
+    position: "relative",
+  },
+  selectedImage: {
+    width: "100%",
+    height: "100%",
+  },
+  imageChangeBadge: {
+    position: "absolute",
+    right: 5,
+    bottom: 5,
+    width: 25,
+    height: 25,
+    borderRadius: 13,
+    alignItems: "center",
+    justifyContent: "center",
   },
   imagePickerIcon: {
-    width: 40,
-    height: 40,
+    width: 48,
+    height: 48,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  imageAction: {
+    width: 38,
+    height: 38,
     borderRadius: 12,
+    borderWidth: 1,
     alignItems: "center",
     justifyContent: "center",
   },
