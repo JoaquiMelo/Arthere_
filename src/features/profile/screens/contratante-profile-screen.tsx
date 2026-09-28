@@ -62,7 +62,11 @@ export default function ContratanteProfileScreen() {
   );
   const [editando, setEditando] = useState(false);
   const [rascunhoEmpresa, setRascunhoEmpresa] = useState(empresa);
-  const [eventos] = useState<EventoAnterior[]>(MOCK_EVENTOS_ANTERIORES);
+  const [eventos, setEventos] = useState<EventoAnterior[]>(MOCK_EVENTOS_ANTERIORES);
+  const [adicionandoEvento, setAdicionandoEvento] = useState(false);
+  const [novoEventoTitulo, setNovoEventoTitulo] = useState("");
+  const [novoEventoData, setNovoEventoData] = useState("");
+  const [novoEventoImagem, setNovoEventoImagem] = useState("");
 
   const concluidas = vagas.filter((vaga) => vaga.status === "CONCLUIDA").length;
   const emAndamento = vagas.filter(
@@ -81,6 +85,34 @@ export default function ContratanteProfileScreen() {
   const salvarEmpresa = () => {
     setEmpresa(rascunhoEmpresa.trim() || empresa);
     setEditando(false);
+  };
+
+  const abrirAdicionarEvento = () => {
+    setNovoEventoTitulo("");
+    setNovoEventoData("");
+    setNovoEventoImagem("");
+    setAdicionandoEvento(true);
+  };
+
+  const salvarEvento = () => {
+    const titulo = novoEventoTitulo.trim();
+    const data = novoEventoData.trim();
+    const imagemUrl = novoEventoImagem.trim();
+
+    if (!titulo || !data) return;
+
+    setEventos((eventosAtuais) => [
+      ...eventosAtuais,
+      {
+        id: `evento-${Date.now()}`,
+        titulo,
+        data,
+        imagemUrl:
+          imagemUrl ||
+          "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=600&q=80",
+      },
+    ]);
+    setAdicionandoEvento(false);
   };
 
   const avatarSource =
@@ -230,7 +262,11 @@ export default function ContratanteProfileScreen() {
               </View>
             ))}
 
-            <TouchableOpacity style={styles.addEventCard} activeOpacity={0.75}>
+            <TouchableOpacity
+              style={styles.addEventCard}
+              activeOpacity={0.75}
+              onPress={abrirAdicionarEvento}
+            >
               <View style={styles.addEventIcon}>
                 <Ionicons name="add" size={24} color={colors.brandInk} />
               </View>
@@ -294,6 +330,70 @@ export default function ContratanteProfileScreen() {
           )}
         </View>
       </ScrollView>
+
+      <Modal
+        visible={adicionandoEvento}
+        animationType="fade"
+        transparent
+        onRequestClose={() => setAdicionandoEvento(false)}
+      >
+        <KeyboardAvoidingView
+          style={styles.overlay}
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+        >
+          <View style={styles.editCard}>
+            <Text style={styles.editKicker}>PORTFÓLIO DE EVENTOS</Text>
+            <Text style={styles.editTitle}>Adicionar evento</Text>
+
+            <Text style={styles.fieldLabel}>NOME DO EVENTO</Text>
+            <TextInput
+              style={styles.editInput}
+              value={novoEventoTitulo}
+              onChangeText={setNovoEventoTitulo}
+              placeholder="Ex.: Festival de Música da Baixada"
+              placeholderTextColor={colors.muted}
+            />
+
+            <Text style={styles.fieldLabel}>DATA</Text>
+            <TextInput
+              style={styles.editInput}
+              value={novoEventoData}
+              onChangeText={setNovoEventoData}
+              placeholder="Ex.: Dez 2026"
+              placeholderTextColor={colors.muted}
+            />
+
+            <Text style={styles.fieldLabel}>URL DA IMAGEM (OPCIONAL)</Text>
+            <TextInput
+              style={styles.editInput}
+              value={novoEventoImagem}
+              onChangeText={setNovoEventoImagem}
+              placeholder="https://..."
+              placeholderTextColor={colors.muted}
+              autoCapitalize="none"
+              keyboardType="url"
+            />
+
+            <View style={styles.editActions}>
+              <TouchableOpacity onPress={() => setAdicionandoEvento(false)}>
+                <Text style={styles.cancel}>CANCELAR</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.save, (!novoEventoTitulo.trim() || !novoEventoData.trim()) && styles.saveDisabled]}
+                onPress={salvarEvento}
+                disabled={!novoEventoTitulo.trim() || !novoEventoData.trim()}
+              >
+                <Text style={styles.saveText}>ADICIONAR</Text>
+                <Ionicons
+                  name="add"
+                  size={14}
+                  color={colors.brandPaper}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
 
       <Modal
         visible={editando}
@@ -648,6 +748,14 @@ const styles = StyleSheet.create({
     marginTop: 3,
     marginBottom: 13,
   },
+  fieldLabel: {
+    color: colors.muted,
+    fontSize: 8,
+    fontWeight: "900",
+    letterSpacing: 1,
+    marginTop: 11,
+    marginBottom: 5,
+  },
   editInput: {
     minHeight: 48,
     borderWidth: 1,
@@ -677,6 +785,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
+  },
+  saveDisabled: {
+    opacity: 0.45,
   },
   saveText: {
     color: colors.brandPaper,
