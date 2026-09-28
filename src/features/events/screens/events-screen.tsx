@@ -818,10 +818,10 @@ export default function EventsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { borderRadius: 18,
-  content: { borderRadius: 18,
+  container: {
+  content: {
 
-  miniHeader: { borderRadius: 18,
+  miniHeader: {
     minHeight: 42,
     flexDirection: "row",
     alignItems: "center",
@@ -831,48 +831,48 @@ const styles = StyleSheet.create({
   brandLockup: { flexDirection: "row", alignItems: "baseline", gap: 6 },
   brand: { fontSize: 13, fontWeight: "900", letterSpacing: 0.8 },
   brandSub: { fontSize: 7, fontWeight: "800", letterSpacing: 1.2 },
-  headerLabel: { borderRadius: 18,
+  headerLabel: {
 
-  hero: { borderRadius: 18,
+  hero: {
   kicker: {
     fontSize: 9,
     fontWeight: "900",
     letterSpacing: 1.4,
     marginBottom: 10,
   },
-  heroTitle: { borderRadius: 18,
+  heroTitle: {
     fontSize: 31,
     lineHeight: 36,
     fontWeight: "800",
     letterSpacing: -0.6,
   },
-  heroTitleAccent: { borderRadius: 18,
-  heroDescription: { borderRadius: 18,
+  heroTitleAccent: {
+  heroDescription: {
     fontSize: 12,
     lineHeight: 18,
     maxWidth: 340,
     marginTop: 12,
   },
 
-  searchSection: { borderRadius: 18,
-  searchHint: { borderRadius: 18,
+  searchSection: {
+  searchHint: {
     fontSize: 9,
     fontWeight: "900",
     letterSpacing: 1.15,
     marginBottom: 8,
   },
-  searchBox: { borderRadius: 18,
+  searchBox: {
     minHeight: 52,
     paddingHorizontal: 14,
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1.5,
   },
-  searchInput: { borderRadius: 18,
-  clearSearch: { borderRadius: 18,
+  searchInput: {
+  clearSearch: {
 
-  filtersHeader: { borderRadius: 18,
-  filterContent: { borderRadius: 18,
+  filtersHeader: {
+  filterContent: {
   filterChip: { borderRadius: 999,
     minHeight: 40,
     paddingHorizontal: 14,
@@ -884,12 +884,12 @@ const styles = StyleSheet.create({
   },
   filterChipText: { borderRadius: 999,
 
-  calendarArea: { borderRadius: 18,
+  calendarArea: {
     marginTop: 20,
     padding: 11,
     borderWidth: 1.5,
   },
-  calendarTop: { borderRadius: 18,
+  calendarTop: {
     minHeight: 112,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -897,8 +897,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingTop: 3,
   },
-  calendarHeadline: { borderRadius: 18,
-  calendarEyebrow: { borderRadius: 18,
+  calendarHeadline: {
+  calendarEyebrow: {
   bigMonth: {
     fontSize: 76,
     lineHeight: 74,
@@ -922,7 +922,7 @@ const styles = StyleSheet.create({
   },
   controlText: { fontSize: 25, lineHeight: 28, fontWeight: "400" },
 
-  weekHeader: { borderRadius: 18,
+  weekHeader: {
     flexDirection: "row",
     borderBottomWidth: 1,
     paddingBottom: 7,
@@ -936,7 +936,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.4,
   },
 
-  calendarGrid: { borderRadius: 18,
+  calendarGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
     borderTopWidth: 1,
@@ -962,7 +962,7 @@ const styles = StyleSheet.create({
   },
   eventDot: { width: 4, height: 4, borderRadius: 2 },
 
-  calendarFooter: { borderRadius: 18,
+  calendarFooter: {
     minHeight: 32,
     paddingHorizontal: 4,
     paddingTop: 9,
@@ -970,20 +970,20 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  legendItems: { borderRadius: 18,
-  legendItem: { borderRadius: 18,
+  legendItems: {
+  legendItem: {
   legendDot: { width: 5, height: 5, borderRadius: 3 },
   legendText: { fontSize: 8, fontWeight: "700" },
   selectedDate: { fontSize: 9, fontWeight: "900", letterSpacing: 1 },
 
-  agendaSection: { borderRadius: 18,
-  sectionLabelRow: { borderRadius: 18,
+  agendaSection: {
+  sectionLabelRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
     gap: 10,
   },
-  sectionLabel: { borderRadius: 18,
+  sectionLabel: {
   agendaTitle: { fontSize: 22, fontWeight: "600", marginTop: 5 },
   agendaDate: {
     fontSize: 10,
@@ -992,7 +992,7 @@ const styles = StyleSheet.create({
     textTransform: "capitalize",
   },
   eventCount: { fontSize: 9, fontWeight: "700" },
-  agendaItem: { borderRadius: 18,
+  agendaItem: {
     minHeight: 70,
     borderTopWidth: 1,
     paddingVertical: 11,
@@ -1004,14 +1004,14 @@ const styles = StyleSheet.create({
   agendaMeta: { fontSize: 8, marginTop: 2 },
   agendaTextBlock: { flex: 1, paddingRight: 8 },
   agendaTitleRow: { flexDirection: "row", alignItems: "center", gap: 7 },
-  agendaItemTitle: { borderRadius: 18,
-  agendaItemMeta: { borderRadius: 18,
+  agendaItemTitle: {
+  agendaItemMeta: {
   agendaArrow: { fontSize: 18 },
   noAgenda: { paddingVertical: 16, borderTopWidth: 1 },
   noAgendaText: { fontSize: 10 },
 
-  searchResultLine: { borderRadius: 18,
-  searchResultText: { borderRadius: 18,
+  searchResultLine: {
+  searchResultText: {
   allEventsLabel: {
     fontSize: 8,
     fontWeight: "900",
@@ -1020,7 +1020,7 @@ const styles = StyleSheet.create({
     marginBottom: 7,
   },
 
-  eventListItem: { borderRadius: 18,
+  eventListItem: {
     minHeight: 82,
     borderTopWidth: 1,
     paddingVertical: 12,
@@ -1049,50 +1049,50 @@ const styles = StyleSheet.create({
   },
   fixedTagText: { borderRadius: 999,
 
-  empty: { borderRadius: 18,
-  emptyTitle: { borderRadius: 18,
-  emptyText: { borderRadius: 18,
+  empty: {
+  emptyTitle: {
+  emptyText: {
     marginTop: 6,
     fontSize: 11,
     lineHeight: 17,
     textAlign: "center",
   },
 
-  highlightsSection: { borderRadius: 18,
+  highlightsSection: {
   highlightsTitle: { fontSize: 22, fontWeight: "600", marginTop: 5 },
-  highlightContent: { borderRadius: 18,
-  featured: { borderRadius: 18,
-  featuredTop: { borderRadius: 18,
+  highlightContent: {
+  featured: {
+  featuredTop: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
   },
-  featuredKicker: { borderRadius: 18,
-  featuredDay: { borderRadius: 18,
+  featuredKicker: {
+  featuredDay: {
     fontSize: 48,
     lineHeight: 50,
     fontWeight: "700",
     marginTop: 2,
   },
-  featuredDateText: { borderRadius: 18,
+  featuredDateText: {
   pinBadge: {
     width: 30,
     height: 30,
     alignItems: "center",
     justifyContent: "center",
   },
-  featuredDivider: { borderRadius: 18,
-  featuredTitle: { borderRadius: 18,
-  featuredDescription: { borderRadius: 18,
-  featuredInfoRow: { borderRadius: 18,
+  featuredDivider: {
+  featuredTitle: {
+  featuredDescription: {
+  featuredInfoRow: {
     flexDirection: "row",
     gap: 15,
     marginTop: 15,
     flexWrap: "wrap",
   },
-  featuredInfo: { borderRadius: 18,
-  featuredFooter: { borderRadius: 18,
-  featuredLocation: { borderRadius: 18,
+  featuredInfo: {
+  featuredFooter: {
+  featuredLocation: {
   detailButton: { borderRadius: 999,
     alignSelf: "flex-start",
     paddingHorizontal: 11,
