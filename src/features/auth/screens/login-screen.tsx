@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Image,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -45,16 +44,9 @@ export default function LoginScreen() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: palette.background }]}>
       <View style={[styles.miniHeader, { borderBottomColor: palette.border }]}>
-        <View style={styles.brandLockup}>
-          <Image
-            source={require('../../../../assets/images/arthere-logo.webp')}
-            style={styles.logo}
-            resizeMode="contain"
-          />
-          <View>
-            <Text style={[styles.brand, { color: palette.brandInk }]}>ARTHERE</Text>
-            <Text style={[styles.brandSub, { color: palette.muted }]}>ARTE · ENCONTRO · TERRITÓRIO</Text>
-          </View>
+        <View>
+          <Text style={[styles.brand, { color: palette.brandInk }]}>ARTHERE</Text>
+          <Text style={[styles.brandSub, { color: palette.muted }]}>ARTE · ENCONTRO · TERRITÓRIO</Text>
         </View>
         <Text style={[styles.headerLabel, { color: palette.muted }]}>ENTRAR</Text>
       </View>
@@ -129,8 +121,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  brandLockup: { flexDirection: 'row', alignItems: 'center', gap: 9 },
-  logo: { width: 42, height: 38 },
   brand: { fontSize: 18, lineHeight: 20, fontWeight: '900', letterSpacing: 1.5 },
   brandSub: { fontSize: 7, fontWeight: '800', letterSpacing: 1.1, marginTop: 2 },
   headerLabel: { fontSize: 8, fontWeight: '900', letterSpacing: 1.4 },
