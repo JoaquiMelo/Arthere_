@@ -1,23 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import {
-  ActivityIndicator,
-  Alert,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-
-import { useTheme } from '@/providers/theme-provider';
+import { ActivityIndicator, Alert, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useUser } from '@/providers/user-provider';
 
 export default function LoginScreen() {
   const navigation = useNavigation<any>();
-  const { palette } = useTheme();
   const { login } = useUser();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
@@ -28,7 +16,6 @@ export default function LoginScreen() {
       Alert.alert('Atenção', 'Informe o e-mail e a senha.');
       return;
     }
-
     try {
       setCarregando(true);
       await new Promise((resolve) => setTimeout(resolve, 600));
@@ -42,68 +29,44 @@ export default function LoginScreen() {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: palette.background }]}>
-      <View style={[styles.miniHeader, { borderBottomColor: palette.border }]}>
-        <View>
-          <Text style={[styles.brand, { color: palette.brandInk }]}>ARTHERE</Text>
-          <Text style={[styles.brandSub, { color: palette.muted }]}>ARTE · ENCONTRO · TERRITÓRIO</Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.visualHeader}>
+        <View style={styles.gear}><Ionicons name="settings-sharp" size={22} color="#fff" /></View>
+        <View style={styles.headerText}>
+          <Text style={styles.eyebrow}>ENCONTRO · TERRITÓRIO</Text>
+          <Text style={styles.brand}>Arthere</Text>
+          <View style={styles.brandLine} />
+          <Text style={styles.headerDescription}>Conectando talentos criativos e{'
+'}projetos na Baixada Santista.</Text>
         </View>
-        <Text style={[styles.headerLabel, { color: palette.muted }]}>ENTRAR</Text>
-      </View>
-
-      <View style={[styles.hero, { borderBottomColor: palette.border }]}>
-        <Text style={[styles.kicker, { color: palette.muted }]}>SEU ESPAÇO CRIATIVO</Text>
-        <Text style={[styles.heroTitle, { color: palette.brandInk }]}>Entre para fazer a</Text>
-        <Text style={[styles.heroTitleAccent, { color: palette.brandCoral }]}>cena acontecer.</Text>
-        <Text style={[styles.heroDescription, { color: palette.muted }]}>
-          Acesse seus projetos, conexões e oportunidades na Baixada Santista.
-        </Text>
+        <View style={styles.shapeCoral} />
+        <View style={styles.shapeYellow} />
+        <View style={styles.shapeBlue} />
       </View>
 
       <View style={styles.form}>
-        <Text style={[styles.label, { color: palette.muted }]}>E-MAIL</Text>
-        <View style={[styles.inputContainer, { backgroundColor: palette.brandPaper, borderColor: palette.brandInk }]}>
-          <Ionicons name="mail-outline" size={19} color={palette.brandInk} />
-          <TextInput
-            style={[styles.input, { color: palette.brandInk }]}
-            placeholder="seu@email.com"
-            placeholderTextColor={palette.muted}
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
+        <Text style={styles.title}>Entrar</Text>
+        <Text style={styles.subtitle}>Acesse seu espaço criativo.</Text>
+
+        <Text style={styles.label}>E-MAIL</Text>
+        <View style={styles.inputWrap}>
+          <Ionicons name="mail-outline" size={15} color="#77716d" />
+          <TextInput style={styles.input} placeholder="seu@email.com" placeholderTextColor="#77716d" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
         </View>
 
-        <Text style={[styles.label, { color: palette.muted }]}>SENHA</Text>
-        <View style={[styles.inputContainer, { backgroundColor: palette.brandPaper, borderColor: palette.brandInk }]}>
-          <Ionicons name="lock-closed-outline" size={19} color={palette.brandInk} />
-          <TextInput
-            style={[styles.input, { color: palette.brandInk }]}
-            placeholder="Digite sua senha"
-            placeholderTextColor={palette.muted}
-            value={senha}
-            onChangeText={setSenha}
-            secureTextEntry
-          />
+        <Text style={styles.label}>SENHA</Text>
+        <View style={styles.inputWrap}>
+          <Ionicons name="lock-closed-outline" size={15} color="#77716d" />
+          <TextInput style={styles.input} placeholder="Digite sua senha" placeholderTextColor="#77716d" value={senha} onChangeText={setSenha} secureTextEntry />
         </View>
 
-        <TouchableOpacity style={[styles.button, { backgroundColor: palette.brandInk }]} onPress={handleLogin} disabled={carregando}>
-          {carregando ? (
-            <ActivityIndicator color={palette.brandPaper} />
-          ) : (
-            <>
-              <Text style={[styles.buttonText, { color: palette.brandPaper }]}>ENTRAR</Text>
-              <Ionicons name="arrow-forward" size={17} color={palette.brandPaper} />
-            </>
-          )}
+        <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={carregando}>
+          {carregando ? <ActivityIndicator color="#f7f2e9" /> : <><Text style={styles.buttonText}>ENTRAR</Text><Ionicons name="arrow-forward" size={16} color="#f7f2e9" /></>}
         </TouchableOpacity>
 
         <View style={styles.registerRow}>
-          <Text style={[styles.registerText, { color: palette.muted }]}>Ainda não tem uma conta?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={[styles.registerLink, { color: palette.brandCoral }]}>CRIAR PERFIL</Text>
-          </TouchableOpacity>
+          <Text style={styles.registerText}>Ainda não tem uma conta?</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Register')}><Text style={styles.registerLink}>CRIAR PERFIL</Text></TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
@@ -111,45 +74,26 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  miniHeader: {
-    minHeight: 62,
-    paddingHorizontal: 20,
-    paddingVertical: 11,
-    borderBottomWidth: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  brand: { fontSize: 18, lineHeight: 20, fontWeight: '900', letterSpacing: 1.5 },
-  brandSub: { fontSize: 7, fontWeight: '800', letterSpacing: 1.1, marginTop: 2 },
-  headerLabel: { fontSize: 8, fontWeight: '900', letterSpacing: 1.4 },
-  hero: { paddingHorizontal: 20, paddingTop: 26, paddingBottom: 24, borderBottomWidth: 1 },
-  kicker: { fontSize: 9, fontWeight: '900', letterSpacing: 1.5, marginBottom: 8 },
-  heroTitle: { fontSize: 31, lineHeight: 34, fontWeight: '600', letterSpacing: -0.8 },
-  heroTitleAccent: { fontSize: 31, lineHeight: 34, fontWeight: '800', letterSpacing: -0.8 },
-  heroDescription: { fontSize: 12, lineHeight: 18, marginTop: 10, maxWidth: 310 },
-  form: { paddingHorizontal: 20, paddingTop: 24 },
-  label: { fontSize: 9, fontWeight: '900', letterSpacing: 1.3, marginBottom: 7 },
-  inputContainer: {
-    minHeight: 50,
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1.5,
-    paddingHorizontal: 13,
-    marginBottom: 17,
-  },
-  input: { flex: 1, fontSize: 14, marginLeft: 10, paddingVertical: 12 },
-  button: {
-    height: 52,
-    marginTop: 3,
-    paddingHorizontal: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  buttonText: { fontSize: 9, fontWeight: '900', letterSpacing: 1.4 },
-  registerRow: { flexDirection: 'row', justifyContent: 'center', gap: 7, marginTop: 20 },
-  registerText: { fontSize: 11 },
-  registerLink: { fontSize: 9, fontWeight: '900', letterSpacing: 1.1 },
+  container: { flex: 1, backgroundColor: '#f7f2e9' },
+  visualHeader: { height: 151, backgroundColor: '#28232b', overflow: 'hidden', position: 'relative' },
+  headerText: { marginLeft: 15, marginTop: 14, zIndex: 2 },
+  eyebrow: { color: '#f2c75c', fontSize: 6.5, fontWeight: '900', letterSpacing: 1.1 },
+  brand: { color: '#f7f2e9', fontSize: 31, lineHeight: 36, fontWeight: '900', letterSpacing: -1.3, marginTop: 3 },
+  brandLine: { width: 53, height: 4, backgroundColor: '#f25b43', marginTop: 5, marginBottom: 10 },
+  headerDescription: { color: '#f7f2e9', fontSize: 8.5, lineHeight: 13, opacity: 0.92 },
+  gear: { position: 'absolute', top: 9, left: 12, width: 34, height: 34, borderRadius: 17, backgroundColor: '#0878df', borderWidth: 2, borderColor: '#8fd0ff', alignItems: 'center', justifyContent: 'center', zIndex: 5 },
+  shapeCoral: { position: 'absolute', right: 62, top: 0, width: 37, height: 76, backgroundColor: '#f25b43', borderBottomLeftRadius: 5, borderBottomRightRadius: 5, transform: [{ rotate: '1deg' }] },
+  shapeYellow: { position: 'absolute', right: -2, top: 20, width: 70, height: 34, backgroundColor: '#f2d28b', borderRadius: 7, transform: [{ rotate: '-4deg' }] },
+  shapeBlue: { position: 'absolute', right: -7, bottom: -21, width: 62, height: 76, backgroundColor: '#8ac6d8', borderTopLeftRadius: 24, transform: [{ rotate: '20deg' }] },
+  form: { paddingHorizontal: 15, paddingTop: 16, flex: 1 },
+  title: { color: '#302a31', fontSize: 20, lineHeight: 23, fontWeight: '900', marginBottom: 2 },
+  subtitle: { color: '#77716d', fontSize: 9, marginBottom: 15 },
+  label: { color: '#514b4a', fontSize: 6.5, fontWeight: '900', letterSpacing: 1.4, marginBottom: 5, marginTop: 1 },
+  inputWrap: { height: 32, backgroundColor: '#fbf8f2', borderWidth: 1, borderColor: '#ddd7cf', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 8, marginBottom: 11 },
+  input: { flex: 1, color: '#302a31', fontSize: 9, marginLeft: 7, paddingVertical: 5 },
+  button: { height: 32, backgroundColor: '#28232b', paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 1 },
+  buttonText: { color: '#f7f2e9', fontSize: 7, fontWeight: '900', letterSpacing: 1.4 },
+  registerRow: { flexDirection: 'row', justifyContent: 'center', gap: 5, marginTop: 14 },
+  registerText: { color: '#77716d', fontSize: 8 },
+  registerLink: { color: '#f25b43', fontSize: 7, fontWeight: '900', letterSpacing: 1 },
 });
