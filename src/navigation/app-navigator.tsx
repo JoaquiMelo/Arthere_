@@ -67,17 +67,17 @@ function AppTabs() {
         tabBarActiveTintColor: palette.brandCoral,
         tabBarInactiveTintColor: palette.brandPaper,
         tabBarLabelStyle: {
-          fontSize: 10,
-          fontWeight: '800',
-          letterSpacing: 0.7,
+          fontSize: 8,
+          fontWeight: '900',
+          letterSpacing: 1,
           textTransform: 'uppercase',
         },
         tabBarStyle: {
-          height: 70,
-          paddingTop: 7,
+          height: 74,
+          paddingTop: 8,
           paddingBottom: 10,
           borderTopWidth: 1,
-          borderTopColor: palette.brandCoral,
+          borderTopColor: palette.border,
           backgroundColor: palette.brandInk,
           elevation: 0,
         },
@@ -106,7 +106,7 @@ function AppTabs() {
 export function AppNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName="Tabs" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="CreatePortfolio" component={CreatePortfolioScreen} />
