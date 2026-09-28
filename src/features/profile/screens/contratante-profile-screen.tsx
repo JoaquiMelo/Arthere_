@@ -343,6 +343,8 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     backgroundColor: colors.brandInk,
     position: "relative",
+    borderBottomLeftRadius: 28,
+    borderBottomRightRadius: 28,
   },
   coverImage: { width: "100%", height: "100%" },
   coverOverlay: {
@@ -374,6 +376,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(246,241,232,0.36)",
     backgroundColor: "rgba(41,36,43,0.60)",
+    borderRadius: 19,
   },
   intro: {
     alignItems: "center",
@@ -387,6 +390,7 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: colors.brandPaper,
     backgroundColor: colors.white,
+    borderRadius: 53,
   },
   name: {
     marginTop: 12,
@@ -406,6 +410,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.brandInk,
     backgroundColor: colors.brandSand,
+    borderRadius: 14,
   },
   empresa: {
     flexShrink: 1,
@@ -429,6 +434,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: colors.border,
+    borderRadius: 16,
   },
   stat: { flex: 1, alignItems: "center" },
   statNumber: { color: colors.brandInk, fontSize: 18, fontWeight: "900" },
@@ -454,6 +460,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 6,
+    borderRadius: 14,
   },
   manageButtonText: {
     color: colors.brandPaper,
@@ -471,6 +478,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 6,
+    borderRadius: 14,
   },
   editProfileButtonText: {
     color: colors.brandInk,
@@ -502,6 +510,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     position: "relative",
     backgroundColor: colors.surface,
+    borderRadius: 18,
   },
   eventImage: { width: "100%", height: "100%" },
   eventOverlay: {
@@ -532,6 +541,7 @@ const styles = StyleSheet.create({
     borderColor: colors.brandInk,
     backgroundColor: colors.brandBlue,
     alignItems: "center",
+    borderRadius: 18,
     justifyContent: "center",
     padding: 10,
   },
@@ -541,6 +551,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.brandPaper,
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: 19,
   },
   addEventText: {
     color: colors.brandInk,
@@ -557,6 +568,7 @@ const styles = StyleSheet.create({
     padding: 24,
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: 18,
   },
   emptyTitle: {
     color: colors.brandInk,
@@ -582,6 +594,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     padding: 13,
     marginBottom: 9,
+    borderRadius: 16,
   },
   flex1: { flex: 1, minWidth: 0 },
   vagaCategoria: {
@@ -620,6 +633,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 2,
     borderTopColor: colors.brandCoral,
     padding: 20,
+    borderRadius: 22,
   },
   editKicker: {
     color: colors.brandCoral,
