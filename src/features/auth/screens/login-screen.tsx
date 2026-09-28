@@ -10,6 +10,7 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [carregando, setCarregando] = useState(false);
+  const [mostrarSenha, setMostrarSenha] = useState(false);
 
   const handleLogin = async () => {
     if (!email.trim() || !senha) {
@@ -18,11 +19,10 @@ export default function LoginScreen() {
     }
     try {
       setCarregando(true);
-      await new Promise((resolve) => setTimeout(resolve, 600));
       if (login) await login(email.trim(), senha);
       navigation.reset({ index: 0, routes: [{ name: 'Tabs' }] });
     } catch {
-      Alert.alert('Erro', 'Não foi possível realizar o login.');
+      Alert.alert('Erro', 'E-mail ou senha inválidos. Verifique seus dados e tente novamente.');
     } finally {
       setCarregando(false);
     }
@@ -31,13 +31,14 @@ export default function LoginScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.visualHeader}>
-        <View style={styles.gear}><Ionicons name="settings-sharp" size={22} color="#fff" /></View>
         <View style={styles.headerText}>
           <Text style={styles.eyebrow}>ENCONTRO · TERRITÓRIO</Text>
           <Text style={styles.brand}>Arthere</Text>
           <View style={styles.brandLine} />
-          <Text style={styles.headerDescription}>Conectando talentos criativos e{'
-'}projetos na Baixada Santista.</Text>
+          <Text style={styles.headerDescription}>
+            Conectando talentos criativos e{'
+'}projetos na Baixada Santista.
+          </Text>
         </View>
         <View style={styles.shapeCoral} />
         <View style={styles.shapeYellow} />
@@ -50,23 +51,57 @@ export default function LoginScreen() {
 
         <Text style={styles.label}>E-MAIL</Text>
         <View style={styles.inputWrap}>
-          <Ionicons name="mail-outline" size={15} color="#77716d" />
-          <TextInput style={styles.input} placeholder="seu@email.com" placeholderTextColor="#77716d" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
+          <Ionicons name="mail-outline" size={22} color="#77716d" />
+          <TextInput
+            style={styles.input}
+            placeholder="seu@email.com"
+            placeholderTextColor="#77716d"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
         </View>
 
-        <Text style={styles.label}>SENHA</Text>
+        <View style={styles.passwordLabelRow}>
+          <Text style={styles.label}>SENHA</Text>
+          <TouchableOpacity onPress={() => Alert.alert('Recuperar senha', 'Em breve você poderá redefinir sua senha por e-mail.')}>
+            <Text style={styles.forgot}>ESQUECI A SENHA</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.inputWrap}>
-          <Ionicons name="lock-closed-outline" size={15} color="#77716d" />
-          <TextInput style={styles.input} placeholder="Digite sua senha" placeholderTextColor="#77716d" value={senha} onChangeText={setSenha} secureTextEntry />
+          <Ionicons name="lock-closed-outline" size={22} color="#77716d" />
+          <TextInput
+            style={styles.input}
+            placeholder="Digite sua senha"
+            placeholderTextColor="#77716d"
+            value={senha}
+            onChangeText={setSenha}
+            secureTextEntry={!mostrarSenha}
+            autoCapitalize="none"
+          />
+          <TouchableOpacity onPress={() => setMostrarSenha((value) => !value)} hitSlop={10}>
+            <Ionicons name={mostrarSenha ? 'eye-off-outline' : 'eye-outline'} size={22} color="#77716d" />
+          </TouchableOpacity>
         </View>
 
         <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={carregando}>
-          {carregando ? <ActivityIndicator color="#f7f2e9" /> : <><Text style={styles.buttonText}>ENTRAR</Text><Ionicons name="arrow-forward" size={16} color="#f7f2e9" /></>}
+          {carregando ? (
+            <ActivityIndicator color="#f7f2e9" />
+          ) : (
+            <>
+              <Text style={styles.buttonText}>ENTRAR</Text>
+              <Ionicons name="arrow-forward" size={22} color="#f7f2e9" />
+            </>
+          )}
         </TouchableOpacity>
 
         <View style={styles.registerRow}>
           <Text style={styles.registerText}>Ainda não tem uma conta?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}><Text style={styles.registerLink}>CRIAR PERFIL</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+            <Text style={styles.registerLink}>CRIAR CONTA</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
@@ -75,25 +110,26 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f7f2e9' },
-  visualHeader: { height: 151, backgroundColor: '#28232b', overflow: 'hidden', position: 'relative' },
-  headerText: { marginLeft: 15, marginTop: 14, zIndex: 2 },
-  eyebrow: { color: '#f2c75c', fontSize: 6.5, fontWeight: '900', letterSpacing: 1.1 },
-  brand: { color: '#f7f2e9', fontSize: 31, lineHeight: 36, fontWeight: '900', letterSpacing: -1.3, marginTop: 3 },
-  brandLine: { width: 53, height: 4, backgroundColor: '#f25b43', marginTop: 5, marginBottom: 10 },
-  headerDescription: { color: '#f7f2e9', fontSize: 8.5, lineHeight: 13, opacity: 0.92 },
-  gear: { position: 'absolute', top: 9, left: 12, width: 34, height: 34, borderRadius: 17, backgroundColor: '#0878df', borderWidth: 2, borderColor: '#8fd0ff', alignItems: 'center', justifyContent: 'center', zIndex: 5 },
-  shapeCoral: { position: 'absolute', right: 62, top: 0, width: 37, height: 76, backgroundColor: '#f25b43', borderBottomLeftRadius: 5, borderBottomRightRadius: 5, transform: [{ rotate: '1deg' }] },
-  shapeYellow: { position: 'absolute', right: -2, top: 20, width: 70, height: 34, backgroundColor: '#f2d28b', borderRadius: 7, transform: [{ rotate: '-4deg' }] },
-  shapeBlue: { position: 'absolute', right: -7, bottom: -21, width: 62, height: 76, backgroundColor: '#8ac6d8', borderTopLeftRadius: 24, transform: [{ rotate: '20deg' }] },
-  form: { paddingHorizontal: 15, paddingTop: 16, flex: 1 },
-  title: { color: '#302a31', fontSize: 20, lineHeight: 23, fontWeight: '900', marginBottom: 2 },
-  subtitle: { color: '#77716d', fontSize: 9, marginBottom: 15 },
-  label: { color: '#514b4a', fontSize: 6.5, fontWeight: '900', letterSpacing: 1.4, marginBottom: 5, marginTop: 1 },
-  inputWrap: { height: 32, backgroundColor: '#fbf8f2', borderWidth: 1, borderColor: '#ddd7cf', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 8, marginBottom: 11 },
-  input: { flex: 1, color: '#302a31', fontSize: 9, marginLeft: 7, paddingVertical: 5 },
-  button: { height: 32, backgroundColor: '#28232b', paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 1 },
-  buttonText: { color: '#f7f2e9', fontSize: 7, fontWeight: '900', letterSpacing: 1.4 },
-  registerRow: { flexDirection: 'row', justifyContent: 'center', gap: 5, marginTop: 14 },
-  registerText: { color: '#77716d', fontSize: 8 },
-  registerLink: { color: '#f25b43', fontSize: 7, fontWeight: '900', letterSpacing: 1 },
+  visualHeader: { height: 190, backgroundColor: '#28232b', overflow: 'hidden', position: 'relative' },
+  headerText: { marginLeft: 24, marginTop: 28, zIndex: 2 },
+  eyebrow: { color: '#f2c75c', fontSize: 10, fontWeight: '900', letterSpacing: 1.7 },
+  brand: { color: '#f7f2e9', fontSize: 44, lineHeight: 48, fontWeight: '900', letterSpacing: -1.8, marginTop: 5 },
+  brandLine: { width: 72, height: 5, backgroundColor: '#f25b43', marginTop: 8, marginBottom: 14 },
+  headerDescription: { color: '#f7f2e9', fontSize: 14, lineHeight: 20, opacity: 0.92 },
+  shapeCoral: { position: 'absolute', right: 82, top: 0, width: 52, height: 96, backgroundColor: '#f25b43', borderBottomLeftRadius: 7, borderBottomRightRadius: 7, transform: [{ rotate: '1deg' }] },
+  shapeYellow: { position: 'absolute', right: -4, top: 32, width: 94, height: 46, backgroundColor: '#f2d28b', borderRadius: 9, transform: [{ rotate: '-4deg' }] },
+  shapeBlue: { position: 'absolute', right: -12, bottom: -27, width: 84, height: 102, backgroundColor: '#8ac6d8', borderTopLeftRadius: 30, transform: [{ rotate: '20deg' }] },
+  form: { paddingHorizontal: 24, paddingTop: 28, flex: 1 },
+  title: { color: '#302a31', fontSize: 30, lineHeight: 36, fontWeight: '900', marginBottom: 4 },
+  subtitle: { color: '#77716d', fontSize: 15, marginBottom: 28 },
+  label: { color: '#514b4a', fontSize: 11, fontWeight: '900', letterSpacing: 1.5, marginBottom: 8 },
+  passwordLabelRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  forgot: { color: '#f25b43', fontSize: 10, fontWeight: '900', letterSpacing: 0.8, marginBottom: 8 },
+  inputWrap: { minHeight: 56, backgroundColor: '#fbf8f2', borderWidth: 1, borderColor: '#d5cec4', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, marginBottom: 20, borderRadius: 4 },
+  input: { flex: 1, color: '#302a31', fontSize: 16, marginLeft: 11, paddingVertical: 12 },
+  button: { minHeight: 56, backgroundColor: '#28232b', paddingHorizontal: 18, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 6, borderRadius: 4 },
+  buttonText: { color: '#f7f2e9', fontSize: 13, fontWeight: '900', letterSpacing: 1.5 },
+  registerRow: { flexDirection: 'row', justifyContent: 'center', gap: 7, marginTop: 24 },
+  registerText: { color: '#77716d', fontSize: 13 },
+  registerLink: { color: '#f25b43', fontSize: 12, fontWeight: '900', letterSpacing: 0.8 },
 });

@@ -14,7 +14,7 @@ export class AuthService {
     const usuario=await this.prisma.usuario.create({data:{
       email:dto.email,senha:senhaHash,tipo:dto.tipo,
       ...(dto.tipo==='AGENTE'
-        ? {agente:{create:{nome:dto.nome,especialidade:dto.especialidade??'',cidade:dto.cidade??'',endereco:dto.endereco??''}}}
+        ? {agente:{create:{nome:dto.nome,especialidade:dto.especialidade??'',bio:dto.descricao??'',cidade:dto.cidade??'',endereco:dto.endereco??''}}}
         : {contratante:{create:{nome:dto.nome,empresa:dto.empresa,telefone:dto.telefone,descricao:dto.descricao,site:dto.site,cidade:dto.cidade,endereco:dto.endereco,categoria:dto.categoria}}})
     },include:{agente:true,contratante:true}});
     return this.gerarToken(usuario);
