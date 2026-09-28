@@ -93,6 +93,9 @@ export default function RegisterScreen() {
           placeholderTextColor="#77716d"
           value={value}
           onChangeText={onChangeText}
+          editable={true}
+          autoComplete="off"
+          importantForAutofill="no"
           {...options}
         />
       </View>
@@ -101,7 +104,7 @@ export default function RegisterScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled" keyboardDismissMode="none">
         <View style={styles.visualHeader}>
           <TouchableOpacity style={styles.back} onPress={() => navigation.goBack()} accessibilityLabel="Voltar">
             <Ionicons name="arrow-back" size={21} color="#28232b" />
