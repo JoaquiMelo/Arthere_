@@ -335,11 +335,11 @@ export default function ManageOpportunitiesScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { borderRadius: 18,
+  container: {
     flex: 1,
     backgroundColor: colors.brandPaper,
   },
-  header: { borderRadius: 18,
+  header: {
     minHeight: 78,
     paddingHorizontal: 16,
     paddingVertical: 11,
@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  headerCopy: { borderRadius: 18,
+  headerCopy: { flex: 1 },
   kicker: {
     color: colors.brandCoral,
     fontSize: 8,
@@ -372,14 +372,14 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     marginTop: 2,
   },
-  headerMark: { borderRadius: 18,
+  headerMark: {
     width: 44,
     height: 44,
     backgroundColor: colors.brandInk,
     overflow: 'hidden',
     position: 'relative',
   },
-  headerMarkShape: { borderRadius: 18,
+  headerMarkShape: {
     position: 'absolute',
     width: 38,
     height: 38,
@@ -388,25 +388,25 @@ const styles = StyleSheet.create({
     backgroundColor: colors.brandCoral,
     transform: [{ rotate: '20deg' }],
   },
-  eventRequestsSection: { borderRadius: 18,
+  eventRequestsSection: {
     paddingHorizontal: 16,
     paddingTop: 14,
   },
-  sectionHeader: { borderRadius: 18,
+  sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
     marginBottom: 10,
     gap: 12,
   },
-  sectionKicker: { borderRadius: 18,
+  sectionKicker: {
     color: colors.brandCoral,
     fontSize: 8,
     fontWeight: '900',
     letterSpacing: 1.35,
     marginBottom: 2,
   },
-  sectionTitle: { borderRadius: 18,
+  sectionTitle: {
     color: colors.brandInk,
     fontSize: 17,
     fontWeight: '900',
@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
     paddingBottom: 34,
     gap: 12,
   },
-  eventRequestCard: { borderRadius: 18,
+  eventRequestCard: {
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.border,
@@ -444,13 +444,13 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     marginBottom: 4,
   },
-  card: { borderRadius: 18,
+  card: {
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.border,
     padding: 14,
   },
-  cardHeader: { borderRadius: 18,
+  cardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
@@ -494,7 +494,7 @@ const styles = StyleSheet.create({
     paddingTop: 13,
     gap: 9,
   },
-  candidatoCard: { borderRadius: 18,
+  candidatoCard: {
     flexDirection: 'row',
     gap: 10,
     backgroundColor: colors.surface,
@@ -600,20 +600,20 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     letterSpacing: 0.8,
   },
-  emptyCard: { borderRadius: 18,
+  emptyCard: {
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: colors.white,
     padding: 24,
     alignItems: 'center',
   },
-  emptyTitle: { borderRadius: 18,
+  emptyTitle: {
     color: colors.brandInk,
     fontSize: 15,
     fontWeight: '900',
     marginTop: 9,
   },
-  emptyText: { borderRadius: 18,
+  emptyText: {
     color: colors.muted,
     fontSize: 11,
     lineHeight: 17,
