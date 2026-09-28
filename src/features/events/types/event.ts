@@ -10,6 +10,7 @@ export type Evento = {
   organizador: string;
   premium: boolean;
   destaque?: boolean;
+  imagemUrl?: string;
 };
 
 export const MOCK_EVENTOS: Evento[] = [
