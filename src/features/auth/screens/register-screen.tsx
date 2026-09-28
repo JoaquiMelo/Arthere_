@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
+  Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -71,8 +72,15 @@ export default function RegisterScreen() {
             <Ionicons name="arrow-back" size={18} color={palette.brandInk} />
           </TouchableOpacity>
           <View style={styles.brandLockup}>
-            <Text style={[styles.brand, { color: palette.brandInk }]}>ARTHERE</Text>
-            <Text style={[styles.brandSub, { color: palette.muted }]}>NOVO PERFIL</Text>
+            <Image
+              source={require('../../../../assets/images/arthere-logo.webp')}
+              style={styles.logo}
+              resizeMode="contain"
+            />
+            <View>
+              <Text style={[styles.brand, { color: palette.brandInk }]}>ARTHERE</Text>
+              <Text style={[styles.brandSub, { color: palette.muted }]}>NOVO PERFIL</Text>
+            </View>
           </View>
           <Text style={[styles.headerLabel, { color: palette.muted }]}>CADASTRO</Text>
         </View>
@@ -188,7 +196,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   backButton: { width: 34, height: 34, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
-  brandLockup: { flex: 1, marginLeft: 12 },
+  brandLockup: { flex: 1, marginLeft: 12, flexDirection: 'row', alignItems: 'center', gap: 9 },
+  logo: { width: 42, height: 38 },
   brand: { fontSize: 18, fontWeight: '900', letterSpacing: 1.5 },
   brandSub: { fontSize: 7, fontWeight: '800', letterSpacing: 1.1, marginTop: 2 },
   headerLabel: { fontSize: 8, fontWeight: '900', letterSpacing: 1.4 },
