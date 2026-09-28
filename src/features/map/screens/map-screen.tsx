@@ -161,7 +161,12 @@ export function MapScreen() {
             </View>
             <View style={styles.headerActions}>
               <Text style={styles.headerLink}>MAPA</Text>
-              <Text style={styles.profileButton}>CRIAR PERFIL</Text>
+              <Text style={styles.loginButton} onPress={() => navigation.navigate('Login')}>
+                ENTRAR
+              </Text>
+              <Text style={styles.profileButton} onPress={() => navigation.navigate('Register')}>
+                CRIAR PERFIL
+              </Text>
             </View>
           </View>
         </View>
@@ -365,6 +370,17 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: colors.muted,
     letterSpacing: 1.2,
+  },
+  loginButton: {
+    color: colors.brandInk,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 999,
+    paddingHorizontal: 11,
+    paddingVertical: 8,
+    fontSize: 7,
+    fontWeight: '800',
+    letterSpacing: 1,
   },
   profileButton: {
     backgroundColor: colors.brandInk,
