@@ -269,6 +269,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: colors.brandInk,
     position: 'relative',
+    borderBottomLeftRadius: 28,
+    borderBottomRightRadius: 28,
   },
   coverImage: {
     width: '100%',
@@ -280,7 +282,6 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     left: 0,
-    backgroundColor: 'rgba(41,36,43,0.48)',
   },
   coverLabel: {
     position: 'absolute',
@@ -289,6 +290,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 9,
     paddingVertical: 6,
     backgroundColor: colors.brandInk,
+    borderRadius: 10,
   },
   coverLabelText: {
     color: colors.brandSand,
@@ -306,6 +308,7 @@ const styles = StyleSheet.create({
   topIcon: {
     width: 38,
     height: 38,
+    borderRadius: 19,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
@@ -321,21 +324,25 @@ const styles = StyleSheet.create({
     marginTop: -54,
     width: 112,
     height: 112,
+    borderRadius: 56,
     borderWidth: 4,
     borderColor: colors.brandPaper,
     backgroundColor: colors.white,
     position: 'relative',
+    overflow: 'hidden',
   },
   avatar: {
     width: 104,
     height: 104,
+    borderRadius: 52,
   },
   cameraBadge: {
     position: 'absolute',
-    right: -7,
+    right: -1,
     bottom: 4,
     width: 28,
     height: 28,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.brandCoral,
@@ -386,6 +393,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     marginTop: 20,
     paddingVertical: 13,
+    borderRadius: 16,
   },
   stat: {
     flex: 1,
@@ -418,6 +426,7 @@ const styles = StyleSheet.create({
     flex: 1,
     minHeight: 44,
     paddingHorizontal: 10,
+    borderRadius: 14,
     backgroundColor: colors.brandInk,
     flexDirection: 'row',
     alignItems: 'center',
@@ -434,6 +443,7 @@ const styles = StyleSheet.create({
     flex: 1,
     minHeight: 44,
     paddingHorizontal: 10,
+    borderRadius: 14,
     borderWidth: 1,
     borderColor: colors.brandInk,
     backgroundColor: colors.brandSand,
@@ -511,6 +521,7 @@ const styles = StyleSheet.create({
     width: galleryItemSize,
     height: galleryItemSize,
     overflow: 'hidden',
+    borderRadius: 14,
     backgroundColor: colors.surface,
   },
   galleryImage: {
@@ -520,6 +531,7 @@ const styles = StyleSheet.create({
   addWork: {
     width: galleryItemSize,
     height: galleryItemSize,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
@@ -537,6 +549,7 @@ const styles = StyleSheet.create({
   aboutCard: {
     margin: 20,
     padding: 18,
+    borderRadius: 18,
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: colors.white,
@@ -558,6 +571,10 @@ const styles = StyleSheet.create({
     gap: 6,
     alignSelf: 'flex-start',
     marginTop: 18,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    backgroundColor: colors.brandSand,
   },
   editBioText: {
     color: colors.brandCoral,
