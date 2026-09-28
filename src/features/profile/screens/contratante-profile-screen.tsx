@@ -34,21 +34,21 @@ const MOCK_EVENTOS_ANTERIORES: EventoAnterior[] = [
     titulo: "Festival Verão de Música",
     data: "Jan 2026",
     imagemUrl:
-      "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80",
   },
   {
     id: "2",
     titulo: "Desfile Primavera/Verão",
     data: "Nov 2025",
     imagemUrl:
-      "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80",
   },
   {
     id: "3",
     titulo: "Gala Corporativa 2025",
     data: "Out 2025",
     imagemUrl:
-      "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=600&q=80",
   },
 ];
 
@@ -96,7 +96,7 @@ export default function ContratanteProfileScreen() {
         <View style={styles.coverContainer}>
           <Image
             source={{
-              uri: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80",
+              uri: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80",
             }}
             style={styles.coverImage}
           />
@@ -217,7 +217,7 @@ export default function ContratanteProfileScreen() {
             {eventos.map((evento) => (
               <View key={evento.id} style={styles.eventCard}>
                 <Image
-                  source={{ uri: evento.imagemUrl || "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=600&q=80" }}
+                  source={{ uri: evento.imagemUrl || "https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=600&q=80" }}
                   style={styles.eventImage}
                 />
                 <View style={styles.eventOverlay}>
