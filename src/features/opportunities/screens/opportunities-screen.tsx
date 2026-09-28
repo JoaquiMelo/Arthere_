@@ -259,11 +259,11 @@ function FieldLabel({ label }: { label: string }) {
 }
 
 const styles = StyleSheet.create({
-  container: { borderRadius: 18,
+  container: {
     flex: 1,
     backgroundColor: colors.brandPaper,
   },
-  header: { borderRadius: 18,
+  header: {
     paddingHorizontal: 20,
     paddingTop: 18,
     paddingBottom: 16,
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.brandPaper,
     gap: 12,
   },
-  headerCopy: { borderRadius: 18,
+  headerCopy: {
     flex: 1,
   },
   kicker: {
@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
     lineHeight: 17,
     marginTop: 3,
   },
-  headerActions: { borderRadius: 18,
+  headerActions: {
     flexDirection: 'row',
     gap: 8,
   },
@@ -330,25 +330,25 @@ const styles = StyleSheet.create({
     paddingBottom: 35,
     gap: 14,
   },
-  empty: { borderRadius: 18,
+  empty: {
     flexGrow: 1,
     padding: 20,
     justifyContent: 'center',
   },
-  emptyCard: { borderRadius: 18,
+  emptyCard: {
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: colors.white,
     padding: 26,
     alignItems: 'center',
   },
-  emptyTitle: { borderRadius: 18,
+  emptyTitle: {
     color: colors.brandInk,
     fontSize: 16,
     fontWeight: '900',
     marginTop: 10,
   },
-  emptyText: { borderRadius: 18,
+  emptyText: {
     color: colors.muted,
     fontSize: 12,
     lineHeight: 18,
@@ -356,13 +356,13 @@ const styles = StyleSheet.create({
     marginTop: 6,
     maxWidth: 280,
   },
-  card: { borderRadius: 18,
+  card: {
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.border,
     padding: 16,
   },
-  cardTop: { borderRadius: 18,
+  cardTop: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -403,7 +403,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '600',
   },
-  footer: { borderRadius: 18,
+  footer: {
     marginTop: 14,
     flexDirection: 'row',
     alignItems: 'flex-end',
@@ -446,7 +446,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(41,36,43,0.50)',
     justifyContent: 'flex-end',
   },
-  modal: { borderRadius: 18,
+  modal: {
     backgroundColor: colors.brandPaper,
     padding: 20,
     paddingTop: 10,
@@ -462,13 +462,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 17,
   },
-  modalKicker: { borderRadius: 18,
+  modalKicker: {
     color: colors.brandCoral,
     fontSize: 9,
     fontWeight: '900',
     letterSpacing: 1.5,
   },
-  modalTitle: { borderRadius: 18,
+  modalTitle: {
     color: colors.brandInk,
     fontSize: 23,
     fontWeight: '900',
@@ -483,7 +483,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
     marginBottom: 6,
   },
-  input: { borderRadius: 18,
+  input: {
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: colors.white,
@@ -493,7 +493,7 @@ const styles = StyleSheet.create({
     paddingVertical: 11,
     fontSize: 13,
   },
-  textarea: { borderRadius: 18,
+  textarea: {
     minHeight: 106,
     textAlignVertical: 'top',
   },
