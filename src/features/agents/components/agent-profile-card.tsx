@@ -157,8 +157,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(41,36,43,0.44)',
   },
-  sheet: { borderRadius: 18,
+  sheet: {
     position: 'absolute',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    overflow: 'hidden',
     left: 0,
     right: 0,
     bottom: 0,
@@ -197,6 +200,7 @@ const styles = StyleSheet.create({
   },
   avatarFrame: {
     width: 70,
+    borderRadius: 20,
     height: 70,
     borderWidth: 2,
     borderColor: colors.brandInk,
@@ -207,6 +211,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: 64,
     height: 64,
+    borderRadius: 17,
   },
   headerInfo: { borderRadius: 18,
     flex: 1,
@@ -314,13 +319,15 @@ const styles = StyleSheet.create({
   portfolioItem: { borderRadius: 18,
     width: 102,
   },
-  portfolioImagem: { borderRadius: 18,
+  portfolioImagem: {
     width: 102,
     height: 76,
+    borderRadius: 18,
     backgroundColor: colors.surface,
   },
   placeholder: {
     width: 102,
+    borderRadius: 18,
     height: 76,
     backgroundColor: colors.surface,
   },
@@ -359,6 +366,7 @@ const styles = StyleSheet.create({
   },
   agendar: {
     flex: 1,
+    borderRadius: 999,
     minHeight: 46,
     backgroundColor: colors.brandInk,
     paddingHorizontal: 14,
@@ -374,6 +382,7 @@ const styles = StyleSheet.create({
   },
   chat: {
     minHeight: 46,
+    borderRadius: 999,
     paddingHorizontal: 12,
     borderWidth: 1,
     borderColor: colors.brandInk,
