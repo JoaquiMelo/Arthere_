@@ -367,7 +367,6 @@ const styles = StyleSheet.create({
   },
   brandLine: { flexDirection: 'row', alignItems: 'baseline', gap: 8 },
   brand: {
-    fontFamily: Platform.select({ ios: 'Georgia', android: 'serif', default: 'serif' }),
     fontSize: 35,
     color: colors.brandInk,
     letterSpacing: -1.8,
