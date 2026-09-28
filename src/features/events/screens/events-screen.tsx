@@ -173,6 +173,8 @@ export default function EventsScreen() {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="none"
       >
         <View
           style={[styles.miniHeader, { borderBottomColor: palette.border }]}
@@ -232,6 +234,9 @@ export default function EventsScreen() {
               placeholder="Nome, cidade, categoria ou local"
               placeholderTextColor={palette.muted}
               style={[styles.searchInput, { color: palette.brandInk }]}
+              editable={true}
+              autoComplete="off"
+              importantForAutofill="no"
               returnKeyType="search"
             />
             {!!busca && (
