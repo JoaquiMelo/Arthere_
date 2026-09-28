@@ -1,25 +1,25 @@
-import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { useMemo, useState } from "react";
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { useMemo, useState } from 'react';
 import {
   Alert,
   Image,
   Platform,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
-} from "react-native";
-import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+  Pressable,
+} from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 
-import type { AgenteCriativo } from "@/features/agents/types/agent";
-import { useChat } from "@/providers/chat-provider";
-import { colors } from "@/shared/theme/colors";
-import { AgentProfileCard } from "../../../features/agents/components/agent-profile-card";
-import { CATEGORIAS } from "../../../shared/config/categories";
+import type { AgenteCriativo } from '@/features/agents/types/agent';
+import { useChat } from '@/providers/chat-provider';
+import { colors } from '@/shared/theme/colors';
+import { AgentProfileCard } from '../../../features/agents/components/agent-profile-card';
+import { CATEGORIAS } from '../../../shared/config/categories';
 
 const REGIAO_INICIAL: Region = {
   latitude: -23.96,
@@ -30,84 +30,60 @@ const REGIAO_INICIAL: Region = {
 
 const agentesBaixadaSantista: AgenteCriativo[] = [
   {
-    id: "1",
-    nome: "Marina Oliveira",
-    categoria: "fotografo",
+    id: '1',
+    nome: 'Marina Oliveira',
+    categoria: 'fotografo',
     disponivel: true,
     avaliacao: 4.9,
-    cidade: "Santos, SP",
-    especialidades: ["Fotógrafo"],
+    cidade: 'Santos, SP',
+    especialidades: ['Fotógrafo'],
     latitude: -23.9608,
     longitude: -46.3339,
-    avatarUrl: "https://i.pravatar.cc/150?img=47",
-    descricao: "Fotógrafa de eventos e retratos autorais.",
-    portfolio: [
-      {
-        id: "marina-1",
-        titulo: "Retrato editorial",
-        imagemUrl: "https://picsum.photos/seed/marina-1/300/200",
-      },
-    ],
+    avatarUrl: 'https://i.pravatar.cc/150?img=47',
+    descricao: 'Fotógrafa de eventos e retratos autorais.',
+    portfolio: [{ id: 'marina-1', titulo: 'Retrato editorial', imagemUrl: 'https://picsum.photos/seed/marina-1/300/200' }],
   },
   {
-    id: "2",
-    nome: "João Paulo",
-    categoria: "videomaker",
+    id: '2',
+    nome: 'João Paulo',
+    categoria: 'videomaker',
     disponivel: true,
     avaliacao: 4.7,
-    cidade: "São Vicente, SP",
-    especialidades: ["Videomaker"],
+    cidade: 'São Vicente, SP',
+    especialidades: ['Videomaker'],
     latitude: -23.965,
     longitude: -46.38,
-    avatarUrl: "https://i.pravatar.cc/150?img=12",
-    descricao: "Videomaker para campanhas, eventos e conteúdo digital.",
-    portfolio: [
-      {
-        id: "joao-1",
-        titulo: "Vídeo de campanha",
-        imagemUrl: "https://picsum.photos/seed/joao-1/300/200",
-      },
-    ],
+    avatarUrl: 'https://i.pravatar.cc/150?img=12',
+    descricao: 'Videomaker para campanhas, eventos e conteúdo digital.',
+    portfolio: [{ id: 'joao-1', titulo: 'Vídeo de campanha', imagemUrl: 'https://picsum.photos/seed/joao-1/300/200' }],
   },
   {
-    id: "3",
-    nome: "Beatriz Costa",
-    categoria: "dj",
+    id: '3',
+    nome: 'Beatriz Costa',
+    categoria: 'dj',
     disponivel: false,
     avaliacao: 4.8,
-    cidade: "Guarujá, SP",
-    especialidades: ["DJ"],
+    cidade: 'Guarujá, SP',
+    especialidades: ['DJ'],
     latitude: -23.99,
     longitude: -46.26,
-    avatarUrl: "https://i.pravatar.cc/150?img=25",
-    descricao: "DJ para casamentos, festas e eventos corporativos.",
-    portfolio: [
-      {
-        id: "beatriz-1",
-        titulo: "Evento ao vivo",
-        imagemUrl: "https://picsum.photos/seed/beatriz-1/300/200",
-      },
-    ],
+    avatarUrl: 'https://i.pravatar.cc/150?img=25',
+    descricao: 'DJ para casamentos, festas e eventos corporativos.',
+    portfolio: [{ id: 'beatriz-1', titulo: 'Evento ao vivo', imagemUrl: 'https://picsum.photos/seed/beatriz-1/300/200' }],
   },
   {
-    id: "4",
-    nome: "Rafael Souza",
-    categoria: "artesao",
+    id: '4',
+    nome: 'Rafael Souza',
+    categoria: 'artesao',
     disponivel: true,
     avaliacao: 4.6,
-    cidade: "Praia Grande, SP",
-    especialidades: ["Artesanato"],
+    cidade: 'Praia Grande, SP',
+    especialidades: ['Artesanato'],
     latitude: -24.005,
     longitude: -46.41,
-    avatarUrl: "https://i.pravatar.cc/150?img=33",
-    descricao: "Artesão de peças autorais em madeira para casas e eventos.",
-    portfolio: [
-      {
-        id: "rafael-1",
-        titulo: "Coleção em madeira",
-        imagemUrl: "https://picsum.photos/seed/rafael-1/300/200",
-      },
-    ],
+    avatarUrl: 'https://i.pravatar.cc/150?img=33',
+    descricao: 'Artesão de peças autorais em madeira para casas e eventos.',
+    portfolio: [{ id: 'rafael-1', titulo: 'Coleção em madeira', imagemUrl: 'https://picsum.photos/seed/rafael-1/300/200' }],
   },
 ];
 
@@ -132,12 +108,7 @@ function CustomPin({
         <View style={[styles.pinImageContainer, { borderColor: cor }]}>
           <Image source={{ uri: agente.avatarUrl }} style={styles.pinImage} />
         </View>
-        <View
-          style={[
-            styles.pinStatus,
-            { backgroundColor: agente.disponivel ? cor : colors.muted },
-          ]}
-        />
+        <View style={[styles.pinStatus, { backgroundColor: agente.disponivel ? cor : colors.muted }]} />
         <View style={[styles.pinTail, { borderTopColor: cor }]} />
       </View>
     </Marker>
@@ -148,7 +119,7 @@ export function MapScreen() {
   const navigation = useNavigation<any>();
   const insets = useSafeAreaInsets();
   const { startConversation } = useChat();
-  const [busca, setBusca] = useState("");
+  const [busca, setBusca] = useState('');
   const [categoria, setCategoria] = useState<string | null>(null);
   const [selecionado, setSelecionado] = useState<AgenteCriativo | null>(null);
 
@@ -157,29 +128,24 @@ export function MapScreen() {
 
     return agentesBaixadaSantista.filter((agente) => {
       const categoriaOk = !categoria || agente.categoria === categoria;
-      const categoriaLabel =
-        CATEGORIAS[agente.categoria]?.label.toLowerCase() ?? "";
+      const categoriaLabel = CATEGORIAS[agente.categoria]?.label.toLowerCase() ?? '';
       const termoOk =
         !termo ||
         agente.nome.toLowerCase().includes(termo) ||
         agente.cidade.toLowerCase().includes(termo) ||
         categoriaLabel.includes(termo) ||
-        agente.especialidades.some((item) =>
-          item.toLowerCase().includes(termo),
-        );
+        agente.especialidades.some((item) => item.toLowerCase().includes(termo));
 
       return categoriaOk && termoOk;
     });
   }, [busca, categoria]);
 
-  const destaque = [...filtrados]
-    .sort((a, b) => b.avaliacao - a.avaliacao)
-    .slice(0, 3);
+  const destaque = [...filtrados].sort((a, b) => b.avaliacao - a.avaliacao).slice(0, 3);
 
   const abrirChat = (agente: AgenteCriativo) => {
     const conversationId = startConversation(agente);
     setSelecionado(null);
-    navigation.navigate("ChatConversation", { conversationId });
+    navigation.navigate('ChatConversation', { conversationId });
   };
 
   return (
@@ -203,11 +169,8 @@ export function MapScreen() {
               accessibilityRole="button"
               accessibilityLabel="Entrar"
               hitSlop={6}
-              style={({ pressed }) => [
-                styles.loginButton,
-                pressed && styles.buttonPressed,
-              ]}
-              onPress={() => navigation.navigate("Login")}
+              style={({ pressed }) => [styles.loginButton, pressed && styles.buttonPressed]}
+              onPress={() => navigation.navigate('Login')}
             >
               <Text style={styles.loginButtonText}>ENTRAR</Text>
             </Pressable>
@@ -215,11 +178,8 @@ export function MapScreen() {
               accessibilityRole="button"
               accessibilityLabel="Criar perfil"
               hitSlop={6}
-              style={({ pressed }) => [
-                styles.profileButton,
-                pressed && styles.buttonPressed,
-              ]}
-              onPress={() => navigation.navigate("Register")}
+              style={({ pressed }) => [styles.profileButton, pressed && styles.buttonPressed]}
+              onPress={() => navigation.navigate('Register')}
             >
               <Text style={styles.profileButtonText}>CRIAR PERFIL</Text>
             </Pressable>
@@ -230,29 +190,23 @@ export function MapScreen() {
           <Text style={styles.kicker}>ARTE, ENCONTRO E TERRITÓRIO</Text>
 
           <Text style={styles.heroTitle}>
-            O mapa vivo dos{" "}
+            O mapa vivo dos{' '}
             <Text style={styles.heroAccent}>talentos criativos</Text>
-            {"\n"}da Baixada Santista.
+            {'\n'}da Baixada Santista.
           </Text>
 
           <Text style={styles.heroDescription}>
-            Fotógrafos, DJs, videomakers, designers e artesãos abertos a novos
-            projetos. Descubra quem está perto, veja o trabalho e comece a
-            conversa.
+            Fotógrafos, DJs, videomakers, designers e artesãos abertos a novos projetos. Descubra quem está perto, veja o trabalho e comece a conversa.
           </Text>
 
           <View style={styles.stats}>
             <View>
-              <Text style={styles.statNumber}>
-                {agentesBaixadaSantista.length}
-              </Text>
+              <Text style={styles.statNumber}>{agentesBaixadaSantista.length}</Text>
               <Text style={styles.statLabel}>ARTISTAS</Text>
             </View>
             <View style={styles.statDivider} />
             <View>
-              <Text style={styles.statNumber}>
-                {Object.keys(CATEGORIAS).length}
-              </Text>
+              <Text style={styles.statNumber}>{Object.keys(CATEGORIAS).length}</Text>
               <Text style={styles.statLabel}>ÁREAS CRIATIVAS</Text>
             </View>
           </View>
@@ -269,25 +223,12 @@ export function MapScreen() {
               style={styles.searchInput}
             />
             {busca ? (
-              <Ionicons
-                name="close"
-                size={18}
-                color={colors.muted}
-                onPress={() => setBusca("")}
-              />
+              <Ionicons name="close" size={18} color={colors.muted} onPress={() => setBusca('')} />
             ) : null}
           </View>
 
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.chips}
-          >
-            <FilterChip
-              label="Todos"
-              active={!categoria}
-              onPress={() => setCategoria(null)}
-            />
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
+            <FilterChip label="Todos" active={!categoria} onPress={() => setCategoria(null)} />
             {Object.entries(CATEGORIAS).map(([id, item]) => (
               <FilterChip
                 key={id}
@@ -304,7 +245,7 @@ export function MapScreen() {
           <View style={styles.mapFrame}>
             <MapView
               style={StyleSheet.absoluteFill}
-              provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
+              provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
               initialRegion={REGIAO_INICIAL}
               scrollEnabled
             >
@@ -321,8 +262,7 @@ export function MapScreen() {
             <View style={styles.mapBadge}>
               <View style={styles.liveDot} />
               <Text style={styles.mapBadgeText}>
-                {filtrados.length}{" "}
-                {filtrados.length === 1 ? "ARTISTA" : "ARTISTAS"} NO MAPA
+                {filtrados.length} {filtrados.length === 1 ? 'ARTISTA' : 'ARTISTAS'} NO MAPA
               </Text>
             </View>
           </View>
@@ -346,41 +286,26 @@ export function MapScreen() {
         <View style={styles.featured}>
           <View style={styles.featuredHeading}>
             <Text style={styles.featuredTitle}>Em destaque</Text>
-            <Text style={styles.featuredCaption}>
-              SELECIONADOS PELA AVALIAÇÃO
-            </Text>
+            <Text style={styles.featuredCaption}>SELECIONADOS PELA AVALIAÇÃO</Text>
           </View>
 
           {destaque.length === 0 ? (
-            <Text style={styles.empty}>
-              Nenhum artista encontrado com esses filtros.
-            </Text>
+            <Text style={styles.empty}>Nenhum artista encontrado com esses filtros.</Text>
           ) : (
             destaque.map((agente) => (
               <View key={agente.id} style={styles.card}>
-                <Image
-                  source={{ uri: agente.avatarUrl }}
-                  style={styles.cardImage}
-                />
+                <Image source={{ uri: agente.avatarUrl }} style={styles.cardImage} />
                 <View style={styles.cardBody}>
                   <View style={styles.cardTop}>
                     <Text style={styles.cardCategory}>
-                      {CATEGORIAS[agente.categoria]?.label.toUpperCase() ??
-                        "CRIATIVO"}
+                      {CATEGORIAS[agente.categoria]?.label.toUpperCase() ?? 'CRIATIVO'}
                     </Text>
-                    <Text style={styles.rating}>
-                      ★ {agente.avaliacao.toFixed(1)}
-                    </Text>
+                    <Text style={styles.rating}>★ {agente.avaliacao.toFixed(1)}</Text>
                   </View>
                   <Text style={styles.cardName}>{agente.nome}</Text>
                   <Text style={styles.cardCity}>{agente.cidade}</Text>
-                  <Text style={styles.cardDescription} numberOfLines={2}>
-                    {agente.descricao}
-                  </Text>
-                  <Text
-                    style={styles.cardAction}
-                    onPress={() => setSelecionado(agente)}
-                  >
+                  <Text style={styles.cardDescription} numberOfLines={2}>{agente.descricao}</Text>
+                  <Text style={styles.cardAction} onPress={() => setSelecionado(agente)}>
                     VER NO MAPA →
                   </Text>
                 </View>
@@ -391,9 +316,7 @@ export function MapScreen() {
 
         <View style={styles.footer}>
           <Text style={styles.footerBrand}>Arthere</Text>
-          <Text style={styles.footerText}>
-            Conectando agentes criativos e contratantes na Baixada Santista.
-          </Text>
+          <Text style={styles.footerText}>Conectando agentes criativos e contratantes na Baixada Santista.</Text>
         </View>
       </ScrollView>
     </View>
@@ -414,7 +337,10 @@ function FilterChip({
   return (
     <Text
       onPress={onPress}
-      style={[styles.chip, active ? styles.chipActive : styles.chipInactive]}
+      style={[
+        styles.chip,
+        active ? styles.chipActive : styles.chipInactive,
+      ]}
     >
       {dot ? <Text style={{ color: dot }}>• </Text> : null}
       {label.toUpperCase()}
@@ -425,7 +351,7 @@ function FilterChip({
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.brandPaper },
   scroll: { flex: 1 },
-  content: { paddingBottom: 20 },
+  content: {
   header: {
     backgroundColor: colors.brandPaper,
     borderBottomWidth: 1,
@@ -435,21 +361,21 @@ const styles = StyleSheet.create({
   headerInner: {
     minHeight: 62,
     paddingHorizontal: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
-  brandLine: { flexDirection: "row", alignItems: "baseline", gap: 8 },
+  brandLine: { flexDirection: 'row', alignItems: 'baseline', gap: 8 },
   brand: {
-    fontFamily: "sans-serif",
-    fontWeight: "800",
+    fontFamily: 'sans-serif',
+    fontWeight: '800',
     fontSize: 24,
     color: colors.brandInk,
     letterSpacing: -0.7,
   },
   region: {
     fontSize: 8,
-    fontWeight: "700",
+    fontWeight: '700',
     color: colors.muted,
     letterSpacing: 1.5,
   },
@@ -457,64 +383,74 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 8,
     paddingBottom: 12,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 10,
   },
   headerLink: {
     fontSize: 8,
-    fontWeight: "800",
+    fontWeight: '800',
     color: colors.muted,
     letterSpacing: 1.2,
   },
-  loginButton: {
+  loginButton: { borderRadius: 999,
     flex: 1,
     minHeight: 44,
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: 999,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: colors.brandPaper,
   },
-  loginButtonText: {
+  loginButtonText: { borderRadius: 999,
     color: colors.brandInk,
     fontSize: 10,
-    fontWeight: "900",
+    fontWeight: '900',
     letterSpacing: 1.3,
   },
-  profileButton: {
+  profileButton: { borderRadius: 999,
     flex: 1,
     minHeight: 44,
     backgroundColor: colors.brandInk,
     borderRadius: 999,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  profileButtonText: {
+  profileButtonText: { borderRadius: 999,
     color: colors.brandPaper,
     fontSize: 10,
-    fontWeight: "900",
+    fontWeight: '900',
     letterSpacing: 1.2,
   },
-  buttonPressed: { opacity: 0.72, transform: [{ scale: 0.98 }] },
-  hero: { paddingHorizontal: 20, paddingTop: 42, paddingBottom: 30 },
+  buttonPressed: { borderRadius: 999,
+    opacity: 0.72,
+    transform: [{ scale: 0.98 }],
+  },
+  hero: {
+    paddingHorizontal: 20,
+    paddingTop: 42,
+    paddingBottom: 30,
+  },
   kicker: {
     fontSize: 9,
-    fontWeight: "700",
+    fontWeight: '700',
     color: colors.muted,
     letterSpacing: 2.1,
     marginBottom: 17,
   },
   heroTitle: {
-    fontFamily: "sans-serif",
-    fontWeight: "800",
+    fontFamily: 'sans-serif',
+    fontWeight: '800',
     color: colors.brandInk,
     fontSize: 39,
     lineHeight: 39,
     letterSpacing: -1,
   },
-  heroAccent: { color: colors.brandCoral, fontStyle: "normal" },
+  heroAccent: {
+    color: colors.brandCoral,
+    fontStyle: 'normal',
+  },
   heroDescription: {
     marginTop: 22,
     color: colors.muted,
@@ -523,8 +459,8 @@ const styles = StyleSheet.create({
     maxWidth: 500,
   },
   stats: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderTopWidth: 1,
     borderTopColor: colors.border,
     marginTop: 24,
@@ -532,8 +468,8 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   statNumber: {
-    fontFamily: "sans-serif",
-    fontWeight: "800",
+    fontFamily: 'sans-serif',
+    fontWeight: '800',
     color: colors.brandInk,
     fontSize: 31,
     lineHeight: 32,
@@ -541,7 +477,7 @@ const styles = StyleSheet.create({
   statLabel: {
     color: colors.muted,
     fontSize: 8,
-    fontWeight: "800",
+    fontWeight: '800',
     letterSpacing: 1.4,
     marginTop: 2,
   },
@@ -560,8 +496,8 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     paddingHorizontal: 14,
     backgroundColor: colors.white,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 9,
   },
   searchInput: {
@@ -570,48 +506,48 @@ const styles = StyleSheet.create({
     fontSize: 13,
     paddingVertical: 7,
   },
-  chips: { paddingVertical: 12, flexDirection: "row", gap: 8 },
-  chip: {
-    overflow: "hidden",
+  chips: { borderRadius: 999,
+  chip: { borderRadius: 999, borderRadius: 999,
+    overflow: 'hidden',
     borderWidth: 1,
     borderRadius: 999,
     paddingHorizontal: 12,
     paddingVertical: 7,
     fontSize: 8,
-    fontWeight: "800",
+    fontWeight: '800',
     letterSpacing: 1,
   },
-  chipActive: {
+  chipActive: { borderRadius: 999,
     color: colors.brandPaper,
     backgroundColor: colors.brandInk,
     borderColor: colors.brandInk,
   },
-  chipInactive: {
+  chipInactive: { borderRadius: 999,
     color: colors.muted,
     backgroundColor: colors.brandPaper,
     borderColor: colors.border,
   },
-  mapSection: { marginTop: 8 },
+  mapSection: {
   mapFrame: {
     height: 520,
-    width: "100%",
-    overflow: "hidden",
+    width: '100%',
+    overflow: 'hidden',
     borderRadius: 24,
     backgroundColor: colors.muted,
     borderWidth: 1,
     borderColor: colors.border,
-    position: "relative",
+    position: 'relative',
   },
   mapBadge: {
-    position: "absolute",
+    position: 'absolute',
     top: 12,
     right: 12,
     backgroundColor: colors.brandInk,
     borderRadius: 999,
     paddingHorizontal: 13,
     paddingVertical: 9,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 7,
   },
   liveDot: {
@@ -623,31 +559,31 @@ const styles = StyleSheet.create({
   mapBadgeText: {
     color: colors.brandPaper,
     fontSize: 8,
-    fontWeight: "800",
+    fontWeight: '800',
     letterSpacing: 1.2,
   },
   profileOverlay: { marginTop: -200, marginHorizontal: 12, zIndex: 5 },
-  featured: { paddingHorizontal: 20, paddingTop: 24, paddingBottom: 20 },
+  featured: {
   featuredHeading: {
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
     paddingBottom: 13,
     marginBottom: 18,
-    flexDirection: "row",
-    alignItems: "flex-end",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
     gap: 10,
   },
   featuredTitle: {
-    fontFamily: "sans-serif",
-    fontWeight: "800",
+    fontFamily: 'sans-serif',
+    fontWeight: '800',
     fontSize: 30,
     color: colors.brandInk,
   },
   featuredCaption: {
     color: colors.muted,
     fontSize: 7,
-    fontWeight: "800",
+    fontWeight: '800',
     letterSpacing: 1.2,
   },
   card: {
@@ -656,42 +592,18 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: colors.white,
     marginBottom: 14,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
-  cardImage: { width: "100%", height: 160 },
-  cardBody: { padding: 14 },
+  cardImage: {
+  cardBody: {
   cardTop: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
   cardCategory: {
-    fontSize: 8,
-    fontWeight: "900",
-    letterSpacing: 1.2,
-    color: colors.brandCoral,
-  },
-  rating: { color: colors.brandInk, fontSize: 10, fontWeight: "700" },
+  rating: { color: colors.brandInk, fontSize: 10, fontWeight: '700' },
   cardName: {
-    marginTop: 8,
-    color: colors.brandInk,
-    fontSize: 18,
-    fontWeight: "800",
-  },
-  cardCity: { marginTop: 4, color: colors.muted, fontSize: 12 },
+  cardCity: {
   cardDescription: {
-    marginTop: 8,
-    color: colors.muted,
-    fontSize: 12,
-    lineHeight: 18,
-  },
   cardAction: {
-    marginTop: 10,
-    color: colors.brandInk,
-    fontSize: 11,
-    fontWeight: "800",
-  },
-  empty: { marginTop: 8, color: colors.muted, fontSize: 12 },
+  empty: {
   footer: {
     borderTopWidth: 1,
     borderTopColor: colors.border,
@@ -700,13 +612,8 @@ const styles = StyleSheet.create({
     gap: 7,
   },
   footerBrand: {
-    fontFamily: "sans-serif",
-    fontWeight: "800",
-    color: colors.brandInk,
-    fontSize: 22,
-  },
-  footerText: { color: colors.muted, fontSize: 12, lineHeight: 18 },
-  pinContainer: { alignItems: "center" },
+  footerText: {
+  pinContainer: {
   pinActive: { transform: [{ scale: 1.16 }] },
   pinImageContainer: {
     width: 44,
@@ -714,22 +621,16 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     borderWidth: 2.5,
     backgroundColor: colors.brandPaper,
-    overflow: "hidden",
+    overflow: 'hidden',
     elevation: 5,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 7,
   },
-  pinImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignSelf: "center",
-    marginTop: 2,
-  },
+  pinImage: { width: 40, height: 40, borderRadius: 20, alignSelf: 'center', marginTop: 2 },
   pinStatus: {
-    position: "absolute",
+    position: 'absolute',
     right: 2,
     top: 0,
     width: 10,
@@ -744,8 +645,8 @@ const styles = StyleSheet.create({
     borderLeftWidth: 6,
     borderRightWidth: 6,
     borderTopWidth: 10,
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
     marginTop: -1,
   },
 });
