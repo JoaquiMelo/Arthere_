@@ -3,19 +3,18 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useMemo, useState } from "react";
 import {
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
-import { useTheme } from "@/providers/theme-provider";
 import { useManagement } from "@/providers/management-provider";
+import { useTheme } from "@/providers/theme-provider";
 import type { RootStackParamList } from "../../../navigation/app-navigator";
-import { eventos } from "../types/event";
 
 type Filtro = "TODOS" | "PREMIUM" | string;
 
@@ -399,9 +398,9 @@ export default function EventsScreen() {
                       borderRightColor: palette.brandCoral,
                       borderBottomColor: palette.brandCoral,
                       backgroundColor: temEvento
-                        ? (eventoPrincipal?.destaque
+                        ? eventoPrincipal?.destaque
                           ? palette.brandGreen
-                          : palette.brandCoral)
+                          : palette.brandCoral
                         : "transparent",
                     },
                     selecionado &&
@@ -432,10 +431,7 @@ export default function EventsScreen() {
                     <Text
                       numberOfLines={2}
                       ellipsizeMode="tail"
-                      style={[
-                        styles.eventName,
-                        { color: palette.brandPaper },
-                      ]}
+                      style={[styles.eventName, { color: palette.brandPaper }]}
                     >
                       {eventoPrincipal.titulo}
                       {eventosDoDiaNoCalendario.length > 1
@@ -974,6 +970,15 @@ const styles = StyleSheet.create({
     borderBottomColor: "transparent",
   },
   dayText: { fontSize: 12, fontWeight: "900", letterSpacing: 0.2 },
+  eventName: {
+    position: "absolute",
+    bottom: 6,
+    width: "90%",
+    fontSize: 6.5,
+    lineHeight: 8,
+    fontWeight: "900",
+    textAlign: "center",
+  },
   eventBadge: {
     position: "absolute",
     bottom: 6,
@@ -1081,7 +1086,13 @@ const styles = StyleSheet.create({
   },
   fixedTagText: { fontSize: 7, fontWeight: "900", letterSpacing: 0.6 },
 
-  empty: { marginTop: 10, borderWidth: 1.5, padding: 24, alignItems: "center", borderRadius: 16 },
+  empty: {
+    marginTop: 10,
+    borderWidth: 1.5,
+    padding: 24,
+    alignItems: "center",
+    borderRadius: 16,
+  },
   emptyTitle: { fontSize: 17, fontWeight: "900", marginTop: 11 },
   emptyText: {
     marginTop: 6,
@@ -1093,7 +1104,13 @@ const styles = StyleSheet.create({
   highlightsSection: { marginTop: 28 },
   highlightsTitle: { fontSize: 22, fontWeight: "600", marginTop: 5 },
   highlightContent: { paddingTop: 13, paddingRight: 16, gap: 12 },
-  featured: { width: 300, paddingVertical: 20, paddingHorizontal: 17, borderRadius: 20, overflow: "hidden" },
+  featured: {
+    width: 300,
+    paddingVertical: 20,
+    paddingHorizontal: 17,
+    borderRadius: 20,
+    overflow: "hidden",
+  },
   featuredTop: {
     flexDirection: "row",
     justifyContent: "space-between",

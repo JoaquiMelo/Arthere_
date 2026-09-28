@@ -1,12 +1,16 @@
 import { Ionicons } from "@expo/vector-icons";
-import DateTimePicker, { type DateTimePickerEvent } from "@react-native-community/datetimepicker";
-import * as ImagePicker from "expo-image-picker";
+import DateTimePicker, {
+  type DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import * as ImagePicker from "expo-image-picker";
 import { useMemo, useState } from "react";
 import {
+  Alert,
   KeyboardAvoidingView,
   Modal,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -14,7 +18,6 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Platform,
 } from "react-native";
 
 import { useManagement } from "@/providers/management-provider";
@@ -75,7 +78,9 @@ export default function CreateEventScreen() {
   };
 
   const horarioParaDate = () => {
-    const [hora, minuto] = horarioValido ? horario.split(":").map(Number) : [12, 0];
+    const [hora, minuto] = horarioValido
+      ? horario.split(":").map(Number)
+      : [12, 0];
     const date = new Date();
     date.setHours(hora, minuto, 0, 0);
     return date;
@@ -92,7 +97,10 @@ export default function CreateEventScreen() {
     }
   };
 
-  const selecionarHorario = (_event: DateTimePickerEvent, selectedTime?: Date) => {
+  const selecionarHorario = (
+    _event: DateTimePickerEvent,
+    selectedTime?: Date,
+  ) => {
     setHorarioPickerAberto(false);
     if (selectedTime) {
       const hora = String(selectedTime.getHours()).padStart(2, "0");
@@ -102,8 +110,38 @@ export default function CreateEventScreen() {
     }
   };
 
+  const selecionarImagem = async () => {
+    const permissao = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permissao.granted) {
+      Alert.alert(
+        "Permissão necessária",
+        "Autorize o acesso à galeria para selecionar a imagem do evento.",
+      );
+      return;
+    }
+
+    const resultado = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      aspect: [16, 9],
+      quality: 0.85,
+    });
+    if (!resultado.canceled && resultado.assets[0]) {
+      setImagemUrl(resultado.assets[0].uri);
+      setErro("");
+    }
+  };
+
   const publicar = () => {
-    if (!titulo.trim() || !descricao.trim() || !data || !horario || !local.trim() || !cidade.trim() || !organizador.trim()) {
+    if (
+      !titulo.trim() ||
+      !descricao.trim() ||
+      !data ||
+      !horario ||
+      !local.trim() ||
+      !cidade.trim() ||
+      !organizador.trim()
+    ) {
       setErro("Preencha todos os campos obrigatórios.");
       return;
     }
@@ -136,7 +174,9 @@ export default function CreateEventScreen() {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: palette.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: palette.background }]}
+    >
       <KeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -149,21 +189,37 @@ export default function CreateEventScreen() {
           <View style={styles.header}>
             <TouchableOpacity
               onPress={() => navigation.goBack()}
-              style={[styles.backButton, { backgroundColor: palette.brandPaper, borderColor: palette.brandInk }]}
+              style={[
+                styles.backButton,
+                {
+                  backgroundColor: palette.brandPaper,
+                  borderColor: palette.brandInk,
+                },
+              ]}
             >
               <Ionicons name="arrow-back" size={19} color={palette.brandInk} />
             </TouchableOpacity>
             <View style={styles.headerCopy}>
-              <Text style={[styles.kicker, { color: palette.brandCoral }]}>PORTFÓLIO · CONTRATANTE</Text>
-              <Text style={[styles.title, { color: palette.brandInk }]}>Criar evento</Text>
+              <Text style={[styles.kicker, { color: palette.brandCoral }]}>
+                PORTFÓLIO · CONTRATANTE
+              </Text>
+              <Text style={[styles.title, { color: palette.brandInk }]}>
+                Criar evento
+              </Text>
               <Text style={[styles.subtitle, { color: palette.muted }]}>
-                Cadastre o evento com as informações que aparecerão na agenda da Arthere.
+                Cadastre o evento com as informações que aparecerão na agenda da
+                Arthere.
               </Text>
             </View>
           </View>
 
           <View style={[styles.preview, { backgroundColor: palette.brandInk }]}>
-            <View style={[styles.previewShape, { backgroundColor: palette.brandCoral }]} />
+            <View
+              style={[
+                styles.previewShape,
+                { backgroundColor: palette.brandCoral },
+              ]}
+            />
             <Text style={[styles.previewKicker, { color: palette.brandSand }]}>
               NOVO EVENTO
             </Text>
@@ -179,20 +235,39 @@ export default function CreateEventScreen() {
           </View>
 
           <View style={styles.section}>
-            <Text style={[styles.sectionKicker, { color: palette.brandCoral }]}>IDENTIDADE</Text>
-            <Text style={[styles.sectionTitle, { color: palette.brandInk }]}>Apresente o evento</Text>
+            <Text style={[styles.sectionKicker, { color: palette.brandCoral }]}>
+              IDENTIDADE
+            </Text>
+            <Text style={[styles.sectionTitle, { color: palette.brandInk }]}>
+              Apresente o evento
+            </Text>
 
-            <Text style={[styles.label, { color: palette.muted }]}>NOME DO EVENTO *</Text>
+            <Text style={[styles.label, { color: palette.muted }]}>
+              NOME DO EVENTO *
+            </Text>
             <TextInput
               value={titulo}
               onChangeText={setTitulo}
               placeholder="Ex.: Festival Criativo da Baixada"
               placeholderTextColor={palette.muted}
-              style={[styles.input, { color: palette.brandInk, borderColor: palette.border, backgroundColor: palette.brandPaper }]}
+              style={[
+                styles.input,
+                {
+                  color: palette.brandInk,
+                  borderColor: palette.border,
+                  backgroundColor: palette.brandPaper,
+                },
+              ]}
             />
 
-            <Text style={[styles.label, { color: palette.muted }]}>CATEGORIA *</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
+            <Text style={[styles.label, { color: palette.muted }]}>
+              CATEGORIA *
+            </Text>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.chips}
+            >
               {CATEGORIAS.map((item) => {
                 const ativo = categoria === item;
                 return (
@@ -202,12 +277,23 @@ export default function CreateEventScreen() {
                     style={[
                       styles.chip,
                       {
-                        backgroundColor: ativo ? palette.brandCoral : palette.brandPaper,
-                        borderColor: ativo ? palette.brandCoral : palette.border,
+                        backgroundColor: ativo
+                          ? palette.brandCoral
+                          : palette.brandPaper,
+                        borderColor: ativo
+                          ? palette.brandCoral
+                          : palette.border,
                       },
                     ]}
                   >
-                    <Text style={[styles.chipText, { color: ativo ? palette.brandPaper : palette.brandInk }]}>
+                    <Text
+                      style={[
+                        styles.chipText,
+                        {
+                          color: ativo ? palette.brandPaper : palette.brandInk,
+                        },
+                      ]}
+                    >
                       {item.toUpperCase()}
                     </Text>
                   </TouchableOpacity>
@@ -215,7 +301,9 @@ export default function CreateEventScreen() {
               })}
             </ScrollView>
 
-            <Text style={[styles.label, { color: palette.muted }]}>DESCRIÇÃO *</Text>
+            <Text style={[styles.label, { color: palette.muted }]}>
+              DESCRIÇÃO *
+            </Text>
             <TextInput
               value={descricao}
               onChangeText={setDescricao}
@@ -223,163 +311,423 @@ export default function CreateEventScreen() {
               placeholderTextColor={palette.muted}
               multiline
               textAlignVertical="top"
-              style={[styles.input, styles.textarea, { color: palette.brandInk, borderColor: palette.border, backgroundColor: palette.brandPaper }]}
+              style={[
+                styles.input,
+                styles.textarea,
+                {
+                  color: palette.brandInk,
+                  borderColor: palette.border,
+                  backgroundColor: palette.brandPaper,
+                },
+              ]}
             />
           </View>
 
           <View style={styles.section}>
-            <Text style={[styles.sectionKicker, { color: palette.brandCoral }]}>DATA E LOCAL</Text>
-            <Text style={[styles.sectionTitle, { color: palette.brandInk }]}>Onde e quando?</Text>
+            <Text style={[styles.sectionKicker, { color: palette.brandCoral }]}>
+              DATA E LOCAL
+            </Text>
+            <Text style={[styles.sectionTitle, { color: palette.brandInk }]}>
+              Onde e quando?
+            </Text>
 
             <View style={styles.twoColumns}>
               <View style={styles.column}>
-                <Text style={[styles.label, { color: palette.muted }]}>DATA *</Text>
+                <Text style={[styles.label, { color: palette.muted }]}>
+                  DATA *
+                </Text>
                 <TouchableOpacity
-                  onPress={() => { setHorarioPickerAberto(false); setDataPickerAberto(true); }}
-                  style={[styles.inputButton, { borderColor: palette.border, backgroundColor: palette.brandPaper }]}
+                  onPress={() => {
+                    setHorarioPickerAberto(false);
+                    setDataPickerAberto(true);
+                  }}
+                  style={[
+                    styles.inputButton,
+                    {
+                      borderColor: palette.border,
+                      backgroundColor: palette.brandPaper,
+                    },
+                  ]}
                   activeOpacity={0.8}
                 >
-                  <Ionicons name="calendar-outline" size={19} color={palette.brandCoral} />
-                  <Text style={[styles.inputButtonText, { color: data ? palette.brandInk : palette.muted }]}>
-                    {data ? data.split("-").reverse().join("/") : "Selecionar data"}
+                  <Ionicons
+                    name="calendar-outline"
+                    size={19}
+                    color={palette.brandCoral}
+                  />
+                  <Text
+                    style={[
+                      styles.inputButtonText,
+                      { color: data ? palette.brandInk : palette.muted },
+                    ]}
+                  >
+                    {data
+                      ? data.split("-").reverse().join("/")
+                      : "Selecionar data"}
                   </Text>
                 </TouchableOpacity>
-                <Modal visible={dataPickerAberto} transparent animationType="fade" onRequestClose={() => setDataPickerAberto(false)}>
+                <Modal
+                  visible={dataPickerAberto}
+                  transparent
+                  animationType="fade"
+                  onRequestClose={() => setDataPickerAberto(false)}
+                >
                   <View style={styles.pickerOverlay}>
-                    <View style={[styles.pickerCard, { backgroundColor: palette.brandPaper, borderColor: palette.border }]}>
-                      <Text style={[styles.pickerTitle, { color: palette.brandInk }]}>Selecionar data</Text>
-                      <DateTimePicker value={dataParaDate()} mode="date" display={Platform.OS === "ios" ? "inline" : "default"} minimumDate={new Date()} onChange={selecionarData} />
-                      <TouchableOpacity onPress={() => setDataPickerAberto(false)} style={[styles.pickerDone, { backgroundColor: palette.brandInk }]}>
-                        <Text style={[styles.pickerDoneText, { color: palette.brandPaper }]}>CONFIRMAR DATA</Text>
+                    <View
+                      style={[
+                        styles.pickerCard,
+                        {
+                          backgroundColor: palette.brandPaper,
+                          borderColor: palette.border,
+                        },
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.pickerTitle,
+                          { color: palette.brandInk },
+                        ]}
+                      >
+                        Selecionar data
+                      </Text>
+                      <DateTimePicker
+                        value={dataParaDate()}
+                        mode="date"
+                        display={Platform.OS === "ios" ? "inline" : "default"}
+                        minimumDate={new Date()}
+                        onChange={selecionarData}
+                      />
+                      <TouchableOpacity
+                        onPress={() => setDataPickerAberto(false)}
+                        style={[
+                          styles.pickerDone,
+                          { backgroundColor: palette.brandInk },
+                        ]}
+                      >
+                        <Text
+                          style={[
+                            styles.pickerDoneText,
+                            { color: palette.brandPaper },
+                          ]}
+                        >
+                          CONFIRMAR DATA
+                        </Text>
                       </TouchableOpacity>
                     </View>
                   </View>
-                </Modal>             </View>
+                </Modal>{" "}
+              </View>
               <View style={styles.column}>
-                <Text style={[styles.label, { color: palette.muted }]}>HORÁRIO *</Text>
+                <Text style={[styles.label, { color: palette.muted }]}>
+                  HORÁRIO *
+                </Text>
                 <TouchableOpacity
-                  onPress={() => { setDataPickerAberto(false); setHorarioPickerAberto(true); }}
-                  style={[styles.inputButton, { borderColor: palette.border, backgroundColor: palette.brandPaper }]}
+                  onPress={() => {
+                    setDataPickerAberto(false);
+                    setHorarioPickerAberto(true);
+                  }}
+                  style={[
+                    styles.inputButton,
+                    {
+                      borderColor: palette.border,
+                      backgroundColor: palette.brandPaper,
+                    },
+                  ]}
                   activeOpacity={0.8}
                 >
-                  <Ionicons name="time-outline" size={19} color={palette.brandCoral} />
-                  <Text style={[styles.inputButtonText, { color: horario ? palette.brandInk : palette.muted }]}>
+                  <Ionicons
+                    name="time-outline"
+                    size={19}
+                    color={palette.brandCoral}
+                  />
+                  <Text
+                    style={[
+                      styles.inputButtonText,
+                      { color: horario ? palette.brandInk : palette.muted },
+                    ]}
+                  >
                     {horario || "Selecionar horário"}
                   </Text>
                 </TouchableOpacity>
-                <Modal visible={horarioPickerAberto} transparent animationType="fade" onRequestClose={() => setHorarioPickerAberto(false)}>
+                <Modal
+                  visible={horarioPickerAberto}
+                  transparent
+                  animationType="fade"
+                  onRequestClose={() => setHorarioPickerAberto(false)}
+                >
                   <View style={styles.pickerOverlay}>
-                    <View style={[styles.pickerCard, { backgroundColor: palette.brandPaper, borderColor: palette.border }]}>
-                      <Text style={[styles.pickerTitle, { color: palette.brandInk }]}>Selecionar horário</Text>
-                      <DateTimePicker value={horarioParaDate()} mode="time" display="spinner" is24Hour onChange={selecionarHorario} />
-                      <TouchableOpacity onPress={() => setHorarioPickerAberto(false)} style={[styles.pickerDone, { backgroundColor: palette.brandInk }]}>
-                        <Text style={[styles.pickerDoneText, { color: palette.brandPaper }]}>CONFIRMAR HORÁRIO</Text>
+                    <View
+                      style={[
+                        styles.pickerCard,
+                        {
+                          backgroundColor: palette.brandPaper,
+                          borderColor: palette.border,
+                        },
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.pickerTitle,
+                          { color: palette.brandInk },
+                        ]}
+                      >
+                        Selecionar horário
+                      </Text>
+                      <DateTimePicker
+                        value={horarioParaDate()}
+                        mode="time"
+                        display="spinner"
+                        is24Hour
+                        onChange={selecionarHorario}
+                      />
+                      <TouchableOpacity
+                        onPress={() => setHorarioPickerAberto(false)}
+                        style={[
+                          styles.pickerDone,
+                          { backgroundColor: palette.brandInk },
+                        ]}
+                      >
+                        <Text
+                          style={[
+                            styles.pickerDoneText,
+                            { color: palette.brandPaper },
+                          ]}
+                        >
+                          CONFIRMAR HORÁRIO
+                        </Text>
                       </TouchableOpacity>
                     </View>
                   </View>
-                </Modal>             </View>
+                </Modal>{" "}
+              </View>
             </View>
 
-            <Text style={[styles.label, { color: palette.muted }]}>LOCAL *</Text>
+            <Text style={[styles.label, { color: palette.muted }]}>
+              LOCAL *
+            </Text>
             <TextInput
               value={local}
               onChangeText={setLocal}
               placeholder="Ex.: Centro Cultural"
               placeholderTextColor={palette.muted}
-              style={[styles.input, { color: palette.brandInk, borderColor: palette.border, backgroundColor: palette.brandPaper }]}
+              style={[
+                styles.input,
+                {
+                  color: palette.brandInk,
+                  borderColor: palette.border,
+                  backgroundColor: palette.brandPaper,
+                },
+              ]}
             />
 
-            <Text style={[styles.label, { color: palette.muted }]}>CIDADE *</Text>
+            <Text style={[styles.label, { color: palette.muted }]}>
+              CIDADE *
+            </Text>
             <TextInput
               value={cidade}
               onChangeText={setCidade}
               placeholder="Ex.: Santos - SP"
               placeholderTextColor={palette.muted}
-              style={[styles.input, { color: palette.brandInk, borderColor: palette.border, backgroundColor: palette.brandPaper }]}
+              style={[
+                styles.input,
+                {
+                  color: palette.brandInk,
+                  borderColor: palette.border,
+                  backgroundColor: palette.brandPaper,
+                },
+              ]}
             />
           </View>
 
           <View style={styles.section}>
-            <Text style={[styles.sectionKicker, { color: palette.brandCoral }]}>PUBLICAÇÃO</Text>
-            <Text style={[styles.sectionTitle, { color: palette.brandInk }]}>Como o evento será exibido?</Text>
+            <Text style={[styles.sectionKicker, { color: palette.brandCoral }]}>
+              PUBLICAÇÃO
+            </Text>
+            <Text style={[styles.sectionTitle, { color: palette.brandInk }]}>
+              Como o evento será exibido?
+            </Text>
 
-            <Text style={[styles.label, { color: palette.muted }]}>ORGANIZADOR *</Text>
+            <Text style={[styles.label, { color: palette.muted }]}>
+              ORGANIZADOR *
+            </Text>
             <TextInput
               value={organizador}
               onChangeText={setOrganizador}
               placeholder="Nome da empresa ou coletivo"
               placeholderTextColor={palette.muted}
-              style={[styles.input, { color: palette.brandInk, borderColor: palette.border, backgroundColor: palette.brandPaper }]}
+              style={[
+                styles.input,
+                {
+                  color: palette.brandInk,
+                  borderColor: palette.border,
+                  backgroundColor: palette.brandPaper,
+                },
+              ]}
             />
 
-            <Text style={[styles.label, { color: palette.muted }]}>IMAGEM DE CAPA (OPCIONAL)</Text>
+            <Text style={[styles.label, { color: palette.muted }]}>
+              IMAGEM DE CAPA (OPCIONAL)
+            </Text>
             <TouchableOpacity
               onPress={selecionarImagem}
-              style={[styles.imagePicker, { borderColor: palette.border, backgroundColor: palette.brandPaper }]}
+              style={[
+                styles.imagePicker,
+                {
+                  borderColor: palette.border,
+                  backgroundColor: palette.brandPaper,
+                },
+              ]}
               activeOpacity={0.82}
             >
-              <View style={[styles.imagePickerIcon, { backgroundColor: palette.brandCoral }]}>
-                <Ionicons name="image-outline" size={20} color={palette.brandPaper} />
+              <View
+                style={[
+                  styles.imagePickerIcon,
+                  { backgroundColor: palette.brandCoral },
+                ]}
+              >
+                <Ionicons
+                  name="image-outline"
+                  size={20}
+                  color={palette.brandPaper}
+                />
               </View>
               <View style={styles.imagePickerCopy}>
                 <Text style={[styles.optionTitle, { color: palette.brandInk }]}>
-                  {imagemUrl ? "Imagem selecionada" : "Selecionar imagem do celular"}
+                  {imagemUrl
+                    ? "Imagem selecionada"
+                    : "Selecionar imagem do celular"}
                 </Text>
                 <Text style={[styles.optionText, { color: palette.muted }]}>
-                  {imagemUrl ? "Toque para escolher outra imagem." : "Escolha uma foto da sua galeria para a capa."}
+                  {imagemUrl
+                    ? "Toque para escolher outra imagem."
+                    : "Escolha uma foto da sua galeria para a capa."}
                 </Text>
               </View>
-              <Ionicons name="chevron-forward" size={20} color={palette.muted} />
+              <Ionicons
+                name="chevron-forward"
+                size={20}
+                color={palette.muted}
+              />
             </TouchableOpacity>
 
             <TouchableOpacity
               onPress={() => setPremium((value) => !value)}
-              style={[styles.option, { borderColor: palette.border, backgroundColor: palette.brandPaper }]}
+              style={[
+                styles.option,
+                {
+                  borderColor: palette.border,
+                  backgroundColor: palette.brandPaper,
+                },
+              ]}
             >
-              <View style={[styles.optionIcon, { backgroundColor: palette.brandGreen }]}>
+              <View
+                style={[
+                  styles.optionIcon,
+                  { backgroundColor: palette.brandGreen },
+                ]}
+              >
                 <Ionicons name="star" size={17} color={palette.brandPaper} />
               </View>
               <View style={styles.optionCopy}>
-                <Text style={[styles.optionTitle, { color: palette.brandInk }]}>Evento Premium</Text>
-                <Text style={[styles.optionText, { color: palette.muted }]}>Marca o evento como premium na agenda.</Text>
+                <Text style={[styles.optionTitle, { color: palette.brandInk }]}>
+                  Evento Premium
+                </Text>
+                <Text style={[styles.optionText, { color: palette.muted }]}>
+                  Marca o evento como premium na agenda.
+                </Text>
               </View>
-              <Ionicons name={premium ? "checkbox" : "square-outline"} size={23} color={premium ? palette.brandCoral : palette.muted} />
+              <Ionicons
+                name={premium ? "checkbox" : "square-outline"}
+                size={23}
+                color={premium ? palette.brandCoral : palette.muted}
+              />
             </TouchableOpacity>
 
             <TouchableOpacity
               onPress={() => setDestaque((value) => !value)}
-              style={[styles.option, { borderColor: palette.border, backgroundColor: palette.brandPaper }]}
+              style={[
+                styles.option,
+                {
+                  borderColor: palette.border,
+                  backgroundColor: palette.brandPaper,
+                },
+              ]}
             >
-              <View style={[styles.optionIcon, { backgroundColor: palette.brandCoral }]}>
+              <View
+                style={[
+                  styles.optionIcon,
+                  { backgroundColor: palette.brandCoral },
+                ]}
+              >
                 <Ionicons name="pin" size={17} color={palette.brandPaper} />
               </View>
               <View style={styles.optionCopy}>
-                <Text style={[styles.optionTitle, { color: palette.brandInk }]}>Fixar nos destaques</Text>
-                <Text style={[styles.optionText, { color: palette.muted }]}>Coloca o evento na área de destaque da agenda.</Text>
+                <Text style={[styles.optionTitle, { color: palette.brandInk }]}>
+                  Fixar nos destaques
+                </Text>
+                <Text style={[styles.optionText, { color: palette.muted }]}>
+                  Coloca o evento na área de destaque da agenda.
+                </Text>
               </View>
-              <Ionicons name={destaque ? "checkbox" : "square-outline"} size={23} color={destaque ? palette.brandCoral : palette.muted} />
+              <Ionicons
+                name={destaque ? "checkbox" : "square-outline"}
+                size={23}
+                color={destaque ? palette.brandCoral : palette.muted}
+              />
             </TouchableOpacity>
           </View>
 
           {!!erro && (
-            <View style={[styles.error, { backgroundColor: palette.brandSand, borderColor: palette.brandCoral }]}>
-              <Ionicons name="alert-circle-outline" size={18} color={palette.brandCoral} />
-              <Text style={[styles.errorText, { color: palette.brandInk }]}>{erro}</Text>
+            <View
+              style={[
+                styles.error,
+                {
+                  backgroundColor: palette.brandSand,
+                  borderColor: palette.brandCoral,
+                },
+              ]}
+            >
+              <Ionicons
+                name="alert-circle-outline"
+                size={18}
+                color={palette.brandCoral}
+              />
+              <Text style={[styles.errorText, { color: palette.brandInk }]}>
+                {erro}
+              </Text>
             </View>
           )}
 
           <TouchableOpacity
             onPress={publicar}
             activeOpacity={0.88}
-            style={[styles.publishButton, { backgroundColor: palette.brandInk }]}
+            style={[
+              styles.publishButton,
+              { backgroundColor: palette.brandInk },
+            ]}
           >
-            <Ionicons name="calendar-outline" size={19} color={palette.brandPaper} />
-            <Text style={[styles.publishText, { color: palette.brandPaper }]}>PUBLICAR EVENTO</Text>
-            <Ionicons name="arrow-forward" size={18} color={palette.brandPaper} />
+            <Ionicons
+              name="calendar-outline"
+              size={19}
+              color={palette.brandPaper}
+            />
+            <Text style={[styles.publishText, { color: palette.brandPaper }]}>
+              PUBLICAR EVENTO
+            </Text>
+            <Ionicons
+              name="arrow-forward"
+              size={18}
+              color={palette.brandPaper}
+            />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.cancelButton}>
-            <Text style={[styles.cancelText, { color: palette.muted }]}>CANCELAR</Text>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.cancelButton}
+          >
+            <Text style={[styles.cancelText, { color: palette.muted }]}>
+              CANCELAR
+            </Text>
           </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -391,47 +739,193 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   flex: { flex: 1 },
   content: { padding: 16, paddingBottom: 42 },
-  header: { flexDirection: "row", gap: 12, alignItems: "flex-start", marginBottom: 16 },
-  backButton: { width: 42, height: 42, borderRadius: 21, borderWidth: 1.5, alignItems: "center", justifyContent: "center" },
+  header: {
+    flexDirection: "row",
+    gap: 12,
+    alignItems: "flex-start",
+    marginBottom: 16,
+  },
+  backButton: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    borderWidth: 1.5,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   headerCopy: { flex: 1, paddingTop: 2 },
   kicker: { fontSize: 8, fontWeight: "900", letterSpacing: 1.4 },
-  title: { fontSize: 31, lineHeight: 35, fontWeight: "900", letterSpacing: -0.8, marginTop: 3 },
+  title: {
+    fontSize: 31,
+    lineHeight: 35,
+    fontWeight: "900",
+    letterSpacing: -0.8,
+    marginTop: 3,
+  },
   subtitle: { fontSize: 11.5, lineHeight: 17, marginTop: 6 },
-  preview: { minHeight: 190, borderRadius: 20, overflow: "hidden", padding: 20, justifyContent: "flex-end", position: "relative", marginBottom: 22 },
-  previewShape: { position: "absolute", width: 115, height: 115, borderRadius: 28, right: -25, top: -20, transform: [{ rotate: "22deg" }] },
+  preview: {
+    minHeight: 190,
+    borderRadius: 20,
+    overflow: "hidden",
+    padding: 20,
+    justifyContent: "flex-end",
+    position: "relative",
+    marginBottom: 22,
+  },
+  previewShape: {
+    position: "absolute",
+    width: 115,
+    height: 115,
+    borderRadius: 28,
+    right: -25,
+    top: -20,
+    transform: [{ rotate: "22deg" }],
+  },
   previewKicker: { fontSize: 8, fontWeight: "900", letterSpacing: 1.5 },
-  previewTitle: { fontSize: 27, lineHeight: 31, fontWeight: "900", maxWidth: 300, marginTop: 6 },
+  previewTitle: {
+    fontSize: 27,
+    lineHeight: 31,
+    fontWeight: "900",
+    maxWidth: 300,
+    marginTop: 6,
+  },
   previewMeta: { fontSize: 11, fontWeight: "800", marginTop: 12 },
   previewLocation: { fontSize: 10, marginTop: 4 },
   section: { marginBottom: 24 },
-  sectionKicker: { fontSize: 8, fontWeight: "900", letterSpacing: 1.3, marginBottom: 3 },
+  sectionKicker: {
+    fontSize: 8,
+    fontWeight: "900",
+    letterSpacing: 1.3,
+    marginBottom: 3,
+  },
   sectionTitle: { fontSize: 19, fontWeight: "900", marginBottom: 10 },
-  label: { fontSize: 8, fontWeight: "900", letterSpacing: 1, marginTop: 12, marginBottom: 6 },
-  input: { minHeight: 48, borderWidth: 1, borderRadius: 12, paddingHorizontal: 12, fontSize: 13 },
-  inputButton: { minHeight: 48, borderWidth: 1, borderRadius: 12, paddingHorizontal: 12, flexDirection: "row", alignItems: "center", gap: 8 },
+  label: {
+    fontSize: 8,
+    fontWeight: "900",
+    letterSpacing: 1,
+    marginTop: 12,
+    marginBottom: 6,
+  },
+  input: {
+    minHeight: 48,
+    borderWidth: 1,
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    fontSize: 13,
+  },
+  inputButton: {
+    minHeight: 48,
+    borderWidth: 1,
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
   inputButtonText: { flex: 1, fontSize: 12.5, fontWeight: "700" },
-  pickerOverlay: { flex: 1, backgroundColor: "rgba(0,0,0,0.45)", alignItems: "center", justifyContent: "center", padding: 20 },
-  pickerCard: { width: "100%", maxWidth: 360, borderRadius: 20, borderWidth: 1, padding: 18, alignItems: "center", elevation: 10, shadowOpacity: 0.2, shadowRadius: 14, shadowOffset: { width: 0, height: 6 } },
-  pickerTitle: { width: "100%", fontSize: 17, fontWeight: "900", marginBottom: 8 },
-  pickerDone: { width: "100%", minHeight: 46, borderRadius: 12, alignItems: "center", justifyContent: "center", marginTop: 10 },
+  pickerOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.45)",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+  },
+  pickerCard: {
+    width: "100%",
+    maxWidth: 360,
+    borderRadius: 20,
+    borderWidth: 1,
+    padding: 18,
+    alignItems: "center",
+    elevation: 10,
+    shadowOpacity: 0.2,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 6 },
+  },
+  pickerTitle: {
+    width: "100%",
+    fontSize: 17,
+    fontWeight: "900",
+    marginBottom: 8,
+  },
+  pickerDone: {
+    width: "100%",
+    minHeight: 46,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
+  },
   pickerDoneText: { fontSize: 9, fontWeight: "900", letterSpacing: 1 },
   textarea: { minHeight: 118, paddingTop: 12, paddingBottom: 12 },
   chips: { gap: 7, paddingBottom: 2 },
-  chip: { minHeight: 36, paddingHorizontal: 12, borderRadius: 11, borderWidth: 1, alignItems: "center", justifyContent: "center" },
+  chip: {
+    minHeight: 36,
+    paddingHorizontal: 12,
+    borderRadius: 11,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   chipText: { fontSize: 8, fontWeight: "900", letterSpacing: 0.7 },
   twoColumns: { flexDirection: "row", gap: 9 },
   column: { flex: 1 },
-  option: { minHeight: 70, borderWidth: 1, borderRadius: 14, padding: 11, flexDirection: "row", alignItems: "center", gap: 10, marginTop: 9 },
-  optionIcon: { width: 38, height: 38, borderRadius: 12, alignItems: "center", justifyContent: "center" },
+  option: {
+    minHeight: 70,
+    borderWidth: 1,
+    borderRadius: 14,
+    padding: 11,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    marginTop: 9,
+  },
+  optionIcon: {
+    width: 38,
+    height: 38,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   optionCopy: { flex: 1 },
   optionTitle: { fontSize: 12, fontWeight: "900" },
   optionText: { fontSize: 9.5, lineHeight: 14, marginTop: 3 },
-  imagePicker: { minHeight: 72, borderWidth: 1, borderRadius: 14, padding: 11, flexDirection: "row", alignItems: "center", gap: 10 },
-  imagePickerIcon: { width: 40, height: 40, borderRadius: 12, alignItems: "center", justifyContent: "center" },
+  imagePicker: {
+    minHeight: 72,
+    borderWidth: 1,
+    borderRadius: 14,
+    padding: 11,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  imagePickerIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   imagePickerCopy: { flex: 1 },
-  error: { borderWidth: 1, borderRadius: 12, padding: 11, flexDirection: "row", gap: 8, alignItems: "center", marginBottom: 12 },
+  error: {
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 11,
+    flexDirection: "row",
+    gap: 8,
+    alignItems: "center",
+    marginBottom: 12,
+  },
   errorText: { flex: 1, fontSize: 10, lineHeight: 15, fontWeight: "700" },
-  publishButton: { minHeight: 52, borderRadius: 15, paddingHorizontal: 16, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 9 },
+  publishButton: {
+    minHeight: 52,
+    borderRadius: 15,
+    paddingHorizontal: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 9,
+  },
   publishText: { fontSize: 9, fontWeight: "900", letterSpacing: 1 },
   cancelButton: { alignItems: "center", paddingVertical: 16 },
   cancelText: { fontSize: 9, fontWeight: "900", letterSpacing: 1.1 },
