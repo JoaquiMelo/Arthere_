@@ -1,8 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { ActivityIndicator, Alert, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useUser } from '@/providers/user-provider';
+import { ARTHERE_LOGO } from '@/shared/assets/artHere-logo';
 
 export default function LoginScreen() {
   const navigation = useNavigation<any>();
@@ -40,6 +41,7 @@ export default function LoginScreen() {
 '}projetos na Baixada Santista.
           </Text>
         </View>
+        <Image source={{ uri: ARTHERE_LOGO }} style={styles.logo} resizeMode="contain" />
         <View style={styles.shapeCoral} />
         <View style={styles.shapeYellow} />
         <View style={styles.shapeBlue} />
@@ -116,6 +118,7 @@ const styles = StyleSheet.create({
   brand: { color: '#f7f2e9', fontSize: 44, lineHeight: 48, fontWeight: '900', letterSpacing: -1.8, marginTop: 5 },
   brandLine: { width: 72, height: 5, backgroundColor: '#f25b43', marginTop: 8, marginBottom: 14 },
   headerDescription: { color: '#f7f2e9', fontSize: 14, lineHeight: 20, opacity: 0.92 },
+  logo: { position: 'absolute', right: 12, top: 12, width: 88, height: 154, zIndex: 1 },
   shapeCoral: { position: 'absolute', right: 82, top: 0, width: 52, height: 96, backgroundColor: '#f25b43', borderBottomLeftRadius: 7, borderBottomRightRadius: 7, transform: [{ rotate: '1deg' }] },
   shapeYellow: { position: 'absolute', right: -4, top: 32, width: 94, height: 46, backgroundColor: '#f2d28b', borderRadius: 9, transform: [{ rotate: '-4deg' }] },
   shapeBlue: { position: 'absolute', right: -12, bottom: -27, width: 84, height: 102, backgroundColor: '#8ac6d8', borderTopLeftRadius: 30, transform: [{ rotate: '20deg' }] },
