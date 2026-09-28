@@ -37,11 +37,10 @@ export default function LoginScreen() {
           <Text style={styles.brand}>Arthere</Text>
           <View style={styles.brandLine} />
           <Text style={styles.headerDescription}>
-            Conectando talentos criativos e{'
-'}projetos na Baixada Santista.
+            Conectando talentos criativos e{''}projetos na Baixada Santista.
           </Text>
         </View>
-        <View style={styles.logoBadge}>
+        <View style={styles.logoArt}>
           <Image source={{ uri: ARTHERE_LOGO }} style={styles.logo} resizeMode="contain" />
         </View>
         <View style={styles.shapeCoral} />

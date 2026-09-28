@@ -127,8 +127,7 @@ export default function RegisterScreen() {
             <Text style={styles.eyebrow}>ENCONTRO · TERRITÓRIO</Text>
             <Text style={styles.brand}>Arthere</Text>
             <View style={styles.brandLine} />
-            <Text style={styles.headerDescription}>Crie seu espaço na rede criativa{'
-'}da Baixada Santista.</Text>
+            <Text style={styles.headerDescription}>Crie seu espaço na rede criativa{''}da Baixada Santista.</Text>
           </View>
           <View style={styles.shapeCoral} />
           <View style={styles.shapeYellow} />
