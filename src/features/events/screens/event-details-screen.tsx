@@ -8,7 +8,6 @@ import type { RouteProp } from '@react-navigation/native';
 import { useTheme } from '@/providers/theme-provider';
 import { useUser } from '@/providers/user-provider';
 import { useManagement } from '@/providers/management-provider';
-import { MOCK_EVENTOS } from '../types/event';
 import type { RootStackParamList } from '../../../navigation/app-navigator';
 
 type Navigation = NativeStackNavigationProp<RootStackParamList, 'EventDetails'>;
@@ -19,9 +18,9 @@ export default function EventDetailsScreen() {
   const route = useRoute<EventRoute>();
   const { palette } = useTheme();
   const { user } = useUser();
-  const { solicitacoesEvento, enviarSolicitacaoEvento } = useManagement();
+  const { eventos, solicitacoesEvento, enviarSolicitacaoEvento } = useManagement();
 
-  const evento = MOCK_EVENTOS.find((item) => item.id === route.params.eventId);
+  const evento = eventos.find((item) => item.id === route.params.eventId);
 
   if (!evento) {
     return (
