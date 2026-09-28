@@ -84,12 +84,14 @@ function ConversationRow({
 }
 
 const styles = StyleSheet.create({
-  container: { borderRadius: 18,
+  container: {
     flex: 1,
     backgroundColor: colors.brandPaper,
   },
-  header: { borderRadius: 18,
-    paddingHorizontal: 20,
+  header: {
+    marginHorizontal: 12,
+    marginTop: 8,
+    paddingHorizontal: 18,
     paddingTop: 18,
     paddingBottom: 14,
   },
@@ -117,11 +119,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   list: {
-    paddingHorizontal: 20,
-    paddingVertical: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
   },
   row: {
     minHeight: 76,
+    marginBottom: 10,
+    paddingHorizontal: 14,
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 11,
@@ -131,6 +135,7 @@ const styles = StyleSheet.create({
   },
   avatarFrame: {
     width: 50,
+    borderRadius: 18,
     height: 50,
     borderWidth: 1,
     borderColor: colors.brandInk,
@@ -142,6 +147,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: 46,
     height: 46,
+    borderRadius: 16,
   },
   online: {
     position: 'absolute',
@@ -154,7 +160,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.brandPaper,
   },
-  rowContent: { borderRadius: 18,
+  rowContent: {
     flex: 1,
     minWidth: 0,
   },
@@ -174,21 +180,25 @@ const styles = StyleSheet.create({
     fontSize: 9,
     fontWeight: '700',
   },
-  preview: { borderRadius: 18,
+  preview: {
     color: colors.muted,
     fontSize: 12,
     marginTop: 5,
   },
-  empty: { borderRadius: 18,
+  empty: {
     flexGrow: 1,
     justifyContent: 'center',
-    paddingHorizontal: 36,
+    paddingHorizontal: 18,
   },
-  emptyContent: { borderRadius: 18,
+  emptyContent: {
     alignItems: 'center',
+    padding: 24,
+    borderRadius: 28,
+    backgroundColor: colors.surface,
   },
-  emptyGraphic: { borderRadius: 18,
+  emptyGraphic: {
     width: 72,
+    borderRadius: 24,
     height: 72,
     backgroundColor: colors.brandInk,
     alignItems: 'center',
@@ -196,7 +206,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     overflow: 'hidden',
   },
-  emptyGraphicCoral: { borderRadius: 18,
+  emptyGraphicCoral: {
     position: 'absolute',
     width: 42,
     height: 42,
@@ -206,13 +216,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.brandCoral,
     transform: [{ rotate: '20deg' }],
   },
-  emptyTitle: { borderRadius: 18,
+  emptyTitle: {
     color: colors.brandInk,
     fontSize: 17,
     fontWeight: '900',
     marginTop: 16,
   },
-  emptyText: { borderRadius: 18,
+  emptyText: {
     color: colors.muted,
     textAlign: 'center',
     lineHeight: 20,
