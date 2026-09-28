@@ -91,9 +91,9 @@ function Field({ label, icon, ...inputProps }: { label: string; icon?: keyof typ
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background }, flex: { flex: 1 },
-  header: { height: 58, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16 },
-  backButton: { width: 38, height: 38, alignItems: 'center', justifyContent: 'center' }, headerTitle: { color: colors.text, fontSize: 17, fontWeight: '800' }, headerSpacer: { width: 38 },
+  container: { borderRadius: 18,
+  header: { borderRadius: 18,
+  backButton: { borderRadius: 999,
   content: { paddingHorizontal: 20, paddingBottom: 38 }, photoSection: { alignItems: 'center', paddingVertical: 18 }, avatarWrapper: { position: 'relative' }, avatar: { width: 104, height: 104, borderRadius: 18, borderWidth: 3, borderColor: colors.secondary }, cameraBadge: { position: 'absolute', right: 0, bottom: 1, width: 31, height: 31, borderRadius: 16, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.primaryDark, borderWidth: 2, borderColor: colors.white }, changePhoto: { marginTop: 10, color: colors.primaryDark, fontSize: 13, fontWeight: '800' },
   form: { gap: 15 }, field: { gap: 7 }, label: { color: colors.text, fontSize: 13, fontWeight: '800' }, inputWithIcon: { minHeight: 49, borderWidth: 1, borderColor: colors.border, borderRadius: 9, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 13, gap: 8, backgroundColor: colors.white }, input: { flex: 1, paddingVertical: 12, color: colors.text, fontSize: 14 }, multiline: { minHeight: 108, borderWidth: 1, borderColor: colors.border, borderRadius: 9, paddingHorizontal: 13, backgroundColor: colors.white }, counter: { alignSelf: 'flex-end', color: colors.muted, fontSize: 11 },
   saveButton: { height: 50, marginTop: 27, borderRadius: 999, backgroundColor: colors.primaryDark, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7 }, saveButtonDisabled: { opacity: 0.7 }, saveText: { color: colors.white, fontSize: 15, fontWeight: '800' },
