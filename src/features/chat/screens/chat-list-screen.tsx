@@ -89,10 +89,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.brandPaper,
   },
   header: {
-    marginHorizontal: 12,
-    borderRadius: 24,
-    marginTop: 8,
-    paddingHorizontal: 18,
+    paddingHorizontal: 20,
     paddingTop: 18,
     paddingBottom: 14,
   },
@@ -120,15 +117,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   list: {
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 6,
   },
   row: {
     minHeight: 76,
-    borderRadius: 20,
-    backgroundColor: colors.surface,
-    marginBottom: 10,
-    paddingHorizontal: 14,
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 11,
@@ -138,7 +131,6 @@ const styles = StyleSheet.create({
   },
   avatarFrame: {
     width: 50,
-    borderRadius: 18,
     height: 50,
     borderWidth: 1,
     borderColor: colors.brandInk,
@@ -150,7 +142,6 @@ const styles = StyleSheet.create({
   avatar: {
     width: 46,
     height: 46,
-    borderRadius: 16,
   },
   online: {
     position: 'absolute',
@@ -191,17 +182,13 @@ const styles = StyleSheet.create({
   empty: {
     flexGrow: 1,
     justifyContent: 'center',
-    paddingHorizontal: 18,
+    paddingHorizontal: 36,
   },
   emptyContent: {
     alignItems: 'center',
-    padding: 24,
-    borderRadius: 28,
-    backgroundColor: colors.surface,
   },
   emptyGraphic: {
     width: 72,
-    borderRadius: 24,
     height: 72,
     backgroundColor: colors.brandInk,
     alignItems: 'center',

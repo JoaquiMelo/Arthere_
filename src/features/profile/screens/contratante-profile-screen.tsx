@@ -2,17 +2,17 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import {
-  Image,
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    Image,
+    KeyboardAvoidingView,
+    Modal,
+    Platform,
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
 
 import { useManagement } from "@/providers/management-provider";
@@ -336,23 +336,15 @@ export default function ContratanteProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.brandPaper,
-  },
-  scrollContent: {
-    paddingBottom: 32,
-  },
+  container: { flex: 1, backgroundColor: colors.brandPaper },
+  scrollContent: { paddingBottom: 42 },
   coverContainer: {
     height: 178,
     overflow: "hidden",
     backgroundColor: colors.brandInk,
     position: "relative",
   },
-  coverImage: {
-    width: "100%",
-    height: "100%",
-  },
+  coverImage: { width: "100%", height: "100%" },
   coverOverlay: {
     ...StyleSheet.absoluteFill,
     backgroundColor: "rgba(41,36,43,0.50)",
@@ -427,10 +419,7 @@ const styles = StyleSheet.create({
     gap: 5,
     marginTop: 7,
   },
-  location: {
-    color: colors.muted,
-    fontSize: 12,
-  },
+  location: { color: colors.muted, fontSize: 12 },
   statsCard: {
     width: "100%",
     flexDirection: "row",
@@ -441,15 +430,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: colors.border,
   },
-  stat: {
-    flex: 1,
-    alignItems: "center",
-  },
-  statNumber: {
-    color: colors.brandInk,
-    fontSize: 18,
-    fontWeight: "900",
-  },
+  stat: { flex: 1, alignItems: "center" },
+  statNumber: { color: colors.brandInk, fontSize: 18, fontWeight: "900" },
   statLabel: {
     marginTop: 2,
     color: colors.muted,
@@ -457,11 +439,7 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     letterSpacing: 0.8,
   },
-  statDivider: {
-    width: 1,
-    height: 24,
-    backgroundColor: colors.border,
-  },
+  statDivider: { width: 1, height: 24, backgroundColor: colors.border },
   actionButtonsRow: {
     width: "100%",
     flexDirection: "row",
@@ -500,10 +478,7 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     letterSpacing: 0.8,
   },
-  section: {
-    paddingHorizontal: 20,
-    marginTop: 24,
-  },
+  section: { marginTop: 24, paddingHorizontal: 20 },
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -518,21 +493,9 @@ const styles = StyleSheet.create({
     letterSpacing: 1.3,
     marginBottom: 2,
   },
-  sectionTitle: {
-    color: colors.brandInk,
-    fontSize: 18,
-    fontWeight: "900",
-    letterSpacing: -0.3,
-  },
-  sectionSubtitle: {
-    color: colors.muted,
-    fontSize: 9,
-    fontWeight: "700",
-  },
-  galleryContainer: {
-    paddingRight: 12,
-    gap: 12,
-  },
+  sectionTitle: { color: colors.brandInk, fontSize: 18, fontWeight: "900" },
+  sectionSubtitle: { color: colors.muted, fontSize: 9, fontWeight: "700" },
+  galleryContainer: { gap: 10, paddingRight: 20 },
   eventCard: {
     width: 158,
     height: 184,
@@ -540,10 +503,7 @@ const styles = StyleSheet.create({
     position: "relative",
     backgroundColor: colors.surface,
   },
-  eventImage: {
-    width: "100%",
-    height: "100%",
-  },
+  eventImage: { width: "100%", height: "100%" },
   eventOverlay: {
     position: "absolute",
     bottom: 0,
@@ -623,10 +583,7 @@ const styles = StyleSheet.create({
     padding: 13,
     marginBottom: 9,
   },
-  flex1: {
-    flex: 1,
-    minWidth: 0,
-  },
+  flex1: { flex: 1, minWidth: 0 },
   vagaCategoria: {
     color: colors.brandCoral,
     fontSize: 8,
@@ -641,15 +598,8 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     marginTop: 3,
   },
-  vagaMeta: {
-    color: colors.muted,
-    fontSize: 10.5,
-    marginTop: 4,
-  },
-  vagaRight: {
-    alignItems: "flex-end",
-    gap: 7,
-  },
+  vagaMeta: { color: colors.muted, fontSize: 10.5, marginTop: 4 },
+  vagaRight: { alignItems: "flex-end", gap: 7 },
   statusBadge: {
     color: colors.brandInk,
     backgroundColor: colors.brandSand,

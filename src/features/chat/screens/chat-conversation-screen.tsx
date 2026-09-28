@@ -107,14 +107,14 @@ export default function ChatConversationScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { borderRadius: 18,
+  container: {
     flex: 1,
     backgroundColor: colors.brandPaper,
   },
   flex: {
     flex: 1,
   },
-  header: { borderRadius: 18,
+  header: {
     minHeight: 70,
     paddingHorizontal: 14,
     paddingVertical: 9,
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
   },
-  headerInfo: { borderRadius: 18,
+  headerInfo: {
     marginLeft: 10,
     flex: 1,
   },
@@ -175,12 +175,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     flexGrow: 1,
   },
-  empty: { borderRadius: 18,
+  empty: {
     flexGrow: 1,
     justifyContent: 'center',
     padding: 34,
   },
-  emptyText: { borderRadius: 18,
+  emptyText: {
     color: colors.muted,
     textAlign: 'center',
     lineHeight: 20,
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: colors.border,
   },
-  input: { borderRadius: 18,
+  input: {
     flex: 1,
     minHeight: 42,
     maxHeight: 110,

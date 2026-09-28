@@ -3,18 +3,18 @@ import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import React, { useState } from "react";
 import {
-    ActivityIndicator,
-    Alert,
-    Image,
-    KeyboardAvoidingView,
-    Platform,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Alert,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 import { useUser } from "@/providers/user-provider";
@@ -282,7 +282,7 @@ function Field({
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.surface },
+  container: { flex: 1, backgroundColor: colors.background },
   flex: { flex: 1 },
   header: {
     height: 58,
@@ -297,10 +297,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  headerTitle: { fontSize: 18, fontWeight: "800", color: colors.text },
+  headerTitle: { fontSize: 17, fontWeight: "900", color: colors.text },
   headerSpacer: { width: 38 },
-  content: { paddingHorizontal: 20, paddingBottom: 32 },
-  photoSection: { alignItems: "center", paddingVertical: 18 },
+  content: { paddingHorizontal: 20, paddingBottom: 45 },
+  photoSection: { alignItems: "center", paddingVertical: 16 },
   avatarWrapper: { position: "relative" },
   avatar: {
     width: 104,
@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
     gap: 10,
     backgroundColor: colors.white,
   },
-  input: { color: colors.text, fontSize: 14, paddingVertical: 12 },
+  input: { flex: 1, color: colors.text, fontSize: 14, paddingVertical: 10 },
   multiline: {
     minHeight: 110,
     borderWidth: 1,
@@ -386,5 +386,5 @@ const styles = StyleSheet.create({
     marginTop: 26,
   },
   buttonDisabled: { opacity: 0.7 },
-  buttonText: { color: colors.white, fontWeight: "800" },
+  buttonText: { color: colors.white, fontWeight: "900", fontSize: 15 },
 });

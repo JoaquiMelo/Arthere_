@@ -1,34 +1,31 @@
-import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
 import {
-    Alert,
-    FlatList,
-    Image,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
+  Alert,
+  FlatList,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
-import { ReviewFormModal } from "@/features/reviews/components/review-form-modal";
-import { useManagement } from "@/providers/management-provider";
-import { useReviews } from "@/providers/reviews-provider";
-import { colors } from "@/shared/theme/colors";
-import type {
-    Candidato,
-    VagaGerenciada,
-} from "../../../features/opportunities/screens/types/management";
-import { StarRating } from "../../../features/reviews/components/star-rating";
+import { ReviewFormModal } from '@/features/reviews/components/review-form-modal';
+import { useManagement } from '@/providers/management-provider';
+import { useReviews } from '@/providers/reviews-provider';
+import { colors } from '@/shared/theme/colors';
+import type { Candidato, VagaGerenciada } from '../../../features/opportunities/screens/types/management';
+import { StarRating } from '../../../features/reviews/components/star-rating';
 
-const STATUS_LABEL: Record<VagaGerenciada["status"], string> = {
-  ABERTA: "Aberta",
-  EM_ANDAMENTO: "Em andamento",
-  CONCLUIDA: "Concluída",
+const STATUS_LABEL: Record<VagaGerenciada['status'], string> = {
+  ABERTA: 'Aberta',
+  EM_ANDAMENTO: 'Em andamento',
+  CONCLUIDA: 'Concluída',
 };
 
-const STATUS_COR: Record<VagaGerenciada["status"], string> = {
+const STATUS_COR: Record<VagaGerenciada['status'], string> = {
   ABERTA: colors.brandCoral,
   EM_ANDAMENTO: colors.brandBlue,
   CONCLUIDA: colors.muted,
@@ -56,16 +53,16 @@ export default function ManageOpportunitiesScreen() {
   const responder = (
     vaga: VagaGerenciada,
     candidato: Candidato,
-    status: "ACEITA" | "RECUSADA",
+    status: 'ACEITA' | 'RECUSADA',
   ) => {
-    if (status === "ACEITA") {
+    if (status === 'ACEITA') {
       Alert.alert(
-        "Aceitar candidato",
+        'Aceitar candidato',
         `Confirmar ${candidato.nome} para "${vaga.titulo}"?`,
         [
-          { text: "Cancelar", style: "cancel" },
+          { text: 'Cancelar', style: 'cancel' },
           {
-            text: "Aceitar",
+            text: 'Aceitar',
             onPress: () => aceitarCandidato(vaga.id, candidato.id),
           },
         ],
@@ -76,14 +73,14 @@ export default function ManageOpportunitiesScreen() {
   };
 
   const concluir = (vaga: VagaGerenciada) => {
-    Alert.alert("Concluir projeto", "Marcar este projeto como concluído?", [
-      { text: "Cancelar", style: "cancel" },
-      { text: "Concluir", onPress: () => concluirVaga(vaga.id) },
+    Alert.alert('Concluir projeto', 'Marcar este projeto como concluído?', [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Concluir', onPress: () => concluirVaga(vaga.id) },
     ]);
   };
 
   const abrirAvaliacao = (vaga: VagaGerenciada) => {
-    const contratado = vaga.candidatos.find((item) => item.status === "ACEITA");
+    const contratado = vaga.candidatos.find((item) => item.status === 'ACEITA');
     if (!contratado) return;
     setAvaliando({ vagaId: vaga.id, candidato: contratado });
   };
@@ -98,14 +95,14 @@ export default function ManageOpportunitiesScreen() {
     if (!avaliando) return;
     adicionarAvaliacao({
       agenteId: avaliando.candidato.agenteId,
-      autorNome: "Você",
+      autorNome: 'Você',
       nota,
       comentario,
     });
     marcarAvaliado(avaliando.vagaId);
     const nome = avaliando.candidato.nome;
     setAvaliando(null);
-    Alert.alert("Avaliação enviada!", `Obrigado por avaliar ${nome}.`);
+    Alert.alert('Avaliação enviada!', `Obrigado por avaliar ${nome}.`);
   };
 
   return (
@@ -142,20 +139,14 @@ export default function ManageOpportunitiesScreen() {
           {solicitacoesEvento.map((solicitacao) => (
             <View key={solicitacao.id} style={styles.eventRequestCard}>
               <View style={styles.flex1}>
-                <Text style={styles.eventRequestEvent}>
-                  {solicitacao.eventoTitulo}
-                </Text>
-                <Text style={styles.candidatoNome}>
-                  {solicitacao.agenteNome}
-                </Text>
+                <Text style={styles.eventRequestEvent}>{solicitacao.eventoTitulo}</Text>
+                <Text style={styles.candidatoNome}>{solicitacao.agenteNome}</Text>
                 <Text style={styles.candidatoEspecialidade}>
                   {solicitacao.agenteEspecialidade}
                 </Text>
-                <Text style={styles.candidatoMensagem}>
-                  {solicitacao.mensagem}
-                </Text>
+                <Text style={styles.candidatoMensagem}>{solicitacao.mensagem}</Text>
 
-                {solicitacao.status === "PENDENTE" ? (
+                {solicitacao.status === 'PENDENTE' ? (
                   <View style={styles.candidatoActions}>
                     <TouchableOpacity
                       style={styles.recusar}
@@ -174,14 +165,14 @@ export default function ManageOpportunitiesScreen() {
                   <Text
                     style={[
                       styles.statusCandidato,
-                      solicitacao.status === "ACEITA"
+                      solicitacao.status === 'ACEITA'
                         ? styles.statusAceito
                         : styles.statusRecusado,
                     ]}
                   >
-                    {solicitacao.status === "ACEITA"
-                      ? "✓ Solicitação aceita"
-                      : "Solicitação recusada"}
+                    {solicitacao.status === 'ACEITA'
+                      ? '✓ Solicitação aceita'
+                      : 'Solicitação recusada'}
                   </Text>
                 )}
               </View>
@@ -196,11 +187,7 @@ export default function ManageOpportunitiesScreen() {
         contentContainerStyle={styles.list}
         ListEmptyComponent={
           <View style={styles.emptyCard}>
-            <Ionicons
-              name="briefcase-outline"
-              size={30}
-              color={colors.brandCoral}
-            />
+            <Ionicons name="briefcase-outline" size={30} color={colors.brandCoral} />
             <Text style={styles.emptyTitle}>Você ainda não publicou vagas</Text>
             <Text style={styles.emptyText}>
               As vagas publicadas e suas candidaturas aparecerão aqui.
@@ -209,7 +196,7 @@ export default function ManageOpportunitiesScreen() {
         }
         renderItem={({ item: vaga }) => {
           const aberta = expandida === vaga.id;
-          const contratado = vaga.candidatos.find((c) => c.status === "ACEITA");
+          const contratado = vaga.candidatos.find((c) => c.status === 'ACEITA');
 
           return (
             <View style={styles.card}>
@@ -223,7 +210,7 @@ export default function ManageOpportunitiesScreen() {
                   <Text style={styles.vagaTitulo}>{vaga.titulo}</Text>
                   <Text style={styles.candidatosCount}>
                     {vaga.candidatos.length} candidato
-                    {vaga.candidatos.length === 1 ? "" : "s"}
+                    {vaga.candidatos.length === 1 ? '' : 's'}
                   </Text>
                 </View>
 
@@ -236,9 +223,7 @@ export default function ManageOpportunitiesScreen() {
                   <Text
                     style={[
                       styles.badgeText,
-                      vaga.status === "EM_ANDAMENTO" && {
-                        color: colors.brandInk,
-                      },
+                      vaga.status === 'EM_ANDAMENTO' && { color: colors.brandInk },
                     ]}
                   >
                     {STATUS_LABEL[vaga.status]}
@@ -246,7 +231,7 @@ export default function ManageOpportunitiesScreen() {
                 </View>
 
                 <Ionicons
-                  name={aberta ? "chevron-up" : "chevron-down"}
+                  name={aberta ? 'chevron-up' : 'chevron-down'}
                   size={18}
                   color={colors.muted}
                 />
@@ -262,16 +247,11 @@ export default function ManageOpportunitiesScreen() {
 
                   {vaga.candidatos.map((candidato) => (
                     <View key={candidato.id} style={styles.candidatoCard}>
-                      <Image
-                        source={{ uri: candidato.avatarUrl }}
-                        style={styles.avatar}
-                      />
+                      <Image source={{ uri: candidato.avatarUrl }} style={styles.avatar} />
 
                       <View style={styles.flex1}>
                         <View style={styles.candidatoTop}>
-                          <Text style={styles.candidatoNome}>
-                            {candidato.nome}
-                          </Text>
+                          <Text style={styles.candidatoNome}>{candidato.nome}</Text>
                           <StarRating value={candidato.avaliacao} size={12} />
                         </View>
 
@@ -282,21 +262,17 @@ export default function ManageOpportunitiesScreen() {
                           {candidato.mensagem}
                         </Text>
 
-                        {candidato.status === "PENDENTE" ? (
+                        {candidato.status === 'PENDENTE' ? (
                           <View style={styles.candidatoActions}>
                             <TouchableOpacity
                               style={styles.recusar}
-                              onPress={() =>
-                                responder(vaga, candidato, "RECUSADA")
-                              }
+                              onPress={() => responder(vaga, candidato, 'RECUSADA')}
                             >
                               <Text style={styles.recusarText}>RECUSAR</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                               style={styles.aceitar}
-                              onPress={() =>
-                                responder(vaga, candidato, "ACEITA")
-                              }
+                              onPress={() => responder(vaga, candidato, 'ACEITA')}
                             >
                               <Text style={styles.aceitarText}>ACEITAR</Text>
                             </TouchableOpacity>
@@ -305,37 +281,26 @@ export default function ManageOpportunitiesScreen() {
                           <Text
                             style={[
                               styles.statusCandidato,
-                              candidato.status === "ACEITA"
+                              candidato.status === 'ACEITA'
                                 ? styles.statusAceito
                                 : styles.statusRecusado,
                             ]}
                           >
-                            {candidato.status === "ACEITA"
-                              ? "✓ CONTRATADO"
-                              : "RECUSADO"}
+                            {candidato.status === 'ACEITA' ? '✓ CONTRATADO' : 'RECUSADO'}
                           </Text>
                         )}
                       </View>
                     </View>
                   ))}
 
-                  {vaga.status === "EM_ANDAMENTO" && contratado ? (
-                    <TouchableOpacity
-                      style={styles.concluir}
-                      onPress={() => concluir(vaga)}
-                    >
+                  {vaga.status === 'EM_ANDAMENTO' && contratado ? (
+                    <TouchableOpacity style={styles.concluir} onPress={() => concluir(vaga)}>
                       <Text style={styles.concluirText}>CONCLUIR PROJETO</Text>
-                      <Ionicons
-                        name="arrow-forward"
-                        size={15}
-                        color={colors.brandPaper}
-                      />
+                      <Ionicons name="arrow-forward" size={15} color={colors.brandPaper} />
                     </TouchableOpacity>
                   ) : null}
 
-                  {vaga.status === "CONCLUIDA" &&
-                  contratado &&
-                  !vaga.avaliado ? (
+                  {vaga.status === 'CONCLUIDA' && contratado && !vaga.avaliado ? (
                     <TouchableOpacity
                       style={styles.avaliar}
                       onPress={() => abrirAvaliacao(vaga)}
@@ -347,7 +312,7 @@ export default function ManageOpportunitiesScreen() {
                     </TouchableOpacity>
                   ) : null}
 
-                  {vaga.status === "CONCLUIDA" && vaga.avaliado ? (
+                  {vaga.status === 'CONCLUIDA' && vaga.avaliado ? (
                     <Text style={styles.avaliadoText}>
                       Você já avaliou este profissional.
                     </Text>
@@ -361,7 +326,7 @@ export default function ManageOpportunitiesScreen() {
 
       <ReviewFormModal
         visible={!!avaliando}
-        agenteNome={avaliando?.candidato.nome ?? ""}
+        agenteNome={avaliando?.candidato.nome ?? ''}
         onClose={() => setAvaliando(null)}
         onSubmit={enviarAvaliacao}
       />
@@ -370,13 +335,16 @@ export default function ManageOpportunitiesScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.brandPaper },
+  container: {
+    flex: 1,
+    backgroundColor: colors.brandPaper,
+  },
   header: {
     minHeight: 78,
     paddingHorizontal: 16,
     paddingVertical: 11,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
     gap: 10,
@@ -387,68 +355,80 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: colors.white,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   headerCopy: { flex: 1 },
   kicker: {
     color: colors.brandCoral,
     fontSize: 8,
-    fontWeight: "900",
+    fontWeight: '900',
     letterSpacing: 1.5,
   },
   title: {
     color: colors.brandInk,
     fontSize: 23,
     lineHeight: 27,
-    fontWeight: "900",
+    fontWeight: '900',
     marginTop: 2,
   },
   headerMark: {
     width: 44,
     height: 44,
     backgroundColor: colors.brandInk,
-    overflow: "hidden",
-    position: "relative",
+    overflow: 'hidden',
+    position: 'relative',
   },
   headerMarkShape: {
-    position: "absolute",
+    position: 'absolute',
     width: 38,
     height: 38,
     right: -10,
     bottom: -10,
     backgroundColor: colors.brandCoral,
-    transform: [{ rotate: "20deg" }],
+    transform: [{ rotate: '20deg' }],
   },
-  eventRequestsSection: { paddingHorizontal: 16, paddingTop: 14 },
+  eventRequestsSection: {
+    paddingHorizontal: 16,
+    paddingTop: 14,
+  },
   sectionHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
     marginBottom: 10,
     gap: 12,
   },
   sectionKicker: {
     color: colors.brandCoral,
     fontSize: 8,
-    fontWeight: "900",
+    fontWeight: '900',
     letterSpacing: 1.35,
     marginBottom: 2,
   },
-  sectionTitle: { color: colors.brandInk, fontSize: 17, fontWeight: "900" },
+  sectionTitle: {
+    color: colors.brandInk,
+    fontSize: 17,
+    fontWeight: '900',
+  },
   count: {
     color: colors.brandPaper,
     backgroundColor: colors.brandInk,
     minWidth: 24,
     height: 24,
     paddingHorizontal: 7,
-    alignItems: "center",
-    justifyContent: "center",
-    textAlign: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
     fontSize: 9,
-    fontWeight: "900",
+    fontWeight: '900',
   },
-  list: { padding: 16, paddingTop: 12, paddingBottom: 34, gap: 12 },
+  list: {
+    padding: 16,
+    paddingTop: 12,
+    paddingBottom: 34,
+    gap: 12,
+  },
   eventRequestCard: {
     backgroundColor: colors.white,
     borderWidth: 1,
@@ -459,9 +439,9 @@ const styles = StyleSheet.create({
   eventRequestEvent: {
     color: colors.brandCoral,
     fontSize: 9,
-    fontWeight: "900",
+    fontWeight: '900',
     letterSpacing: 1.1,
-    textTransform: "uppercase",
+    textTransform: 'uppercase',
     marginBottom: 4,
   },
   card: {
@@ -470,33 +450,41 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     padding: 14,
   },
-  cardHeader: { flexDirection: "row", alignItems: "center", gap: 10 },
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
   flex1: { flex: 1, minWidth: 0 },
   category: {
     color: colors.brandCoral,
     fontSize: 8,
-    fontWeight: "900",
+    fontWeight: '900',
     letterSpacing: 1,
-    textTransform: "uppercase",
+    textTransform: 'uppercase',
   },
   vagaTitulo: {
     color: colors.brandInk,
     fontSize: 16,
     lineHeight: 19,
-    fontWeight: "900",
+    fontWeight: '900',
     marginTop: 3,
   },
-  candidatosCount: { color: colors.muted, fontSize: 10.5, marginTop: 4 },
+  candidatosCount: {
+    color: colors.muted,
+    fontSize: 10.5,
+    marginTop: 4,
+  },
   badge: {
     minHeight: 24,
     paddingHorizontal: 8,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   badgeText: {
     color: colors.brandPaper,
     fontSize: 8,
-    fontWeight: "900",
+    fontWeight: '900',
     letterSpacing: 0.6,
   },
   candidatos: {
@@ -507,7 +495,7 @@ const styles = StyleSheet.create({
     gap: 9,
   },
   candidatoCard: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 10,
     backgroundColor: colors.surface,
     borderWidth: 1,
@@ -518,39 +506,46 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     backgroundColor: colors.white,
-    borderRadius: 22,
   },
   candidatoTop: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     gap: 8,
   },
   candidatoNome: {
     color: colors.brandInk,
-    fontWeight: "900",
+    fontWeight: '900',
     fontSize: 12,
     flex: 1,
   },
-  candidatoEspecialidade: { color: colors.muted, fontSize: 10, marginTop: 2 },
+  candidatoEspecialidade: {
+    color: colors.muted,
+    fontSize: 10,
+    marginTop: 2,
+  },
   candidatoMensagem: {
     color: colors.text,
     fontSize: 11,
     lineHeight: 16,
     marginTop: 6,
   },
-  candidatoActions: { flexDirection: "row", gap: 8, marginTop: 10 },
+  candidatoActions: {
+    flexDirection: 'row',
+    gap: 8,
+    marginTop: 10,
+  },
   recusar: {
     flex: 1,
     minHeight: 36,
     borderWidth: 1,
     borderColor: colors.danger,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   recusarText: {
     color: colors.danger,
-    fontWeight: "900",
+    fontWeight: '900',
     fontSize: 8,
     letterSpacing: 0.9,
   },
@@ -558,19 +553,19 @@ const styles = StyleSheet.create({
     flex: 1,
     minHeight: 36,
     backgroundColor: colors.brandInk,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   aceitarText: {
     color: colors.brandPaper,
-    fontWeight: "900",
+    fontWeight: '900',
     fontSize: 8,
     letterSpacing: 0.9,
   },
   statusCandidato: {
     marginTop: 8,
     fontSize: 9,
-    fontWeight: "900",
+    fontWeight: '900',
     letterSpacing: 0.8,
   },
   statusAceito: { color: colors.brandGreen },
@@ -578,15 +573,15 @@ const styles = StyleSheet.create({
   concluir: {
     minHeight: 42,
     backgroundColor: colors.brandInk,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 12,
   },
   concluirText: {
     color: colors.brandPaper,
     fontSize: 8,
-    fontWeight: "900",
+    fontWeight: '900',
     letterSpacing: 1,
   },
   avaliar: {
@@ -594,15 +589,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.brandSand,
     borderWidth: 1,
     borderColor: colors.brandInk,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     gap: 7,
   },
   avaliarText: {
     color: colors.brandInk,
     fontSize: 8,
-    fontWeight: "900",
+    fontWeight: '900',
     letterSpacing: 0.8,
   },
   emptyCard: {
@@ -610,26 +605,26 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     backgroundColor: colors.white,
     padding: 24,
-    alignItems: "center",
+    alignItems: 'center',
   },
   emptyTitle: {
     color: colors.brandInk,
     fontSize: 15,
-    fontWeight: "900",
+    fontWeight: '900',
     marginTop: 9,
   },
   emptyText: {
     color: colors.muted,
     fontSize: 11,
     lineHeight: 17,
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 5,
     maxWidth: 280,
   },
   avaliadoText: {
     color: colors.muted,
     fontSize: 11,
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 2,
   },
 });
