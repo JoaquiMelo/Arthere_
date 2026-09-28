@@ -863,6 +863,7 @@ const styles = StyleSheet.create({
   },
   searchBox: {
     minHeight: 52,
+    borderRadius: 14,
     paddingHorizontal: 14,
     flexDirection: "row",
     alignItems: "center",
@@ -875,6 +876,7 @@ const styles = StyleSheet.create({
   filterContent: { paddingRight: 10, gap: 8 },
   filterChip: {
     minHeight: 40,
+    borderRadius: 12,
     paddingHorizontal: 14,
     justifyContent: "center",
     alignItems: "center",
@@ -886,6 +888,8 @@ const styles = StyleSheet.create({
 
   calendarArea: {
     marginTop: 20,
+    borderRadius: 18,
+    overflow: "hidden",
     padding: 11,
     borderWidth: 1.5,
   },
@@ -915,6 +919,7 @@ const styles = StyleSheet.create({
   monthControls: { flexDirection: "row", gap: 6, paddingTop: 5 },
   controlButton: {
     width: 38,
+    borderRadius: 12,
     height: 38,
     borderWidth: 1.5,
     alignItems: "center",
@@ -994,6 +999,7 @@ const styles = StyleSheet.create({
   eventCount: { fontSize: 9, fontWeight: "700" },
   agendaItem: {
     minHeight: 70,
+    borderRadius: 12,
     borderTopWidth: 1,
     paddingVertical: 11,
     flexDirection: "row",
@@ -1010,7 +1016,7 @@ const styles = StyleSheet.create({
   noAgenda: { paddingVertical: 16, borderTopWidth: 1 },
   noAgendaText: { fontSize: 10 },
 
-  searchResultLine: { marginTop: 12, padding: 10 },
+  searchResultLine: { marginTop: 12, padding: 10, borderRadius: 10 },
   searchResultText: { fontSize: 9, fontWeight: "800" },
   allEventsLabel: {
     fontSize: 8,
@@ -1030,6 +1036,7 @@ const styles = StyleSheet.create({
   },
   smallDate: {
     width: 54,
+    borderRadius: 12,
     height: 58,
     alignItems: "center",
     justifyContent: "center",
@@ -1042,6 +1049,7 @@ const styles = StyleSheet.create({
   eventListTime: { fontSize: 8.5, fontWeight: "800", marginTop: 5 },
   fixedTag: {
     paddingHorizontal: 6,
+    borderRadius: 9,
     paddingVertical: 4,
     flexDirection: "row",
     alignItems: "center",
@@ -1049,7 +1057,7 @@ const styles = StyleSheet.create({
   },
   fixedTagText: { fontSize: 7, fontWeight: "900", letterSpacing: 0.6 },
 
-  empty: { marginTop: 10, borderWidth: 1.5, padding: 24, alignItems: "center" },
+  empty: { marginTop: 10, borderWidth: 1.5, padding: 24, alignItems: "center", borderRadius: 16 },
   emptyTitle: { fontSize: 17, fontWeight: "900", marginTop: 11 },
   emptyText: {
     marginTop: 6,
@@ -1061,7 +1069,7 @@ const styles = StyleSheet.create({
   highlightsSection: { marginTop: 28 },
   highlightsTitle: { fontSize: 22, fontWeight: "600", marginTop: 5 },
   highlightContent: { paddingTop: 13, paddingRight: 16, gap: 12 },
-  featured: { width: 300, paddingVertical: 20, paddingHorizontal: 17 },
+  featured: { width: 300, paddingVertical: 20, paddingHorizontal: 17, borderRadius: 20, overflow: "hidden" },
   featuredTop: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -1077,6 +1085,7 @@ const styles = StyleSheet.create({
   featuredDateText: { fontSize: 9, fontWeight: "700", letterSpacing: 0.4 },
   pinBadge: {
     width: 30,
+    borderRadius: 15,
     height: 30,
     alignItems: "center",
     justifyContent: "center",
@@ -1095,6 +1104,7 @@ const styles = StyleSheet.create({
   featuredLocation: { fontSize: 8.5 },
   detailButton: {
     alignSelf: "flex-start",
+    borderRadius: 12,
     paddingHorizontal: 11,
     paddingVertical: 9,
   },
