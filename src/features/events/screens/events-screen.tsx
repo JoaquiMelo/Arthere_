@@ -894,7 +894,7 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
   },
   calendarTop: {
-    minHeight: 112,
+    minHeight: 124,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
@@ -949,7 +949,7 @@ const styles = StyleSheet.create({
   },
   dayCell: {
     width: "14.285%",
-    height: 49,
+    height: 62,
     alignItems: "center",
     justifyContent: "center",
     position: "relative",
@@ -958,14 +958,23 @@ const styles = StyleSheet.create({
     borderRightColor: "transparent",
     borderBottomColor: "transparent",
   },
-  dayText: { fontSize: 11, fontWeight: "900", letterSpacing: 0.2 },
-  eventMarks: {
+  dayText: { fontSize: 12, fontWeight: "900", letterSpacing: 0.2 },
+  eventBadge: {
     position: "absolute",
     bottom: 6,
-    flexDirection: "row",
-    gap: 3,
+    minWidth: 28,
+    maxWidth: "90%",
+    paddingHorizontal: 3,
+    paddingVertical: 3,
+    borderRadius: 6,
+    alignItems: "center",
   },
-  eventDot: { width: 4, height: 4, borderRadius: 2 },
+  eventBadgeText: {
+    fontSize: 6.5,
+    fontWeight: "900",
+    letterSpacing: 0.1,
+    textAlign: "center",
+  },
 
   calendarFooter: {
     minHeight: 32,
