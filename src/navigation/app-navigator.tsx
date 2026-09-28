@@ -10,6 +10,7 @@ import RegisterScreen from '../features/auth/screens/register-screen';
 import ChatConversationScreen from '../features/chat/screens/chat-conversation-screen';
 import ChatListScreen from '../features/chat/screens/chat-list-screen';
 import EventDetailsScreen from '../features/events/screens/event-details-screen';
+import CreateEventScreen from '../features/events/screens/create-event-screen';
 import EventsScreen from '../features/events/screens/events-screen';
 import { MapScreen } from '../features/map/screens/map-screen';
 import ManageOpportunitiesScreen from '../features/opportunities/screens/manage-opportunities-screen';
@@ -34,6 +35,7 @@ export type RootStackParamList = {
   ManageOpportunities: undefined;
   Events: undefined;
   EventDetails: { eventId: string };
+  CreateEvent: undefined;
 };
 
 export type TabParamList = {
@@ -120,6 +122,7 @@ export function AppNavigator() {
         <Stack.Screen name="ManageOpportunities" component={ManageOpportunitiesScreen} />
         <Stack.Screen name="Events" component={EventsScreen} />
         <Stack.Screen name="EventDetails" component={EventDetailsScreen} />
+        <Stack.Screen name="CreateEvent" component={CreateEventScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
