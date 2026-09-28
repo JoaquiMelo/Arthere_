@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(41,36,43,0.44)',
   },
-  sheet: {
+  sheet: { borderRadius: 18,
     position: 'absolute',
     left: 0,
     right: 0,
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 15,
   },
-  closeButton: {
+  closeButton: { borderRadius: 999,
     position: 'absolute',
     top: 15,
     right: 14,
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     zIndex: 2,
   },
-  header: {
+  header: { borderRadius: 18,
     flexDirection: 'row',
     gap: 14,
     paddingRight: 40,
@@ -208,11 +208,11 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
   },
-  headerInfo: {
+  headerInfo: { borderRadius: 18,
     flex: 1,
     minWidth: 0,
   },
-  categoryRow: {
+  categoryRow: { borderRadius: 18,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.9,
     marginTop: 7,
   },
-  metaRow: {
+  metaRow: { borderRadius: 18,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginTop: 16,
   },
-  metaItem: {
+  metaItem: { borderRadius: 18,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
@@ -289,32 +289,32 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     marginTop: 13,
   },
-  sectionHeader: {
+  sectionHeader: { borderRadius: 18,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
     marginTop: 17,
     marginBottom: 9,
   },
-  sectionTitle: {
+  sectionTitle: { borderRadius: 18,
     color: colors.brandInk,
     fontSize: 9,
     fontWeight: '900',
     letterSpacing: 1.3,
   },
-  sectionRule: {
+  sectionRule: { borderRadius: 18,
     flex: 1,
     height: 1,
     backgroundColor: colors.border,
   },
-  portfolioList: {
+  portfolioList: { borderRadius: 18,
     paddingRight: 4,
     gap: 10,
   },
-  portfolioItem: {
+  portfolioItem: { borderRadius: 18,
     width: 102,
   },
-  portfolioImagem: {
+  portfolioImagem: { borderRadius: 18,
     width: 102,
     height: 76,
     backgroundColor: colors.surface,
@@ -324,29 +324,29 @@ const styles = StyleSheet.create({
     height: 76,
     backgroundColor: colors.surface,
   },
-  portfolioTexto: {
+  portfolioTexto: { borderRadius: 18,
     color: colors.muted,
     fontSize: 9,
     marginTop: 4,
   },
-  reviewItem: {
+  reviewItem: { borderRadius: 18,
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.border,
     padding: 10,
     marginBottom: 7,
   },
-  reviewHeader: {
+  reviewHeader: { borderRadius: 18,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  reviewAutor: {
+  reviewAutor: { borderRadius: 18,
     color: colors.brandInk,
     fontSize: 11,
     fontWeight: '800',
   },
-  reviewTexto: {
+  reviewTexto: { borderRadius: 18,
     color: colors.muted,
     fontSize: 11,
     lineHeight: 16,
