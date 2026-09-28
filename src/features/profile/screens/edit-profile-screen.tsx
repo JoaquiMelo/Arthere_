@@ -49,7 +49,7 @@ export default function EditProfileScreen() {
         <View style={styles.headerSpacer} />
       </View>
       <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" keyboardDismissMode="none">
           <View style={styles.photoSection}>
             <TouchableOpacity style={styles.avatarWrapper} onPress={escolherFoto} accessibilityLabel="Trocar foto de perfil">
               <Image source={{ uri: avatarUri }} style={styles.avatar} />
@@ -84,7 +84,7 @@ function Field({ label, icon, ...inputProps }: { label: string; icon?: keyof typ
       <Text style={styles.label}>{label}</Text>
       <View style={styles.inputWithIcon}>
         {icon && <Ionicons name={icon} size={18} color={colors.primaryDark} />}
-        <TextInput style={styles.input} placeholderTextColor={colors.muted} {...inputProps} />
+        <TextInput style={styles.input} placeholderTextColor={colors.muted} editable={true} autoComplete="off" importantForAutofill="no" {...inputProps} />
       </View>
     </View>
   );
