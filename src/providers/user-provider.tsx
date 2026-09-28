@@ -1,36 +1,67 @@
 import React, { createContext, useState, useContext } from 'react';
-import { login as loginAccount } from '../services/api';
 import { MOCK_USUARIO_LOGADO } from '../shared/data/mock-data';
 
+export type TipoUsuario = 'AGENTE' | 'CONTRATANTE' | 'ADMIN';
+
+export interface LocalUser {
+  id: string;
+  documento?: string;
+  nome: string;
+  nomeSocial?: string;
+  pronomes?: string;
+  email: string;
+  tipo: TipoUsuario;
+  especialidade?: string;
+  cidade?: string;
+  latitude?: number;
+  longitude?: number;
+  bio?: string;
+  telefone?: string;
+  foto?: string;
+  avatarUrl?: string;
+  empresa?: string;
+  descricao?: string;
+  site?: string;
+  endereco?: string;
+  categoria?: string;
+}
+
 interface UserContextType {
-  user: typeof MOCK_USUARIO_LOGADO;
+  user: LocalUser;
   login: (email: string, senha: string) => Promise<boolean>;
-  updateProfile: (dados: Partial<typeof MOCK_USUARIO_LOGADO>) => void;
+  updateProfile: (dados: Partial<LocalUser>) => void;
   logout: () => void;
 }
 
 const UserContext = createContext<UserContextType>({} as UserContextType);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState(MOCK_USUARIO_LOGADO);
+  const [user, setUser] = useState<LocalUser>(MOCK_USUARIO_LOGADO);
+  const [registeredUser, setRegisteredUser] = useState<LocalUser | null>(null);
 
-  const login = async (email: string, senha: string) => {
-    const result = await loginAccount(email.trim(), senha);
-    const perfil = result.usuario.perfil as Partial<typeof MOCK_USUARIO_LOGADO> | null;
+  const login = async (email: string, _senha: string) => {
+    const emailNormalizado = email.trim().toLowerCase();
+
+    if (registeredUser && registeredUser.email.toLowerCase() === emailNormalizado) {
+      setUser(registeredUser);
+      return true;
+    }
 
     setUser((prev) => ({
       ...prev,
-      id: result.usuario.id,
-      email: result.usuario.email,
-      tipo: result.usuario.tipo,
-      ...(perfil ?? {}),
+      id: prev.id || 'local-user',
+      email: emailNormalizado,
     }));
 
     return true;
   };
 
-  const updateProfile = (dados: Partial<typeof MOCK_USUARIO_LOGADO>) => {
-    setUser((prev) => ({ ...prev, ...dados }));
+  const updateProfile = (dados: Partial<LocalUser>) => {
+    setUser((prev) => {
+      const atualizado = { ...prev, ...dados };
+      setRegisteredUser(atualizado);
+      return atualizado;
+    });
   };
 
   const logout = () => {
