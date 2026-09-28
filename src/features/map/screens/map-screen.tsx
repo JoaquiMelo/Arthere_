@@ -351,14 +351,14 @@ function FilterChip({
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.brandPaper },
   scroll: { flex: 1 },
-  content: { borderRadius: 18,
-  header: { borderRadius: 18,
+  content: {
+  header: {
     backgroundColor: colors.brandPaper,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
     zIndex: 20,
   },
-  headerInner: { borderRadius: 18,
+  headerInner: {
     minHeight: 62,
     paddingHorizontal: 20,
     flexDirection: 'row',
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
     color: colors.muted,
     letterSpacing: 1.5,
   },
-  headerActions: { borderRadius: 18,
+  headerActions: {
     paddingHorizontal: 20,
     paddingTop: 8,
     paddingBottom: 12,
@@ -387,7 +387,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
   },
-  headerLink: { borderRadius: 18,
+  headerLink: {
     fontSize: 8,
     fontWeight: '800',
     color: colors.muted,
@@ -427,7 +427,7 @@ const styles = StyleSheet.create({
     opacity: 0.72,
     transform: [{ scale: 0.98 }],
   },
-  hero: { borderRadius: 18,
+  hero: {
     paddingHorizontal: 20,
     paddingTop: 42,
     paddingBottom: 30,
@@ -439,7 +439,7 @@ const styles = StyleSheet.create({
     letterSpacing: 2.1,
     marginBottom: 17,
   },
-  heroTitle: { borderRadius: 18,
+  heroTitle: {
     fontFamily: 'sans-serif',
     fontWeight: '800',
     color: colors.brandInk,
@@ -447,11 +447,11 @@ const styles = StyleSheet.create({
     lineHeight: 39,
     letterSpacing: -1,
   },
-  heroAccent: { borderRadius: 18,
+  heroAccent: {
     color: colors.brandCoral,
     fontStyle: 'normal',
   },
-  heroDescription: { borderRadius: 18,
+  heroDescription: {
     marginTop: 22,
     color: colors.muted,
     fontSize: 14,
@@ -489,7 +489,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 20,
   },
-  searchRow: { borderRadius: 18,
+  searchRow: {
     minHeight: 44,
     borderWidth: 1,
     borderColor: colors.border,
@@ -500,14 +500,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 9,
   },
-  searchInput: { borderRadius: 18,
+  searchInput: {
     flex: 1,
     color: colors.brandInk,
     fontSize: 13,
     paddingVertical: 7,
   },
   chips: { borderRadius: 999,
-  chip: { borderRadius: 999,
+  chip: { borderRadius: 999, borderRadius: 999,
     overflow: 'hidden',
     borderWidth: 1,
     borderRadius: 999,
@@ -527,7 +527,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.brandPaper,
     borderColor: colors.border,
   },
-  mapSection: { borderRadius: 18,
+  mapSection: {
   mapFrame: {
     height: 520,
     width: '100%',
@@ -563,8 +563,8 @@ const styles = StyleSheet.create({
     letterSpacing: 1.2,
   },
   profileOverlay: { marginTop: -200, marginHorizontal: 12, zIndex: 5 },
-  featured: { borderRadius: 18,
-  featuredHeading: { borderRadius: 18,
+  featured: {
+  featuredHeading: {
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
     paddingBottom: 13,
@@ -574,19 +574,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 10,
   },
-  featuredTitle: { borderRadius: 18,
+  featuredTitle: {
     fontFamily: 'sans-serif',
     fontWeight: '800',
     fontSize: 30,
     color: colors.brandInk,
   },
-  featuredCaption: { borderRadius: 18,
+  featuredCaption: {
     color: colors.muted,
     fontSize: 7,
     fontWeight: '800',
     letterSpacing: 1.2,
   },
-  card: { borderRadius: 18,
+  card: {
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: 20,
@@ -594,28 +594,28 @@ const styles = StyleSheet.create({
     marginBottom: 14,
     overflow: 'hidden',
   },
-  cardImage: { borderRadius: 18,
-  cardBody: { borderRadius: 18,
-  cardTop: { borderRadius: 18,
-  cardCategory: { borderRadius: 18,
+  cardImage: {
+  cardBody: {
+  cardTop: {
+  cardCategory: {
   rating: { color: colors.brandInk, fontSize: 10, fontWeight: '700' },
-  cardName: { borderRadius: 18,
-  cardCity: { borderRadius: 18,
-  cardDescription: { borderRadius: 18,
-  cardAction: { borderRadius: 18,
-  empty: { borderRadius: 18,
-  footer: { borderRadius: 18,
+  cardName: {
+  cardCity: {
+  cardDescription: {
+  cardAction: {
+  empty: {
+  footer: {
     borderTopWidth: 1,
     borderTopColor: colors.border,
     paddingHorizontal: 20,
     paddingVertical: 34,
     gap: 7,
   },
-  footerBrand: { borderRadius: 18,
-  footerText: { borderRadius: 18,
-  pinContainer: { borderRadius: 18,
+  footerBrand: {
+  footerText: {
+  pinContainer: {
   pinActive: { transform: [{ scale: 1.16 }] },
-  pinImageContainer: { borderRadius: 18,
+  pinImageContainer: {
     width: 44,
     height: 44,
     borderRadius: 22,
