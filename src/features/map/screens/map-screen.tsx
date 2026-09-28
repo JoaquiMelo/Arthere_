@@ -367,11 +367,11 @@ const styles = StyleSheet.create({
   },
   brandLine: { flexDirection: 'row', alignItems: 'baseline', gap: 8 },
   brand: {
-    fontFamily: 'serif',
-    fontWeight: '900',
-    fontSize: 33,
+    fontFamily: Platform.select({ ios: 'Georgia', android: 'serif', default: 'serif' }),
+    fontSize: 35,
     color: colors.brandInk,
-    letterSpacing: -1.1,
+    letterSpacing: -1.8,
+    lineHeight: 38,
   },
   region: {
     marginTop: 1,
