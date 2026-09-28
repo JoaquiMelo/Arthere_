@@ -1,4 +1,3 @@
-
 import { colors } from '@/shared/theme/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -6,7 +5,7 @@ import { useState } from 'react';
 import { Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const { width } = Dimensions.get('window');
-const galleryItemSize = (width - 48) / 3;
+const galleryItemSize = (width - 64) / 3;
 
 export interface PortfolioItem {
   id: string;
@@ -48,38 +47,41 @@ export default function ProfileScreen() {
   const agente = MOCK_AGENT_PROFILE;
   const abrirEdicaoPerfil = () => navigation.navigate('EditProfile', { agente });
   const abrirEdicaoPortfolio = () => navigation.navigate('PortfolioCreation', { portfolio: agente.portfolio });
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-        <View style={styles.coverContainer}>
-          <Image source={{ uri: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80' }} style={styles.coverImage} />
-          <View style={styles.coverOverlay} />
-          <View style={styles.topActions}>
-            <TouchableOpacity style={styles.topIcon} onPress={() => navigation.navigate('Settings')} accessibilityLabel="Abrir configurações"><Ionicons name="settings-outline" size={21} color={colors.white} /></TouchableOpacity>
-            <TouchableOpacity style={styles.topIcon} accessibilityLabel="Compartilhar perfil"><Ionicons name="share-social-outline" size={21} color={colors.white} /></TouchableOpacity>
-          </View>
-        </View>
-
-        <View style={styles.profileIntro}>
-          <TouchableOpacity style={styles.avatarFrame} onPress={abrirEdicaoPerfil} accessibilityLabel="Editar foto de perfil">
-            <Image source={{ uri: agente.avatarUrl }} style={styles.avatar} />
-            <View style={styles.cameraBadge}><Ionicons name="camera" size={14} color={colors.white} /></View>
-          </TouchableOpacity>
-          <Text style={styles.name}>{agente.nome}</Text>
-          <Text style={styles.role}>{agente.especialidade}</Text>
-          <View style={styles.locationRow}><Ionicons name="location" size={15} color={colors.orange} /><Text style={styles.location}>{agente.cidade}</Text></View>
-
-          <View style={styles.statsRow}>
-            <View style={styles.stat}><Text style={styles.statNumber}>{agente.totalProjetos}</Text><Text style={styles.statLabel}>projetos</Text></View>
-            <View style={styles.statDivider} />
-            <View style={styles.stat}><Text style={styles.statNumber}>{agente.totalAvaliacoes}</Text><Text style={styles.statLabel}>avaliações</Text></View>
-            <View style={styles.statDivider} />
-            <View style={styles.stat}><Text style={styles.statNumber}>{agente.notaMedia}</Text><Text style={styles.statLabel}>nota média</Text></View>
+        <View style={styles.profileCard}>
+          <View style={styles.coverContainer}>
+            <Image source={{ uri: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80' }} style={styles.coverImage} />
+            <View style={styles.coverOverlay} />
+            <View style={styles.topActions}>
+              <TouchableOpacity style={styles.topIcon} onPress={() => navigation.navigate('Settings')} accessibilityLabel="Abrir configurações"><Ionicons name="settings-outline" size={21} color={colors.white} /></TouchableOpacity>
+              <TouchableOpacity style={styles.topIcon} accessibilityLabel="Compartilhar perfil"><Ionicons name="share-social-outline" size={21} color={colors.white} /></TouchableOpacity>
+            </View>
           </View>
 
-          <View style={styles.buttonRow}>
-            <TouchableOpacity style={styles.primaryButton} onPress={abrirEdicaoPerfil}><Ionicons name="create-outline" size={17} color={colors.white} /><Text style={styles.primaryButtonText}>Editar perfil</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.secondaryButton} onPress={abrirEdicaoPortfolio}><Ionicons name="images-outline" size={17} color={colors.text} /><Text style={styles.secondaryButtonText}>Portfólio</Text></TouchableOpacity>
+          <View style={styles.profileIntro}>
+            <TouchableOpacity style={styles.avatarFrame} onPress={abrirEdicaoPerfil} accessibilityLabel="Editar foto de perfil">
+              <Image source={{ uri: agente.avatarUrl }} style={styles.avatar} />
+              <View style={styles.cameraBadge}><Ionicons name="camera" size={14} color={colors.white} /></View>
+            </TouchableOpacity>
+            <Text style={styles.name}>{agente.nome}</Text>
+            <Text style={styles.role}>{agente.especialidade}</Text>
+            <View style={styles.locationRow}><Ionicons name="location" size={15} color={colors.orange} /><Text style={styles.location}>{agente.cidade}</Text></View>
+
+            <View style={styles.statsRow}>
+              <View style={styles.stat}><Text style={styles.statNumber}>{agente.totalProjetos}</Text><Text style={styles.statLabel}>projetos</Text></View>
+              <View style={styles.statDivider} />
+              <View style={styles.stat}><Text style={styles.statNumber}>{agente.totalAvaliacoes}</Text><Text style={styles.statLabel}>avaliações</Text></View>
+              <View style={styles.statDivider} />
+              <View style={styles.stat}><Text style={styles.statNumber}>{agente.notaMedia}</Text><Text style={styles.statLabel}>nota média</Text></View>
+            </View>
+
+            <View style={styles.buttonRow}>
+              <TouchableOpacity style={styles.primaryButton} onPress={abrirEdicaoPerfil}><Ionicons name="create-outline" size={17} color={colors.white} /><Text style={styles.primaryButtonText}>Editar perfil</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.secondaryButton} onPress={abrirEdicaoPortfolio}><Ionicons name="images-outline" size={17} color={colors.text} /><Text style={styles.secondaryButtonText}>Portfólio</Text></TouchableOpacity>
+            </View>
           </View>
         </View>
 
@@ -109,14 +111,48 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { borderRadius: 18,
-  coverContainer: { borderRadius: 18,
-  topActions: { position: 'absolute', top: 14, right: 16, flexDirection: 'row', gap: 10 }, topIcon: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.28)' },
-  profileIntro: { alignItems: 'center', paddingHorizontal: 20, paddingBottom: 20 }, avatarFrame: { marginTop: -57, borderRadius: 62, borderWidth: 4, borderColor: colors.white, position: 'relative' }, avatar: { width: 116, height: 116, borderRadius: 58 },
-  cameraBadge: { position: 'absolute', right: -2, bottom: 2, width: 31, height: 31, borderRadius: 16, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.primaryDark, borderWidth: 2, borderColor: colors.white }, name: { marginTop: 11, color: colors.text, fontSize: 22, fontWeight: '800' }, role: { marginTop: 3, color: colors.primaryDark, fontSize: 14, fontWeight: '600' },
-  locationRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 7 }, location: { color: colors.muted, fontSize: 13 }, statsRow: { flexDirection: 'row', alignItems: 'center', marginTop: 20 }, stat: { width: 82, alignItems: 'center' }, statNumber: { color: colors.text, fontSize: 18, fontWeight: '800' }, statLabel: { marginTop: 2, color: colors.muted, fontSize: 11 }, statDivider: { width: StyleSheet.hairlineWidth, height: 27, backgroundColor: colors.border },
-  buttonRow: { flexDirection: 'row', gap: 9, width: '100%', marginTop: 20 }, primaryButton: { flex: 1, height: 44, borderRadius: 999, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7, backgroundColor: colors.primaryDark }, primaryButtonText: { color: colors.white, fontSize: 13, fontWeight: '800' }, secondaryButton: { flex: 1, height: 44, borderRadius: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7, borderWidth: 1, borderColor: colors.accent, backgroundColor: '#FFF9E8' }, secondaryButtonText: { color: colors.text, fontSize: 13, fontWeight: '800' },
-  tabs: { borderRadius: 999,
-  gallerySection: { paddingHorizontal: 16, paddingTop: 19 }, sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }, sectionTitle: { color: colors.text, fontSize: 16, fontWeight: '800' }, actionText: { color: colors.primaryDark, fontSize: 13, fontWeight: '800' }, gallery: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 }, galleryItem: { width: galleryItemSize, height: galleryItemSize, borderRadius: 18, overflow: 'hidden' }, galleryImage: { width: '100%', height: '100%' }, addWork: { width: galleryItemSize, height: galleryItemSize, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.surfaceStrong, borderWidth: 1.5, borderStyle: 'dashed', borderColor: colors.primary },
-  aboutCard: { margin: 20, padding: 18, borderRadius: 18, backgroundColor: colors.surface }, aboutTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 8 }, aboutText: { marginTop: 14, color: colors.muted, fontSize: 14, lineHeight: 21 }, editBio: { flexDirection: 'row', alignItems: 'center', gap: 5, alignSelf: 'flex-start', marginTop: 18 }, editBioText: { color: colors.primaryDark, fontSize: 13, fontWeight: '800' },
+  container: { flex: 1, backgroundColor: colors.background },
+  scrollContent: { padding: 12, paddingBottom: 28 },
+  profileCard: { overflow: 'hidden', borderRadius: 28, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border },
+  coverContainer: { height: 205, overflow: 'hidden', borderTopLeftRadius: 28, borderTopRightRadius: 28 },
+  coverImage: { width: '100%', height: '100%' },
+  coverOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(16, 20, 28, 0.28)' },
+  topActions: { position: 'absolute', top: 14, right: 16, flexDirection: 'row', gap: 10 },
+  topIcon: { width: 40, height: 40, borderRadius: 999, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.28)' },
+  profileIntro: { alignItems: 'center', paddingHorizontal: 20, paddingBottom: 22 },
+  avatarFrame: { marginTop: -57, borderRadius: 62, borderWidth: 4, borderColor: colors.white, position: 'relative', backgroundColor: colors.white },
+  avatar: { width: 116, height: 116, borderRadius: 58 },
+  cameraBadge: { position: 'absolute', right: -2, bottom: 2, width: 31, height: 31, borderRadius: 999, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.primaryDark, borderWidth: 2, borderColor: colors.white },
+  name: { marginTop: 11, color: colors.text, fontSize: 22, fontWeight: '800' },
+  role: { marginTop: 3, color: colors.primaryDark, fontSize: 14, fontWeight: '600' },
+  locationRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 7 },
+  location: { color: colors.muted, fontSize: 13 },
+  statsRow: { flexDirection: 'row', alignItems: 'center', marginTop: 20 },
+  stat: { width: 82, alignItems: 'center' },
+  statNumber: { color: colors.text, fontSize: 18, fontWeight: '800' },
+  statLabel: { marginTop: 2, color: colors.muted, fontSize: 11 },
+  statDivider: { width: StyleSheet.hairlineWidth, height: 27, backgroundColor: colors.border },
+  buttonRow: { flexDirection: 'row', gap: 9, width: '100%', marginTop: 20 },
+  primaryButton: { flex: 1, height: 44, borderRadius: 999, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7, backgroundColor: colors.primaryDark },
+  primaryButtonText: { color: colors.white, fontSize: 13, fontWeight: '800' },
+  secondaryButton: { flex: 1, height: 44, borderRadius: 999, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7, borderWidth: 1, borderColor: colors.accent, backgroundColor: '#FFF9E8' },
+  secondaryButtonText: { color: colors.text, fontSize: 13, fontWeight: '800' },
+  tabs: { marginTop: 14, padding: 4, flexDirection: 'row', borderRadius: 999, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border },
+  tab: { flex: 1, height: 38, borderRadius: 999, alignItems: 'center', justifyContent: 'center' },
+  tabActive: { backgroundColor: colors.primaryDark },
+  tabText: { color: colors.muted, fontSize: 13, fontWeight: '700' },
+  tabTextActive: { color: colors.white },
+  gallerySection: { marginTop: 16, padding: 18, borderRadius: 24, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border },
+  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
+  sectionTitle: { color: colors.text, fontSize: 16, fontWeight: '800' },
+  actionText: { color: colors.primaryDark, fontSize: 13, fontWeight: '800' },
+  gallery: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  galleryItem: { width: galleryItemSize, height: galleryItemSize, borderRadius: 18, overflow: 'hidden' },
+  galleryImage: { width: '100%', height: '100%' },
+  addWork: { width: galleryItemSize, height: galleryItemSize, borderRadius: 18, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.surfaceStrong, borderWidth: 1.5, borderStyle: 'dashed', borderColor: colors.primary },
+  aboutCard: { marginTop: 16, padding: 18, borderRadius: 24, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border },
+  aboutTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  aboutText: { marginTop: 14, color: colors.muted, fontSize: 14, lineHeight: 21 },
+  editBio: { flexDirection: 'row', alignItems: 'center', gap: 5, alignSelf: 'flex-start', marginTop: 18, paddingVertical: 8, paddingHorizontal: 12, borderRadius: 999, backgroundColor: colors.surfaceStrong },
+  editBioText: { color: colors.primaryDark, fontSize: 13, fontWeight: '800' },
 });
