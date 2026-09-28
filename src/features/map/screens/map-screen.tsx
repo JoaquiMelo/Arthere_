@@ -159,8 +159,8 @@ export function MapScreen() {
         <View style={styles.header}>
           <View style={[styles.headerInner, { paddingTop: insets.top + 8 }]}>
             <View style={styles.brandLine}>
-              <Text style={styles.brand}>Arthere</Text>
-              <Text style={styles.region}>Conectando a Baixada Criativa.</Text>
+              <Text style={styles.brand}></Text>
+              <Text style={styles.region}></Text>
             </View>
             <Text style={styles.headerLink}>MAPA</Text>
           </View>
