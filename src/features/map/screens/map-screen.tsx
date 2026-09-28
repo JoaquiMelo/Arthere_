@@ -10,7 +10,9 @@ import {
   Text,
   TextInput,
   View,
+  Pressable,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 
 import type { AgenteCriativo } from '@/features/agents/types/agent';
@@ -115,6 +117,7 @@ function CustomPin({
 
 export function MapScreen() {
   const navigation = useNavigation<any>();
+  const insets = useSafeAreaInsets();
   const { startConversation } = useChat();
   const [busca, setBusca] = useState('');
   const [categoria, setCategoria] = useState<string | null>(null);
@@ -154,20 +157,32 @@ export function MapScreen() {
         stickyHeaderIndices={[0]}
       >
         <View style={styles.header}>
-          <View style={styles.headerInner}>
+          <View style={[styles.headerInner, { paddingTop: insets.top + 8 }]}>
             <View style={styles.brandLine}>
               <Text style={styles.brand}>Arthere</Text>
               <Text style={styles.region}>BAIXADA SANTISTA</Text>
             </View>
-            <View style={styles.headerActions}>
-              <Text style={styles.headerLink}>MAPA</Text>
-              <Text style={styles.loginButton} onPress={() => navigation.navigate('Login')}>
-                ENTRAR
-              </Text>
-              <Text style={styles.profileButton} onPress={() => navigation.navigate('Register')}>
-                CRIAR PERFIL
-              </Text>
-            </View>
+            <Text style={styles.headerLink}>MAPA</Text>
+          </View>
+          <View style={styles.headerActions}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Entrar"
+              hitSlop={6}
+              style={({ pressed }) => [styles.loginButton, pressed && styles.buttonPressed]}
+              onPress={() => navigation.navigate('Login')}
+            >
+              <Text style={styles.loginButtonText}>ENTRAR</Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Criar perfil"
+              hitSlop={6}
+              style={({ pressed }) => [styles.profileButton, pressed && styles.buttonPressed]}
+              onPress={() => navigation.navigate('Register')}
+            >
+              <Text style={styles.profileButtonText}>CRIAR PERFIL</Text>
+            </Pressable>
           </View>
         </View>
 
@@ -344,7 +359,7 @@ const styles = StyleSheet.create({
     zIndex: 20,
   },
   headerInner: {
-    minHeight: 64,
+    minHeight: 62,
     paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
@@ -364,7 +379,14 @@ const styles = StyleSheet.create({
     color: colors.muted,
     letterSpacing: 1.5,
   },
-  headerActions: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  headerActions: {
+    paddingHorizontal: 20,
+    paddingTop: 8,
+    paddingBottom: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
   headerLink: {
     fontSize: 8,
     fontWeight: '800',
@@ -372,25 +394,38 @@ const styles = StyleSheet.create({
     letterSpacing: 1.2,
   },
   loginButton: {
-    color: colors.brandInk,
+    flex: 1,
+    minHeight: 44,
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: 999,
-    paddingHorizontal: 11,
-    paddingVertical: 8,
-    fontSize: 7,
-    fontWeight: '800',
-    letterSpacing: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.brandPaper,
+  },
+  loginButtonText: {
+    color: colors.brandInk,
+    fontSize: 10,
+    fontWeight: '900',
+    letterSpacing: 1.3,
   },
   profileButton: {
+    flex: 1,
+    minHeight: 44,
     backgroundColor: colors.brandInk,
-    color: colors.brandPaper,
     borderRadius: 999,
-    paddingHorizontal: 13,
-    paddingVertical: 8,
-    fontSize: 7,
-    fontWeight: '800',
-    letterSpacing: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  profileButtonText: {
+    color: colors.brandPaper,
+    fontSize: 10,
+    fontWeight: '900',
+    letterSpacing: 1.2,
+  },
+  buttonPressed: {
+    opacity: 0.72,
+    transform: [{ scale: 0.98 }],
   },
   hero: {
     paddingHorizontal: 20,
