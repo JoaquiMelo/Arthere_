@@ -509,6 +509,11 @@ export default function CreateEventScreen() {
             <TextInput
               value={local}
               onChangeText={setLocal}
+              editable={true}
+              focusable={true}
+              autoCorrect={false}
+              autoComplete="off"
+              importantForAutofill="no"
               placeholder="Ex.: Centro Cultural"
               placeholderTextColor={palette.muted}
               style={[
@@ -527,6 +532,11 @@ export default function CreateEventScreen() {
             <TextInput
               value={cidade}
               onChangeText={setCidade}
+              editable={true}
+              focusable={true}
+              autoCorrect={false}
+              autoComplete="off"
+              importantForAutofill="no"
               placeholder="Ex.: Santos - SP"
               placeholderTextColor={palette.muted}
               style={[
