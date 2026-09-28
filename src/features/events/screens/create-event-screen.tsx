@@ -1,4 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
+import DateTimePicker, { type DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useMemo, useState } from "react";
@@ -54,6 +56,8 @@ export default function CreateEventScreen() {
     user?.empresa || user?.nomeSocial || user?.nome || "",
   );
   const [imagemUrl, setImagemUrl] = useState("");
+  const [dataPickerAberto, setDataPickerAberto] = useState(false);
+  const [horarioPickerAberto, setHorarioPickerAberto] = useState(false);
   const [premium, setPremium] = useState(false);
   const [destaque, setDestaque] = useState(false);
   const [erro, setErro] = useState("");
@@ -193,25 +197,47 @@ export default function CreateEventScreen() {
             <View style={styles.twoColumns}>
               <View style={styles.column}>
                 <Text style={[styles.label, { color: palette.muted }]}>DATA *</Text>
-                <TextInput
-                  value={data}
-                  onChangeText={setData}
-                  placeholder="2026-10-18"
-                  placeholderTextColor={palette.muted}
-                  keyboardType="numbers-and-punctuation"
-                  style={[styles.input, { color: palette.brandInk, borderColor: palette.border, backgroundColor: palette.brandPaper }]}
-                />
+                <TouchableOpacity
+                  onPress={() => setDataPickerAberto(true)}
+                  style={[styles.inputButton, { borderColor: palette.border, backgroundColor: palette.brandPaper }]}
+                  activeOpacity={0.8}
+                >
+                  <Ionicons name="calendar-outline" size={19} color={palette.brandCoral} />
+                  <Text style={[styles.inputButtonText, { color: data ? palette.brandInk : palette.muted }]}>
+                    {data ? data.split("-").reverse().join("/") : "Selecionar data"}
+                  </Text>
+                </TouchableOpacity>
+                {dataPickerAberto && (
+                  <DateTimePicker
+                    value={dataParaDate()}
+                    mode="date"
+                    display={Platform.OS === "ios" ? "inline" : "default"}
+                    minimumDate={new Date()}
+                    onChange={selecionarData}
+                  />
+                )}
               </View>
               <View style={styles.column}>
                 <Text style={[styles.label, { color: palette.muted }]}>HORÁRIO *</Text>
-                <TextInput
-                  value={horario}
-                  onChangeText={setHorario}
-                  placeholder="19:30"
-                  placeholderTextColor={palette.muted}
-                  keyboardType="numbers-and-punctuation"
-                  style={[styles.input, { color: palette.brandInk, borderColor: palette.border, backgroundColor: palette.brandPaper }]}
-                />
+                <TouchableOpacity
+                  onPress={() => setHorarioPickerAberto(true)}
+                  style={[styles.inputButton, { borderColor: palette.border, backgroundColor: palette.brandPaper }]}
+                  activeOpacity={0.8}
+                >
+                  <Ionicons name="time-outline" size={19} color={palette.brandCoral} />
+                  <Text style={[styles.inputButtonText, { color: horario ? palette.brandInk : palette.muted }]}>
+                    {horario || "Selecionar horário"}
+                  </Text>
+                </TouchableOpacity>
+                {horarioPickerAberto && (
+                  <DateTimePicker
+                    value={horarioParaDate()}
+                    mode="time"
+                    display={Platform.OS === "ios" ? "spinner" : "default"}
+                    is24Hour
+                    onChange={selecionarHorario}
+                  />
+                )}
               </View>
             </View>
 
@@ -248,15 +274,24 @@ export default function CreateEventScreen() {
             />
 
             <Text style={[styles.label, { color: palette.muted }]}>IMAGEM DE CAPA (OPCIONAL)</Text>
-            <TextInput
-              value={imagemUrl}
-              onChangeText={setImagemUrl}
-              placeholder="https://..."
-              placeholderTextColor={palette.muted}
-              autoCapitalize="none"
-              keyboardType="url"
-              style={[styles.input, { color: palette.brandInk, borderColor: palette.border, backgroundColor: palette.brandPaper }]}
-            />
+            <TouchableOpacity
+              onPress={selecionarImagem}
+              style={[styles.imagePicker, { borderColor: palette.border, backgroundColor: palette.brandPaper }]}
+              activeOpacity={0.82}
+            >
+              <View style={[styles.imagePickerIcon, { backgroundColor: palette.brandCoral }]}>
+                <Ionicons name="image-outline" size={20} color={palette.brandPaper} />
+              </View>
+              <View style={styles.imagePickerCopy}>
+                <Text style={[styles.optionTitle, { color: palette.brandInk }]}>
+                  {imagemUrl ? "Imagem selecionada" : "Selecionar imagem do celular"}
+                </Text>
+                <Text style={[styles.optionText, { color: palette.muted }]}>
+                  {imagemUrl ? "Toque para escolher outra imagem." : "Escolha uma foto da sua galeria para a capa."}
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color={palette.muted} />
+            </TouchableOpacity>
 
             <TouchableOpacity
               onPress={() => setPremium((value) => !value)}
@@ -334,6 +369,8 @@ const styles = StyleSheet.create({
   sectionTitle: { fontSize: 19, fontWeight: "900", marginBottom: 10 },
   label: { fontSize: 8, fontWeight: "900", letterSpacing: 1, marginTop: 12, marginBottom: 6 },
   input: { minHeight: 48, borderWidth: 1, borderRadius: 12, paddingHorizontal: 12, fontSize: 13 },
+  inputButton: { minHeight: 48, borderWidth: 1, borderRadius: 12, paddingHorizontal: 12, flexDirection: "row", alignItems: "center", gap: 8 },
+  inputButtonText: { flex: 1, fontSize: 12.5, fontWeight: "700" },
   textarea: { minHeight: 118, paddingTop: 12, paddingBottom: 12 },
   chips: { gap: 7, paddingBottom: 2 },
   chip: { minHeight: 36, paddingHorizontal: 12, borderRadius: 11, borderWidth: 1, alignItems: "center", justifyContent: "center" },
@@ -345,6 +382,9 @@ const styles = StyleSheet.create({
   optionCopy: { flex: 1 },
   optionTitle: { fontSize: 12, fontWeight: "900" },
   optionText: { fontSize: 9.5, lineHeight: 14, marginTop: 3 },
+  imagePicker: { minHeight: 72, borderWidth: 1, borderRadius: 14, padding: 11, flexDirection: "row", alignItems: "center", gap: 10 },
+  imagePickerIcon: { width: 40, height: 40, borderRadius: 12, alignItems: "center", justifyContent: "center" },
+  imagePickerCopy: { flex: 1 },
   error: { borderWidth: 1, borderRadius: 12, padding: 11, flexDirection: "row", gap: 8, alignItems: "center", marginBottom: 12 },
   errorText: { flex: 1, fontSize: 10, lineHeight: 15, fontWeight: "700" },
   publishButton: { minHeight: 52, borderRadius: 15, paddingHorizontal: 16, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 9 },
