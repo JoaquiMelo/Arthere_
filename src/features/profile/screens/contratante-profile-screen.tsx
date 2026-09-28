@@ -1,25 +1,25 @@
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 import {
-  Image,
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+    Image,
+    KeyboardAvoidingView,
+    Modal,
+    Platform,
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from "react-native";
 
-import { useManagement } from '@/providers/management-provider';
-import { useUser } from '@/providers/user-provider';
-import { colors } from '@/shared/theme/colors';
+import { useManagement } from "@/providers/management-provider";
+import { useUser } from "@/providers/user-provider";
+import { colors } from "@/shared/theme/colors";
 
-const AVATAR_PADRAO = 'https://i.pravatar.cc/300?img=68';
+const AVATAR_PADRAO = "https://i.pravatar.cc/300?img=68";
 
 interface EventoAnterior {
   id: string;
@@ -30,25 +30,25 @@ interface EventoAnterior {
 
 const MOCK_EVENTOS_ANTERIORES: EventoAnterior[] = [
   {
-    id: '1',
-    titulo: 'Festival Verão de Música',
-    data: 'Jan 2026',
+    id: "1",
+    titulo: "Festival Verão de Música",
+    data: "Jan 2026",
     imagemUrl:
-      'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80',
+      "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80",
   },
   {
-    id: '2',
-    titulo: 'Desfile Primavera/Verão',
-    data: 'Nov 2025',
+    id: "2",
+    titulo: "Desfile Primavera/Verão",
+    data: "Nov 2025",
     imagemUrl:
-      'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80',
+      "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80",
   },
   {
-    id: '3',
-    titulo: 'Gala Corporativa 2025',
-    data: 'Out 2025',
+    id: "3",
+    titulo: "Gala Corporativa 2025",
+    data: "Out 2025",
     imagemUrl:
-      'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=600&q=80',
+      "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=600&q=80",
   },
 ];
 
@@ -57,13 +57,17 @@ export default function ContratanteProfileScreen() {
   const { user } = useUser();
   const { vagas } = useManagement();
 
-  const [empresa, setEmpresa] = useState(user?.empresa || 'Empresa não informada');
+  const [empresa, setEmpresa] = useState(
+    user?.empresa || "Empresa não informada",
+  );
   const [editando, setEditando] = useState(false);
   const [rascunhoEmpresa, setRascunhoEmpresa] = useState(empresa);
   const [eventos] = useState<EventoAnterior[]>(MOCK_EVENTOS_ANTERIORES);
 
-  const concluidas = vagas.filter((vaga) => vaga.status === 'CONCLUIDA').length;
-  const emAndamento = vagas.filter((vaga) => vaga.status === 'EM_ANDAMENTO').length;
+  const concluidas = vagas.filter((vaga) => vaga.status === "CONCLUIDA").length;
+  const emAndamento = vagas.filter(
+    (vaga) => vaga.status === "EM_ANDAMENTO",
+  ).length;
   const totalCandidaturas = vagas.reduce(
     (soma, vaga) => soma + vaga.candidatos.length,
     0,
@@ -86,11 +90,14 @@ export default function ContratanteProfileScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
         <View style={styles.coverContainer}>
           <Image
             source={{
-              uri: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
+              uri: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80",
             }}
             style={styles.coverImage}
           />
@@ -102,10 +109,14 @@ export default function ContratanteProfileScreen() {
 
           <TouchableOpacity
             style={styles.settingsIcon}
-            onPress={() => navigation.navigate('Settings')}
+            onPress={() => navigation.navigate("Settings")}
             accessibilityLabel="Abrir configurações"
           >
-            <Ionicons name="settings-outline" size={19} color={colors.brandPaper} />
+            <Ionicons
+              name="settings-outline"
+              size={19}
+              color={colors.brandPaper}
+            />
           </TouchableOpacity>
         </View>
 
@@ -113,18 +124,28 @@ export default function ContratanteProfileScreen() {
           <Image source={{ uri: avatarSource }} style={styles.avatar} />
 
           <Text style={styles.name}>
-            {user?.nomeSocial || user?.nome || 'Contratante'}
+            {user?.nomeSocial || user?.nome || "Contratante"}
           </Text>
 
-          <TouchableOpacity style={styles.empresaBadge} onPress={abrirEdicao} activeOpacity={0.75}>
+          <TouchableOpacity
+            style={styles.empresaBadge}
+            onPress={abrirEdicao}
+            activeOpacity={0.75}
+          >
             <Ionicons name="business" size={14} color={colors.brandInk} />
-            <Text style={styles.empresa} numberOfLines={1}>{empresa}</Text>
+            <Text style={styles.empresa} numberOfLines={1}>
+              {empresa}
+            </Text>
             <Ionicons name="pencil" size={11} color={colors.brandInk} />
           </TouchableOpacity>
 
           {user?.cidade ? (
             <View style={styles.locationRow}>
-              <Ionicons name="location-outline" size={14} color={colors.brandTerracotta} />
+              <Ionicons
+                name="location-outline"
+                size={14}
+                color={colors.brandTerracotta}
+              />
               <Text style={styles.location}>{user.cidade}</Text>
             </View>
           ) : null}
@@ -149,21 +170,30 @@ export default function ContratanteProfileScreen() {
           <View style={styles.actionButtonsRow}>
             <TouchableOpacity
               style={styles.manageButton}
-              onPress={() => navigation.navigate('ManageOpportunities')}
+              onPress={() => navigation.navigate("ManageOpportunities")}
               activeOpacity={0.85}
             >
-              <Ionicons name="people-outline" size={16} color={colors.brandPaper} />
+              <Ionicons
+                name="people-outline"
+                size={16}
+                color={colors.brandPaper}
+              />
               <Text style={styles.manageButtonText}>
-                CANDIDATURAS{totalCandidaturas > 0 ? ` · ${totalCandidaturas}` : ''}
+                CANDIDATURAS
+                {totalCandidaturas > 0 ? ` · ${totalCandidaturas}` : ""}
               </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.editProfileButton}
-              onPress={() => navigation.navigate('EditContractorProfile')}
+              onPress={() => navigation.navigate("EditContractorProfile")}
               activeOpacity={0.85}
             >
-              <Ionicons name="create-outline" size={16} color={colors.brandInk} />
+              <Ionicons
+                name="create-outline"
+                size={16}
+                color={colors.brandInk}
+              />
               <Text style={styles.editProfileButtonText}>EDITAR PERFIL</Text>
             </TouchableOpacity>
           </View>
@@ -175,7 +205,9 @@ export default function ContratanteProfileScreen() {
               <Text style={styles.sectionKicker}>PORTFÓLIO DE EVENTOS</Text>
               <Text style={styles.sectionTitle}>Eventos anteriores</Text>
             </View>
-            <Text style={styles.sectionSubtitle}>{eventos.length} registros</Text>
+            <Text style={styles.sectionSubtitle}>
+              {eventos.length} registros
+            </Text>
           </View>
 
           <ScrollView
@@ -185,9 +217,14 @@ export default function ContratanteProfileScreen() {
           >
             {eventos.map((evento) => (
               <View key={evento.id} style={styles.eventCard}>
-                <Image source={{ uri: evento.imagemUrl }} style={styles.eventImage} />
+                <Image
+                  source={{ uri: evento.imagemUrl }}
+                  style={styles.eventImage}
+                />
                 <View style={styles.eventOverlay}>
-                  <Text style={styles.eventTitle} numberOfLines={2}>{evento.titulo}</Text>
+                  <Text style={styles.eventTitle} numberOfLines={2}>
+                    {evento.titulo}
+                  </Text>
                   <Text style={styles.eventDateText}>{evento.data}</Text>
                 </View>
               </View>
@@ -212,7 +249,11 @@ export default function ContratanteProfileScreen() {
 
           {vagas.length === 0 ? (
             <View style={styles.emptyStateContainer}>
-              <Ionicons name="folder-open-outline" size={30} color={colors.brandCoral} />
+              <Ionicons
+                name="folder-open-outline"
+                size={30}
+                color={colors.brandCoral}
+              />
               <Text style={styles.emptyTitle}>Nenhuma vaga publicada</Text>
               <Text style={styles.emptyText}>
                 Suas oportunidades aparecerão aqui depois que forem publicadas.
@@ -223,21 +264,30 @@ export default function ContratanteProfileScreen() {
               <TouchableOpacity
                 key={vaga.id}
                 style={styles.vagaCard}
-                onPress={() => navigation.navigate('ManageOpportunities')}
+                onPress={() => navigation.navigate("ManageOpportunities")}
                 activeOpacity={0.75}
               >
                 <View style={styles.flex1}>
                   <Text style={styles.vagaCategoria}>{vaga.categoria}</Text>
                   <Text style={styles.vagaTitulo}>{vaga.titulo}</Text>
                   <Text style={styles.vagaMeta}>
-                    {vaga.candidatos.length} candidato{vaga.candidatos.length === 1 ? '' : 's'}
+                    {vaga.candidatos.length} candidato
+                    {vaga.candidatos.length === 1 ? "" : "s"}
                   </Text>
                 </View>
                 <View style={styles.vagaRight}>
                   <Text style={styles.statusBadge}>
-                    {vaga.status === 'CONCLUIDA' ? 'CONCLUÍDA' : vaga.status === 'EM_ANDAMENTO' ? 'EM ANDAMENTO' : 'ABERTA'}
+                    {vaga.status === "CONCLUIDA"
+                      ? "CONCLUÍDA"
+                      : vaga.status === "EM_ANDAMENTO"
+                        ? "EM ANDAMENTO"
+                        : "ABERTA"}
                   </Text>
-                  <Ionicons name="arrow-forward" size={15} color={colors.brandInk} />
+                  <Ionicons
+                    name="arrow-forward"
+                    size={15}
+                    color={colors.brandInk}
+                  />
                 </View>
               </TouchableOpacity>
             ))
@@ -253,7 +303,7 @@ export default function ContratanteProfileScreen() {
       >
         <KeyboardAvoidingView
           style={styles.overlay}
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
         >
           <View style={styles.editCard}>
             <Text style={styles.editKicker}>PERFIL DO CONTRATANTE</Text>
@@ -271,7 +321,11 @@ export default function ContratanteProfileScreen() {
               </TouchableOpacity>
               <TouchableOpacity style={styles.save} onPress={salvarEmpresa}>
                 <Text style={styles.saveText}>SALVAR</Text>
-                <Ionicons name="arrow-forward" size={14} color={colors.brandPaper} />
+                <Ionicons
+                  name="arrow-forward"
+                  size={14}
+                  color={colors.brandPaper}
+                />
               </TouchableOpacity>
             </View>
           </View>
@@ -286,17 +340,17 @@ const styles = StyleSheet.create({
   scrollContent: { paddingBottom: 42 },
   coverContainer: {
     height: 178,
-    overflow: 'hidden',
+    overflow: "hidden",
     backgroundColor: colors.brandInk,
-    position: 'relative',
+    position: "relative",
   },
-  coverImage: { width: '100%', height: '100%' },
+  coverImage: { width: "100%", height: "100%" },
   coverOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(41,36,43,0.50)',
+    ...StyleSheet.absoluteFill,
+    backgroundColor: "rgba(41,36,43,0.50)",
   },
   coverLabel: {
-    position: 'absolute',
+    position: "absolute",
     left: 16,
     bottom: 14,
     backgroundColor: colors.brandInk,
@@ -306,23 +360,23 @@ const styles = StyleSheet.create({
   coverLabelText: {
     color: colors.brandSand,
     fontSize: 8,
-    fontWeight: '900',
+    fontWeight: "900",
     letterSpacing: 1.2,
   },
   settingsIcon: {
-    position: 'absolute',
+    position: "absolute",
     top: 14,
     right: 14,
     width: 38,
     height: 38,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderWidth: 1,
-    borderColor: 'rgba(246,241,232,0.36)',
-    backgroundColor: 'rgba(41,36,43,0.60)',
+    borderColor: "rgba(246,241,232,0.36)",
+    backgroundColor: "rgba(41,36,43,0.60)",
   },
   intro: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingHorizontal: 20,
     paddingBottom: 20,
   },
@@ -338,13 +392,13 @@ const styles = StyleSheet.create({
     marginTop: 12,
     color: colors.brandInk,
     fontSize: 24,
-    fontWeight: '900',
+    fontWeight: "900",
     letterSpacing: -0.6,
   },
   empresaBadge: {
-    maxWidth: '92%',
-    flexDirection: 'row',
-    alignItems: 'center',
+    maxWidth: "92%",
+    flexDirection: "row",
+    alignItems: "center",
     gap: 6,
     marginTop: 5,
     paddingHorizontal: 10,
@@ -353,37 +407,42 @@ const styles = StyleSheet.create({
     borderColor: colors.brandInk,
     backgroundColor: colors.brandSand,
   },
-  empresa: { flexShrink: 1, color: colors.brandInk, fontSize: 12, fontWeight: '800' },
+  empresa: {
+    flexShrink: 1,
+    color: colors.brandInk,
+    fontSize: 12,
+    fontWeight: "800",
+  },
   locationRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 5,
     marginTop: 7,
   },
   location: { color: colors.muted, fontSize: 12 },
   statsCard: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 19,
     paddingVertical: 13,
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: colors.border,
   },
-  stat: { flex: 1, alignItems: 'center' },
-  statNumber: { color: colors.brandInk, fontSize: 18, fontWeight: '900' },
+  stat: { flex: 1, alignItems: "center" },
+  statNumber: { color: colors.brandInk, fontSize: 18, fontWeight: "900" },
   statLabel: {
     marginTop: 2,
     color: colors.muted,
     fontSize: 8,
-    fontWeight: '900',
+    fontWeight: "900",
     letterSpacing: 0.8,
   },
   statDivider: { width: 1, height: 24, backgroundColor: colors.border },
   actionButtonsRow: {
-    width: '100%',
-    flexDirection: 'row',
+    width: "100%",
+    flexDirection: "row",
     gap: 9,
     marginTop: 16,
   },
@@ -391,77 +450,103 @@ const styles = StyleSheet.create({
     flex: 1,
     minHeight: 44,
     backgroundColor: colors.brandInk,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 6,
   },
-  manageButtonText: { color: colors.brandPaper, fontSize: 8.5, fontWeight: '900', letterSpacing: 0.8 },
+  manageButtonText: {
+    color: colors.brandPaper,
+    fontSize: 8.5,
+    fontWeight: "900",
+    letterSpacing: 0.8,
+  },
   editProfileButton: {
     flex: 1,
     minHeight: 44,
     borderWidth: 1,
     borderColor: colors.brandInk,
     backgroundColor: colors.brandSand,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 6,
   },
-  editProfileButtonText: { color: colors.brandInk, fontSize: 8.5, fontWeight: '900', letterSpacing: 0.8 },
+  editProfileButtonText: {
+    color: colors.brandInk,
+    fontSize: 8.5,
+    fontWeight: "900",
+    letterSpacing: 0.8,
+  },
   section: { marginTop: 24, paddingHorizontal: 20 },
   sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
     gap: 10,
     marginBottom: 11,
   },
-  sectionKicker: { color: colors.brandCoral, fontSize: 8, fontWeight: '900', letterSpacing: 1.3, marginBottom: 2 },
-  sectionTitle: { color: colors.brandInk, fontSize: 18, fontWeight: '900' },
-  sectionSubtitle: { color: colors.muted, fontSize: 9, fontWeight: '700' },
+  sectionKicker: {
+    color: colors.brandCoral,
+    fontSize: 8,
+    fontWeight: "900",
+    letterSpacing: 1.3,
+    marginBottom: 2,
+  },
+  sectionTitle: { color: colors.brandInk, fontSize: 18, fontWeight: "900" },
+  sectionSubtitle: { color: colors.muted, fontSize: 9, fontWeight: "700" },
   galleryContainer: { gap: 10, paddingRight: 20 },
   eventCard: {
     width: 158,
     height: 184,
-    overflow: 'hidden',
-    position: 'relative',
+    overflow: "hidden",
+    position: "relative",
     backgroundColor: colors.surface,
   },
-  eventImage: { width: '100%', height: '100%' },
+  eventImage: { width: "100%", height: "100%" },
   eventOverlay: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
     padding: 10,
-    backgroundColor: 'rgba(41,36,43,0.75)',
+    backgroundColor: "rgba(41,36,43,0.75)",
   },
-  eventTitle: { color: colors.brandPaper, fontSize: 12, lineHeight: 15, fontWeight: '900' },
-  eventDateText: { color: colors.brandSand, fontSize: 9, fontWeight: '800', marginTop: 5 },
+  eventTitle: {
+    color: colors.brandPaper,
+    fontSize: 12,
+    lineHeight: 15,
+    fontWeight: "900",
+  },
+  eventDateText: {
+    color: colors.brandSand,
+    fontSize: 9,
+    fontWeight: "800",
+    marginTop: 5,
+  },
   addEventCard: {
     width: 118,
     height: 184,
     borderWidth: 1,
-    borderStyle: 'dashed',
+    borderStyle: "dashed",
     borderColor: colors.brandInk,
     backgroundColor: colors.brandBlue,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 10,
   },
   addEventIcon: {
     width: 38,
     height: 38,
     backgroundColor: colors.brandPaper,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   addEventText: {
     color: colors.brandInk,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 8,
-    fontWeight: '900',
+    fontWeight: "900",
     letterSpacing: 0.9,
     marginTop: 9,
   },
@@ -470,15 +555,27 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     backgroundColor: colors.white,
     padding: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
-  emptyTitle: { color: colors.brandInk, fontSize: 15, fontWeight: '900', marginTop: 10 },
-  emptyText: { color: colors.muted, fontSize: 11.5, lineHeight: 18, textAlign: 'center', marginTop: 5, maxWidth: 290 },
+  emptyTitle: {
+    color: colors.brandInk,
+    fontSize: 15,
+    fontWeight: "900",
+    marginTop: 10,
+  },
+  emptyText: {
+    color: colors.muted,
+    fontSize: 11.5,
+    lineHeight: 18,
+    textAlign: "center",
+    marginTop: 5,
+    maxWidth: 290,
+  },
   vagaCard: {
     minHeight: 78,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 11,
     backgroundColor: colors.white,
     borderWidth: 1,
@@ -487,23 +584,35 @@ const styles = StyleSheet.create({
     marginBottom: 9,
   },
   flex1: { flex: 1, minWidth: 0 },
-  vagaCategoria: { color: colors.brandCoral, fontSize: 8, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
-  vagaTitulo: { color: colors.brandInk, fontSize: 14, lineHeight: 17, fontWeight: '900', marginTop: 3 },
+  vagaCategoria: {
+    color: colors.brandCoral,
+    fontSize: 8,
+    fontWeight: "900",
+    letterSpacing: 1,
+    textTransform: "uppercase",
+  },
+  vagaTitulo: {
+    color: colors.brandInk,
+    fontSize: 14,
+    lineHeight: 17,
+    fontWeight: "900",
+    marginTop: 3,
+  },
   vagaMeta: { color: colors.muted, fontSize: 10.5, marginTop: 4 },
-  vagaRight: { alignItems: 'flex-end', gap: 7 },
+  vagaRight: { alignItems: "flex-end", gap: 7 },
   statusBadge: {
     color: colors.brandInk,
     backgroundColor: colors.brandSand,
     paddingHorizontal: 7,
     paddingVertical: 4,
     fontSize: 7.5,
-    fontWeight: '900',
+    fontWeight: "900",
     letterSpacing: 0.6,
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(41,36,43,0.52)',
-    justifyContent: 'center',
+    backgroundColor: "rgba(41,36,43,0.52)",
+    justifyContent: "center",
     paddingHorizontal: 22,
   },
   editCard: {
@@ -512,8 +621,19 @@ const styles = StyleSheet.create({
     borderTopColor: colors.brandCoral,
     padding: 20,
   },
-  editKicker: { color: colors.brandCoral, fontSize: 8, fontWeight: '900', letterSpacing: 1.3 },
-  editTitle: { color: colors.brandInk, fontSize: 21, fontWeight: '900', marginTop: 3, marginBottom: 13 },
+  editKicker: {
+    color: colors.brandCoral,
+    fontSize: 8,
+    fontWeight: "900",
+    letterSpacing: 1.3,
+  },
+  editTitle: {
+    color: colors.brandInk,
+    fontSize: 21,
+    fontWeight: "900",
+    marginTop: 3,
+    marginBottom: 13,
+  },
   editInput: {
     minHeight: 48,
     borderWidth: 1,
@@ -524,20 +644,30 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   editActions: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
     gap: 18,
     marginTop: 18,
   },
-  cancel: { color: colors.muted, fontSize: 9, fontWeight: '900', letterSpacing: 1 },
+  cancel: {
+    color: colors.muted,
+    fontSize: 9,
+    fontWeight: "900",
+    letterSpacing: 1,
+  },
   save: {
     minHeight: 42,
     paddingHorizontal: 14,
     backgroundColor: colors.brandInk,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 8,
   },
-  saveText: { color: colors.brandPaper, fontSize: 9, fontWeight: '900', letterSpacing: 1.1 },
+  saveText: {
+    color: colors.brandPaper,
+    fontSize: 9,
+    fontWeight: "900",
+    letterSpacing: 1.1,
+  },
 });
