@@ -73,8 +73,17 @@ export default function ProfileScreen() {
 
 function AgenteProfileScreenContent() {
   const navigation = useNavigation<any>();
+  const { user } = useUser();
   const [abaAtiva, setAbaAtiva] = useState<'portfolio' | 'sobre' | 'avaliacoes'>('portfolio');
-  const agente = MOCK_AGENT_PROFILE;
+  const agente: AgentePerfil = {
+    ...MOCK_AGENT_PROFILE,
+    id: user.id || MOCK_AGENT_PROFILE.id,
+    nome: user.nome || MOCK_AGENT_PROFILE.nome,
+    especialidade: user.especialidade || MOCK_AGENT_PROFILE.especialidade,
+    bio: user.bio || user.descricao || MOCK_AGENT_PROFILE.bio,
+    cidade: user.cidade || MOCK_AGENT_PROFILE.cidade,
+    avatarUrl: user.avatarUrl || user.foto || MOCK_AGENT_PROFILE.avatarUrl,
+  };
   const { avaliacoesPorAgente, mediaPorAgente } = useReviews();
   const avaliacoes = avaliacoesPorAgente(agente.id);
   const media = avaliacoes.length ? mediaPorAgente(agente.id) : agente.notaMedia;
