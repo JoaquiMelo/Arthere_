@@ -367,10 +367,11 @@ const styles = StyleSheet.create({
   },
   brandLine: { flexDirection: 'row', alignItems: 'baseline', gap: 8 },
   brand: {
+    fontFamily: 'serif',
     fontWeight: '900',
-    fontSize: 30,
+    fontSize: 33,
     color: colors.brandInk,
-    letterSpacing: -1.5,
+    letterSpacing: -1.1,
   },
   region: {
     marginTop: 1,
