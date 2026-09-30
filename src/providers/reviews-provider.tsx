@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 import { MOCK_AVALIACOES } from '@/features/reviews/data/mock-reviews';
 import type { Avaliacao } from '@/features/reviews/types/review';
@@ -12,7 +12,7 @@ type ReviewsContextType = {
   adicionarAvaliacao: (dados: NovaAvaliacao) => void;
 };
 
-const ReviewsContext = createContext<ReviewsContextType>({} as ReviewsContextType);
+const ReviewsContext = createContext<ReviewsContextType | null>(null);
 
 export function ReviewsProvider({ children }: { children: React.ReactNode }) {
   const [avaliacoes, setAvaliacoes] = useState<Avaliacao[]>(MOCK_AVALIACOES);
@@ -33,8 +33,8 @@ export function ReviewsProvider({ children }: { children: React.ReactNode }) {
     ]);
   };
 
-  const value = useMemo(() => ({ avaliacoes, avaliacoesPorAgente, mediaPorAgente, adicionarAvaliacao }), [avaliacoes]);
+  const value = { avaliacoes, avaliacoesPorAgente, mediaPorAgente, adicionarAvaliacao };
   return <ReviewsContext.Provider value={value}>{children}</ReviewsContext.Provider>;
 }
 
-export const useReviews = () => useContext(ReviewsContext);
+export const useReviews = () => { const value = useContext(ReviewsContext); if (!value) throw new Error('useReviews fora do ReviewsProvider'); return value; };

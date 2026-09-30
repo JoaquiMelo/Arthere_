@@ -83,7 +83,7 @@ export default function EventsScreen() {
       new Set(eventos.map((evento) => evento.categoria)),
     );
     return ["TODOS", ...unicas, "PREMIUM"];
-  }, []);
+  }, [eventos]);
 
   const eventosFiltrados = useMemo(() => {
     const termo = busca.trim().toLowerCase();
@@ -108,7 +108,7 @@ export default function EventsScreen() {
         evento.organizador,
       ].some((campo) => campo.toLowerCase().includes(termo));
     });
-  }, [busca, filtro]);
+  }, [busca, eventos, filtro]);
 
   const eventosDoMes = useMemo(
     () =>

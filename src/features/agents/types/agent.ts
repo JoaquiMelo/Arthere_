@@ -1,7 +1,8 @@
 export interface PortfolioItem {
   id: string;
-  imagemUrl?: string;
-  titulo: string;
+  imageUrl: string;
+  titulo?: string;
+  descricao?: string;
 }
 
 export interface AgenteCriativo {

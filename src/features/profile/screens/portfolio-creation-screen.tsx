@@ -3,7 +3,7 @@ import { ActivityIndicator, Alert, Image, KeyboardAvoidingView, Platform, SafeAr
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
-import type { PortfolioItem } from './profile-screen';
+import type { PortfolioItem } from '@/features/agents/types/agent';
 import { colors } from '@/shared/theme/colors';
 
 export default function PortfolioCreationScreen() {

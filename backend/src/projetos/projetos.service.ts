@@ -1,13 +1,6 @@
 import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-
-type CriarProjetoDto = {
-  titulo: string;
-  descricao: string;
-  categoria: string;
-  orcamento?: number;
-  dataEvento?: string;
-};
+import type { CriarProjetoDto } from './projeto.dto';
 
 @Injectable()
 export class ProjetosService {

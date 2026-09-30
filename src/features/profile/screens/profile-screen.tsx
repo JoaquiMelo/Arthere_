@@ -21,12 +21,7 @@ import ContratanteProfileScreen from './contratante-profile-screen';
 const { width } = Dimensions.get('window');
 const galleryItemSize = (width - 52) / 3;
 
-export interface PortfolioItem {
-  id: string;
-  imageUrl: string;
-  titulo?: string;
-  descricao?: string;
-}
+import type { PortfolioItem } from '@/features/agents/types/agent';
 
 export interface AgentePerfil {
   id: string;

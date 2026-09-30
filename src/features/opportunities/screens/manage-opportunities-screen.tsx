@@ -16,7 +16,7 @@ import { ReviewFormModal } from '@/features/reviews/components/review-form-modal
 import { useManagement } from '@/providers/management-provider';
 import { useReviews } from '@/providers/reviews-provider';
 import { colors } from '@/shared/theme/colors';
-import type { Candidato, VagaGerenciada } from '../../../features/opportunities/screens/types/management';
+import type { Candidato, VagaGerenciada } from '@/features/opportunities/types/management';
 import { StarRating } from '../../../features/reviews/components/star-rating';
 
 const STATUS_LABEL: Record<VagaGerenciada['status'], string> = {

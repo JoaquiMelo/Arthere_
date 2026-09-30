@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Param, Post, Request, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CandidaturaDto, CriarProjetoDto } from './projeto.dto';
 import { ProjetosService } from './projetos.service';
 
 @Controller('projetos')
@@ -13,13 +14,13 @@ export class ProjetosController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  criar(@Request() request: { user: { id: string } }, @Body() dados: any) {
+  criar(@Request() request: { user: { id: string } }, @Body() dados: CriarProjetoDto) {
     return this.projetosService.criar(request.user.id, dados);
   }
 
   @Post(':id/candidaturas')
   @UseGuards(JwtAuthGuard)
-  candidatar(@Request() request: { user: { id: string } }, @Param('id') projetoId: string, @Body() dados: { mensagem?: string }) {
+  candidatar(@Request() request: { user: { id: string } }, @Param('id') projetoId: string, @Body() dados: CandidaturaDto) {
     return this.projetosService.candidatar(request.user.id, projetoId, dados.mensagem);
   }
 }

@@ -1,37 +1,43 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { memo, useState } from 'react';
+import { Image, StyleSheet, View } from 'react-native';
 import { Marker } from 'react-native-maps';
-import { StyleSheet, View } from 'react-native';
 
-import { CATEGORIAS } from '../../../shared/config/categories';
 import type { AgenteCriativo } from '@/features/agents/types/agent';
+import { CATEGORIAS } from '@/shared/config/categories';
 import { colors } from '@/shared/theme/colors';
 
-interface Props {
-  agente: AgenteCriativo;
-  onPress: (agente: AgenteCriativo) => void;
-}
+type Props = { agente: AgenteCriativo; ativo: boolean; onPress: (agente: AgenteCriativo) => void };
 
-export function AgentMarker({ agente, onPress }: Props) {
-  const categoria = CATEGORIAS[agente.categoria] ?? CATEGORIAS.design;
+function AgentMarkerComponent({ agente, ativo, onPress }: Props) {
+  const [pronto, setPronto] = useState(false);
+  const cor = CATEGORIAS[agente.categoria]?.cor ?? CATEGORIAS.design.cor;
 
   return (
     <Marker
       coordinate={{ latitude: agente.latitude, longitude: agente.longitude }}
       onPress={() => onPress(agente)}
-      tracksViewChanges={false}>
-      <View style={styles.wrapper}>
-        <MaterialCommunityIcons name="map-marker" size={44} color={categoria.cor} />
-        <View style={styles.iconOverlay}>
-          <MaterialCommunityIcons name={categoria.icone as never} size={14} color={colors.white} />
+      anchor={{ x: 0.5, y: 1 }}
+      tracksViewChanges={!pronto}
+    >
+      <View style={[styles.pinContainer, ativo && styles.pinActive]}>
+
+        <View style={[styles.pinImageContainer, { borderColor: cor }]}>
+          <Image source={{ uri: agente.avatarUrl }} style={styles.pinImage} onLoad={() => setPronto(true)} />
         </View>
-        {agente.disponivel && <View style={styles.statusDot} />}
+        <View style={[styles.pinStatus, { backgroundColor: agente.disponivel ? cor : colors.muted }]} />
+        <View style={[styles.pinTail, { borderTopColor: cor }]} />
       </View>
     </Marker>
   );
 }
 
+export const AgentMarker = memo(AgentMarkerComponent);
+
 const styles = StyleSheet.create({
-  wrapper: { width: 44, height: 44, alignItems: 'center', justifyContent: 'flex-start' },
-  iconOverlay: { position: 'absolute', top: 6 },
-  statusDot: { position: 'absolute', top: 0, right: 4, width: 10, height: 10, borderRadius: 5, backgroundColor: colors.primary, borderWidth: 1.5, borderColor: colors.white },
+  pinContainer: { alignItems: 'center', width: 54, height: 65 },
+  pinActive: { transform: [{ scale: 1.16 }] },
+  pinImageContainer: { width: 44, height: 44, borderRadius: 22, borderWidth: 2.5, backgroundColor: colors.brandPaper, overflow: 'hidden', elevation: 5 },
+  pinImage: { width: 40, height: 40, borderRadius: 20, alignSelf: 'center', marginTop: 2 },
+  pinStatus: { position: 'absolute', right: 2, top: 0, width: 10, height: 10, borderRadius: 5, borderWidth: 2, borderColor: colors.brandPaper },
+  pinTail: { width: 0, height: 0, borderLeftWidth: 6, borderRightWidth: 6, borderTopWidth: 10, borderLeftColor: 'transparent', borderRightColor: 'transparent', marginTop: -1 },
 });

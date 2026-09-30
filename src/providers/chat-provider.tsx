@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 import type { AgenteCriativo } from '@/features/agents/types/agent';
 
@@ -15,7 +15,7 @@ type ChatContextType = {
   sendMessage: (conversationId: string, text: string) => void;
 };
 
-const ChatContext = createContext<ChatContextType>({} as ChatContextType);
+const ChatContext = createContext<ChatContextType | null>(null);
 
 export function ChatProvider({ children }: { children: React.ReactNode }) {
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -41,8 +41,8 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
       : conversation));
   };
 
-  const value = useMemo(() => ({ conversations, startConversation, sendMessage }), [conversations]);
+  const value = { conversations, startConversation, sendMessage };
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 }
 
-export const useChat = () => useContext(ChatContext);
+export const useChat = () => { const value = useContext(ChatContext); if (!value) throw new Error('useChat fora do ChatProvider'); return value; };

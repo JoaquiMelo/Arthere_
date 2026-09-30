@@ -13,6 +13,7 @@ import EventDetailsScreen from '../features/events/screens/event-details-screen'
 import CreateEventScreen from '../features/events/screens/create-event-screen';
 import EventsScreen from '../features/events/screens/events-screen';
 import { MapScreen } from '../features/map/screens/map-screen';
+import OpportunitiesScreen from '../features/opportunities/screens/opportunities-screen';
 import ManageOpportunitiesScreen from '../features/opportunities/screens/manage-opportunities-screen';
 import EditContractorProfileScreen from '../features/profile/screens/edit-contractor-profile-screen';
 import EditProfileScreen from '../features/profile/screens/edit-profile-screen';
@@ -33,7 +34,6 @@ export type RootStackParamList = {
   Settings: undefined;
   ChatConversation: { conversationId: string };
   ManageOpportunities: undefined;
-  Events: undefined;
   EventDetails: { eventId: string };
   CreateEvent: undefined;
 };
@@ -42,7 +42,6 @@ export type TabParamList = {
   Map: undefined;
   Profile: undefined;
   Opportunities: undefined;
-  Settings: undefined;
   Chat: undefined;
   Events: undefined;
 };
@@ -56,7 +55,6 @@ const icons: Record<keyof TabParamList, keyof typeof Ionicons.glyphMap> = {
   Opportunities: 'briefcase-outline',
   Events: 'calendar-outline',
   Chat: 'chatbubble-ellipses-outline',
-  Settings: 'settings-outline',
 };
 
 function AppTabs() {
@@ -98,9 +96,9 @@ function AppTabs() {
     >
       <Tab.Screen name="Map" component={MapScreen} options={{ title: 'Mapa' }} />
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: 'Perfil' }} />
+      <Tab.Screen name="Opportunities" component={OpportunitiesScreen} options={{ title: 'Oportunidades' }} />
       <Tab.Screen name="Events" component={EventsScreen} options={{ title: 'Eventos' }} />
       <Tab.Screen name="Chat" component={ChatListScreen} options={{ title: 'Chat' }} />
-      <Tab.Screen name="Settings" component={SettingsScreen} options={{ title: 'Config.' }} />
     </Tab.Navigator>
   );
 }
@@ -120,7 +118,6 @@ export function AppNavigator() {
         <Stack.Screen name="Settings" component={SettingsScreen} />
         <Stack.Screen name="ChatConversation" component={ChatConversationScreen} />
         <Stack.Screen name="ManageOpportunities" component={ManageOpportunitiesScreen} />
-        <Stack.Screen name="Events" component={EventsScreen} />
         <Stack.Screen name="EventDetails" component={EventDetailsScreen} />
         <Stack.Screen name="CreateEvent" component={CreateEventScreen} />
       </Stack.Navigator>
