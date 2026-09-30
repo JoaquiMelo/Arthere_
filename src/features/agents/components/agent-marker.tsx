@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { Marker } from 'react-native-maps';
 
@@ -8,7 +8,7 @@ import { colors } from '@/shared/theme/colors';
 
 type Props = { agente: AgenteCriativo; ativo: boolean; onPress: (agente: AgenteCriativo) => void };
 
-export function AgentMarker({ agente, ativo, onPress }: Props) {
+function AgentMarkerComponent({ agente, ativo, onPress }: Props) {
   const [pronto, setPronto] = useState(false);
   const cor = CATEGORIAS[agente.categoria]?.cor ?? CATEGORIAS.design.cor;
 
@@ -30,6 +30,8 @@ export function AgentMarker({ agente, ativo, onPress }: Props) {
     </Marker>
   );
 }
+
+export const AgentMarker = memo(AgentMarkerComponent);
 
 const styles = StyleSheet.create({
   pinContainer: { alignItems: 'center', width: 54, height: 65 },
