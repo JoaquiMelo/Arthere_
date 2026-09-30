@@ -22,7 +22,7 @@ import { useAgentFilter } from '@/features/map/hooks/use-agent-filter';
 import { useChat } from '@/providers/chat-provider';
 import { colors } from '@/shared/theme/colors';
 import { AgentProfileCard } from '../../../features/agents/components/agent-profile-card';
-import { CATEGORIAS } from '../../../shared/config/categories';
+import { CATEGORIAS } from '@/shared/config/categories';
 
 const REGIAO_INICIAL: Region = {
   latitude: -23.96,
@@ -41,7 +41,10 @@ export function MapScreen() {
 
   const filtrados = useAgentFilter(mockAgentes, busca, categoria);
 
-  const destaque = [...filtrados].sort((a, b) => b.avaliacao - a.avaliacao).slice(0, 3);
+  const destaque = filtrados
+    .slice()
+    .sort((a, b) => b.avaliacao - a.avaliacao)
+    .slice(0, 3);
 
   const abrirChat = (agente: AgenteCriativo) => {
     const conversationId = startConversation(agente);
@@ -103,7 +106,7 @@ export function MapScreen() {
 
           <View style={styles.stats}>
             <View>
-              <Text style={styles.statNumber}>{agentesBaixadaSantista.length}</Text>
+              <Text style={styles.statNumber}>{mockAgentes.length}</Text>
               <Text style={styles.statLabel}>ARTISTAS</Text>
             </View>
             <View style={styles.statDivider} />
@@ -210,9 +213,13 @@ export function MapScreen() {
                   <Text style={styles.cardName}>{agente.nome}</Text>
                   <Text style={styles.cardCity}>{agente.cidade}</Text>
                   <Text style={styles.cardDescription} numberOfLines={2}>{agente.descricao}</Text>
-                  <Text style={styles.cardAction} onPress={() => setSelecionado(agente)}>
-                    VER NO MAPA →
-                  </Text>
+                  <Pressable
+                    accessibilityRole="button"
+                    onPress={() => setSelecionado(agente)}
+                    hitSlop={6}
+                  >
+                    <Text style={styles.cardAction}>VER NO MAPA →</Text>
+                  </Pressable>
                 </View>
               </View>
             ))
@@ -240,16 +247,17 @@ function FilterChip({
   onPress: () => void;
 }) {
   return (
-    <Text
+    <Pressable
+      accessibilityRole="button"
+      accessibilityState={{ selected: active }}
       onPress={onPress}
-      style={[
-        styles.chip,
-        active ? styles.chipActive : styles.chipInactive,
-      ]}
+      style={[styles.chip, active ? styles.chipActive : styles.chipInactive]}
     >
       {dot ? <Text style={{ color: dot }}>• </Text> : null}
-      {label.toUpperCase()}
-    </Text>
+      <Text style={active ? styles.chipTextActive : styles.chipTextInactive}>
+        {label.toUpperCase()}
+      </Text>
+    </Pressable>
   );
 }
 
@@ -425,6 +433,15 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     paddingHorizontal: 12,
     paddingVertical: 7,
+  },
+  chipTextActive: {
+    color: colors.brandPaper,
+    fontSize: 8,
+    fontWeight: '800',
+    letterSpacing: 1,
+  },
+  chipTextInactive: {
+    color: colors.muted,
     fontSize: 8,
     fontWeight: '800',
     letterSpacing: 1,
