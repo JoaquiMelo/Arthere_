@@ -18,9 +18,9 @@ export function AgentMarker({ agente, ativo, onPress }: Props) {
       onPress={() => onPress(agente)}
       anchor={{ x: 0.5, y: 1 }}
       tracksViewChanges={!pronto}
-      key={agente.id + (ativo ? '-active' : '-idle')}
     >
       <View style={[styles.pinContainer, ativo && styles.pinActive]}>
+
         <View style={[styles.pinImageContainer, { borderColor: cor }]}>
           <Image source={{ uri: agente.avatarUrl }} style={styles.pinImage} onLoad={() => setPronto(true)} />
         </View>
