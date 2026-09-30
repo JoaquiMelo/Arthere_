@@ -1,8 +1,8 @@
-import React, { createContext, useMemo, useState } from 'react';
-import { MOCK_VAGAS_GERENCIADAS } from '../features/opportunities/screens/data/mock-management';
-import type { Candidato, VagaGerenciada } from '../features/opportunities/screens/types/management';
-import { MOCK_EVENTOS } from '../features/events/types/event';
-import type { Evento } from '../features/events/types/event';
+import React, { createContext, useContext, useState } from 'react';
+import { MOCK_VAGAS_GERENCIADAS } from '@/features/opportunities/data/mock-management';
+import type { Candidato, VagaGerenciada } from '@/features/opportunities/types/management';
+import { MOCK_EVENTOS } from '@/features/events/data/mock-events';
+import type { Evento } from '@/features/events/types/event';
 
 type NovoEvento = Omit<Evento, 'id'>;
 
@@ -34,7 +34,7 @@ type ManagementContextType = {
   recusarSolicitacaoEvento: (solicitacaoId: string) => void;
 };
 
-const ManagementContext = createContext<ManagementContextType>({} as ManagementContextType);
+const ManagementContext = createContext<ManagementContextType | null>(null);
 
 export function ManagementProvider({ children }: { children: React.ReactNode }) {
   const [vagas, setVagas] = useState<VagaGerenciada[]>(MOCK_VAGAS_GERENCIADAS);
@@ -81,22 +81,9 @@ export function ManagementProvider({ children }: { children: React.ReactNode }) 
   const aceitarSolicitacaoEvento = (solicitacaoId: string) => atualizarSolicitacaoEvento(solicitacaoId, 'ACEITA');
   const recusarSolicitacaoEvento = (solicitacaoId: string) => atualizarSolicitacaoEvento(solicitacaoId, 'RECUSADA');
 
-  const value = useMemo(() => ({
-    vagas,
-    eventos,
-    solicitacoesEvento,
-    publicarVaga,
-    criarEvento,
-    aceitarCandidato,
-    recusarCandidato,
-    concluirVaga,
-    marcarAvaliado,
-    enviarSolicitacaoEvento,
-    aceitarSolicitacaoEvento,
-    recusarSolicitacaoEvento,
-  }), [vagas, eventos, solicitacoesEvento]);
+  const value: ManagementContextType = { vagas, eventos, solicitacoesEvento, publicarVaga, criarEvento, aceitarCandidato, recusarCandidato, concluirVaga, marcarAvaliado, enviarSolicitacaoEvento, aceitarSolicitacaoEvento, recusarSolicitacaoEvento };
 
   return <ManagementContext.Provider value={value}>{children}</ManagementContext.Provider>;
 }
 
-export const useManagement = () => React.useContext(ManagementContext);
+export const useManagement = () => { const value = useContext(ManagementContext); if (!value) throw new Error('useManagement fora do ManagementProvider'); return value; };

@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import {
   Alert,
   Image,
@@ -13,9 +13,12 @@ import {
   Pressable,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Region } from 'react-native-maps';
 
 import type { AgenteCriativo } from '@/features/agents/types/agent';
+import { mockAgentes } from '@/features/agents/data/mock-agents';
+import { AgentMarker } from '@/features/agents/components/agent-marker';
+import { useAgentFilter } from '@/features/map/hooks/use-agent-filter';
 import { useChat } from '@/providers/chat-provider';
 import { colors } from '@/shared/theme/colors';
 import { AgentProfileCard } from '../../../features/agents/components/agent-profile-card';
@@ -28,93 +31,6 @@ const REGIAO_INICIAL: Region = {
   longitudeDelta: 0.12,
 };
 
-const agentesBaixadaSantista: AgenteCriativo[] = [
-  {
-    id: '1',
-    nome: 'Marina Oliveira',
-    categoria: 'fotografo',
-    disponivel: true,
-    avaliacao: 4.9,
-    cidade: 'Santos, SP',
-    especialidades: ['Fotógrafo'],
-    latitude: -23.9608,
-    longitude: -46.3339,
-    avatarUrl: 'https://i.pravatar.cc/150?img=47',
-    descricao: 'Fotógrafa de eventos e retratos autorais.',
-    portfolio: [{ id: 'marina-1', titulo: 'Retrato editorial', imagemUrl: 'https://picsum.photos/seed/marina-1/300/200' }],
-  },
-  {
-    id: '2',
-    nome: 'João Paulo',
-    categoria: 'videomaker',
-    disponivel: true,
-    avaliacao: 4.7,
-    cidade: 'São Vicente, SP',
-    especialidades: ['Videomaker'],
-    latitude: -23.965,
-    longitude: -46.38,
-    avatarUrl: 'https://i.pravatar.cc/150?img=12',
-    descricao: 'Videomaker para campanhas, eventos e conteúdo digital.',
-    portfolio: [{ id: 'joao-1', titulo: 'Vídeo de campanha', imagemUrl: 'https://picsum.photos/seed/joao-1/300/200' }],
-  },
-  {
-    id: '3',
-    nome: 'Beatriz Costa',
-    categoria: 'dj',
-    disponivel: false,
-    avaliacao: 4.8,
-    cidade: 'Guarujá, SP',
-    especialidades: ['DJ'],
-    latitude: -23.99,
-    longitude: -46.26,
-    avatarUrl: 'https://i.pravatar.cc/150?img=25',
-    descricao: 'DJ para casamentos, festas e eventos corporativos.',
-    portfolio: [{ id: 'beatriz-1', titulo: 'Evento ao vivo', imagemUrl: 'https://picsum.photos/seed/beatriz-1/300/200' }],
-  },
-  {
-    id: '4',
-    nome: 'Rafael Souza',
-    categoria: 'artesao',
-    disponivel: true,
-    avaliacao: 4.6,
-    cidade: 'Praia Grande, SP',
-    especialidades: ['Artesanato'],
-    latitude: -24.005,
-    longitude: -46.41,
-    avatarUrl: 'https://i.pravatar.cc/150?img=33',
-    descricao: 'Artesão de peças autorais em madeira para casas e eventos.',
-    portfolio: [{ id: 'rafael-1', titulo: 'Coleção em madeira', imagemUrl: 'https://picsum.photos/seed/rafael-1/300/200' }],
-  },
-];
-
-function CustomPin({
-  agente,
-  ativo,
-  onPress,
-}: {
-  agente: AgenteCriativo;
-  ativo: boolean;
-  onPress: (a: AgenteCriativo) => void;
-}) {
-  const cor = CATEGORIAS[agente.categoria]?.cor ?? CATEGORIAS.design.cor;
-
-  return (
-    <Marker
-      coordinate={{ latitude: agente.latitude, longitude: agente.longitude }}
-      onPress={() => onPress(agente)}
-      anchor={{ x: 0.5, y: 1 }}
-    >
-      <View style={[styles.pinContainer, ativo && styles.pinActive]}>
-        <View style={[styles.pinImageContainer, { borderColor: cor }]}>
-          <Image source={{ uri: agente.avatarUrl }} style={styles.pinImage} />
-        </View>
-        <View style={[styles.pinStatus, { backgroundColor: agente.disponivel ? cor : colors.muted }]} />
-        <View style={[styles.pinTail, { borderTopColor: cor }]} />
-      </View>
-    </Marker>
-  );
-}
-
 export function MapScreen() {
   const navigation = useNavigation<any>();
   const insets = useSafeAreaInsets();
@@ -123,22 +39,7 @@ export function MapScreen() {
   const [categoria, setCategoria] = useState<string | null>(null);
   const [selecionado, setSelecionado] = useState<AgenteCriativo | null>(null);
 
-  const filtrados = useMemo(() => {
-    const termo = busca.trim().toLowerCase();
-
-    return agentesBaixadaSantista.filter((agente) => {
-      const categoriaOk = !categoria || agente.categoria === categoria;
-      const categoriaLabel = CATEGORIAS[agente.categoria]?.label.toLowerCase() ?? '';
-      const termoOk =
-        !termo ||
-        agente.nome.toLowerCase().includes(termo) ||
-        agente.cidade.toLowerCase().includes(termo) ||
-        categoriaLabel.includes(termo) ||
-        agente.especialidades.some((item) => item.toLowerCase().includes(termo));
-
-      return categoriaOk && termoOk;
-    });
-  }, [busca, categoria]);
+  const filtrados = useAgentFilter(mockAgentes, busca, categoria);
 
   const destaque = [...filtrados].sort((a, b) => b.avaliacao - a.avaliacao).slice(0, 3);
 
@@ -254,7 +155,7 @@ export function MapScreen() {
               scrollEnabled
             >
               {filtrados.map((agente) => (
-                <CustomPin
+                <AgentMarker
                   key={agente.id}
                   agente={agente}
                   ativo={selecionado?.id === agente.id}

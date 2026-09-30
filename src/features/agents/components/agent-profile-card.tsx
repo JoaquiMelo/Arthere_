@@ -101,8 +101,8 @@ export function AgentProfileCard({
         >
           {agente.portfolio.map((item) => (
             <View key={item.id} style={styles.portfolioItem}>
-              {item.imagemUrl ? (
-                <Image source={{ uri: item.imagemUrl }} style={styles.portfolioImagem} />
+              {item.imageUrl ? (
+                <Image source={{ uri: item.imageUrl }} style={styles.portfolioImagem} />
               ) : (
                 <View style={styles.placeholder} />
               )}

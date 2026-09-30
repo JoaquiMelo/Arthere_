@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ConflictException, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
@@ -8,6 +8,9 @@ import { LoginDto, RegisterDto } from './auth.dto';
 export class AuthService {
   constructor(private prisma: PrismaService, private jwt: JwtService) {}
   async register(dto: RegisterDto) {
+    if (dto.tipo !== 'AGENTE' && dto.tipo !== 'CONTRATANTE') {
+      throw new BadRequestException('Tipo de usuário inválido.');
+    }
     const existe=await this.prisma.usuario.findUnique({where:{email:dto.email}});
     if(existe) throw new ConflictException('Email já cadastrado.');
     const senhaHash=await bcrypt.hash(dto.senha,10);
@@ -26,5 +29,5 @@ export class AuthService {
     if(!ok) throw new UnauthorizedException('Email ou senha inválidos.');
     return this.gerarToken(usuario);
   }
-  private gerarToken(usuario:any){return {access_token:this.jwt.sign({sub:usuario.id,email:usuario.email,tipo:usuario.tipo}),usuario:{id:usuario.id,email:usuario.email,tipo:usuario.tipo,perfil:usuario.agente??usuario.contratante}};}
+  private gerarToken(usuario: { id: string; email: string; tipo: string; agente?: unknown; contratante?: unknown }){return {access_token:this.jwt.sign({sub:usuario.id,email:usuario.email,tipo:usuario.tipo}),usuario:{id:usuario.id,email:usuario.email,tipo:usuario.tipo,perfil:usuario.agente??usuario.contratante}};}
 }

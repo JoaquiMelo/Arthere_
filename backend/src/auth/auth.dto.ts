@@ -1,8 +1,35 @@
-import { TipoUsuario } from '@prisma/client';
+import { IsEmail, IsIn, IsOptional, IsString, MinLength } from 'class-validator';
 
 export class RegisterDto {
-  email: string; senha: string; tipo: TipoUsuario; nome: string;
-  especialidade?: string; empresa?: string; telefone?: string; descricao?: string;
-  site?: string; cidade?: string; endereco?: string; categoria?: string;
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  @MinLength(6)
+  senha: string;
+
+  @IsIn(['AGENTE', 'CONTRATANTE'])
+  tipo: 'AGENTE' | 'CONTRATANTE';
+
+  @IsString()
+  @MinLength(2)
+  nome: string;
+
+  @IsOptional() @IsString() especialidade?: string;
+  @IsOptional() @IsString() empresa?: string;
+  @IsOptional() @IsString() telefone?: string;
+  @IsOptional() @IsString() descricao?: string;
+  @IsOptional() @IsString() site?: string;
+  @IsOptional() @IsString() cidade?: string;
+  @IsOptional() @IsString() endereco?: string;
+  @IsOptional() @IsString() categoria?: string;
 }
-export class LoginDto { email: string; senha: string; }
+
+export class LoginDto {
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  @MinLength(6)
+  senha: string;
+}

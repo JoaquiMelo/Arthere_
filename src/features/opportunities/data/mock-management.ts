@@ -1,6 +1,5 @@
-import type { VagaGerenciada } from '../types/management';
+import type { VagaGerenciada } from '@/features/opportunities/types/management';
 
-// agenteId corresponde aos agentes mocados em map-screen.tsx
 export const MOCK_VAGAS_GERENCIADAS: VagaGerenciada[] = [
   {
     id: 'vaga-1', titulo: 'Cobertura fotográfica - Aniversário de 15 anos', categoria: 'Fotografia', orcamento: 1200,

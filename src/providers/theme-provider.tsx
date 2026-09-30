@@ -1,5 +1,5 @@
 import { colors as baseColors } from '@/shared/theme/colors';
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 export type PaletteName = 'Arthere' | 'Oceano' | 'Ameixa';
 
@@ -53,17 +53,19 @@ const palettes = {
   },
 } as const;
 
+export type Palette = (typeof palettes)[PaletteName];
+
 type ThemeContextType = {
   paletteName: PaletteName;
-  palette: (typeof palettes)[PaletteName];
+  palette: Palette;
   setPalette: (name: PaletteName) => void;
 };
 
-const ThemeContext = createContext<ThemeContextType>({} as ThemeContextType);
+const ThemeContext = createContext<ThemeContextType | null>(null);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [paletteName, setPaletteName] = useState<PaletteName>('Arthere');
-  const palette = useMemo(() => palettes[paletteName], [paletteName]);
+  const palette = palettes[paletteName];
 
   return (
     <ThemeContext.Provider value={{ paletteName, palette, setPalette: setPaletteName }}>
@@ -72,6 +74,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => { const value = useContext(ThemeContext); if (!value) throw new Error('useTheme fora do ThemeProvider'); return value; };
 export { palettes };
 
